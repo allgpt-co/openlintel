@@ -2,6 +2,7 @@
 
 import { use, useState, useEffect, useCallback, useRef } from 'react';
 import { trpc } from '@/lib/trpc/client';
+import { FLOOR_PLAN_PREVIEW_RETRY_MS, shouldRetryFloorPlanPreview } from '@/lib/floor-plan-preview';
 import dynamic from 'next/dynamic';
 
 const FloorPlanUpload = dynamic(
@@ -71,6 +72,61 @@ function storageKeyToImageUrl(storageKey: string): string {
   }
   const previewKey = storageKey.replace(/\.[^.]+$/, '_preview.png');
   return `/api/uploads/${encodeURIComponent(previewKey)}`;
+}
+
+function FloorPlanPreviewImage({
+  src,
+  alt,
+  className,
+  fallbackClassName,
+  onClick,
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  fallbackClassName: string;
+  onClick?: () => void;
+}) {
+  const [failedAt, setFailedAt] = useState<number | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
+
+  useEffect(() => {
+    setFailedAt(null);
+    setRetryKey(0);
+  }, [src]);
+
+  useEffect(() => {
+    if (failedAt === null) return;
+
+    const remainingMs = Math.max(0, FLOOR_PLAN_PREVIEW_RETRY_MS - (Date.now() - failedAt));
+    const timer = window.setTimeout(() => {
+      if (shouldRetryFloorPlanPreview(failedAt, Date.now())) {
+        setRetryKey((current) => current + 1);
+        setFailedAt(null);
+      }
+    }, remainingMs);
+
+    return () => window.clearTimeout(timer);
+  }, [failedAt]);
+
+  if (failedAt !== null) {
+    return (
+      <div className={fallbackClassName} aria-label={`${alt} preview unavailable`}>
+        <Map className="h-10 w-10 text-muted-foreground/40" />
+      </div>
+    );
+  }
+
+  return (
+    <img
+      key={`${src}:${retryKey}`}
+      src={src}
+      alt={alt}
+      className={className}
+      onClick={onClick}
+      onError={() => setFailedAt(Date.now())}
+    />
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -687,9 +743,6 @@ export default function FloorPlanPage({ params }: { params: Promise<{ id: string
   // Lightbox
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
-  // Track uploads whose preview image failed to load (fallback to placeholder)
-  const [previewErrors, setPreviewErrors] = useState<Set<string>>(new Set());
-
   // Upload renaming
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editNameValue, setEditNameValue] = useState('');
@@ -1089,13 +1142,13 @@ export default function FloorPlanPage({ params }: { params: Promise<{ id: string
               <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-2.5 text-sm">
                 <p className="text-muted-foreground">Uploaded floor plan</p>
               </div>
-              {activeUploadUrl && !previewErrors.has(activeUploadId!) ? (
-                <img
+              {activeUploadUrl ? (
+                <FloorPlanPreviewImage
                   src={activeUploadUrl}
                   alt={name}
                   className="max-h-[280px] w-auto max-w-full cursor-pointer rounded-xl border object-contain transition-opacity hover:opacity-90"
+                  fallbackClassName="flex h-40 w-56 items-center justify-center rounded-xl bg-muted"
                   onClick={() => activeUploadUrl && setLightboxSrc(activeUploadUrl)}
-                  onError={() => setPreviewErrors((prev) => new Set(prev).add(activeUploadId!))}
                 />
               ) : (
                 <div className="flex h-40 w-56 items-center justify-center rounded-xl bg-muted">
@@ -1257,18 +1310,12 @@ export default function FloorPlanPage({ params }: { params: Promise<{ id: string
                   onClick={() => openUpload(upload.id)}
                 >
                   <div className="relative aspect-video bg-muted">
-                    {!previewErrors.has(upload.id) ? (
-                      <img
-                        src={getUploadImageUrl(upload)}
-                        alt={name}
-                        className="h-full w-full object-contain"
-                        onError={() => setPreviewErrors((prev) => new Set(prev).add(upload.id))}
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <Map className="h-10 w-10 text-muted-foreground/40" />
-                      </div>
-                    )}
+                    <FloorPlanPreviewImage
+                      src={getUploadImageUrl(upload)}
+                      alt={name}
+                      className="h-full w-full object-contain"
+                      fallbackClassName="flex h-full items-center justify-center"
+                    />
 
                     {uploadMessages.length > 0 && (
                       <div className="absolute left-2 top-2">

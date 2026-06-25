@@ -19,6 +19,32 @@ function exec(cmd: string, args: string[], timeoutMs = 30000): Promise<{ stdout:
   });
 }
 
+export function formatCadConversionError(error: unknown, extension: string): string {
+  const original = error instanceof Error ? error.message : String(error);
+  const upperExt = extension.toUpperCase();
+  const pythonDeps = 'python3 -m pip install ezdxf matplotlib';
+
+  if (extension === 'dwg') {
+    return [
+      'DWG conversion requires a local DWG-to-DXF converter and Python rendering packages.',
+      'Install or expose `dwg2dxf` from LibreDWG/ODA File Converter on PATH.',
+      `Install Python renderer dependencies with: ${pythonDeps}.`,
+      `Original error: ${original}`,
+    ].join(' ');
+  }
+
+  return [
+    `${upperExt} rendering requires Python rendering packages.`,
+    `Install them with: ${pythonDeps}.`,
+    `Original error: ${original}`,
+  ].join(' ');
+}
+
+export function getCadPythonCommand(env?: { PYTHON_BIN?: string }): string {
+  const source = env ?? (process.env as { PYTHON_BIN?: string });
+  return source.PYTHON_BIN || 'python3';
+}
+
 /**
  * Convert a PDF buffer to a PNG image buffer (first page only).
  * Uses pdftoppm from poppler-utils.
@@ -111,7 +137,11 @@ async function cadToPng(buffer: Buffer, extension: string): Promise<Buffer> {
     await writeFile(inputPath, buffer);
     // DWG files need extra time: dwg2dxf conversion + ezdxf rendering
     const timeout = extension === 'dwg' ? 120000 : 60000;
-    await exec('python3', [scriptPath, inputPath, outputPath], timeout);
+    try {
+      await exec(getCadPythonCommand(), [scriptPath, inputPath, outputPath], timeout);
+    } catch (error) {
+      throw new Error(formatCadConversionError(error, extension));
+    }
     const png = await readFile(outputPath);
     return png;
   } finally {

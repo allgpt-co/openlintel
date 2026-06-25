@@ -3,6 +3,10 @@ import { router, protectedProcedure } from '../init';
 import {
   renderJobs, projects, rooms, eq, and,
 } from '@openlintel/db';
+import OpenAI from 'openai';
+import { generateAndStoreOpenAIImage } from '../../openai-image';
+
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export const renderRouter = router({
   // ── List render jobs for a project ────────────────────────
@@ -257,29 +261,13 @@ async function generateRenderImage(
 }
 
 async function callDalle(apiKey: string, prompt: string, size: string, quality: string): Promise<string> {
-  const res = await fetch('https://api.openai.com/v1/images/generations', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'dall-e-3',
-      prompt,
-      n: 1,
-      size,
-      quality,
-      response_format: 'url',
-    }),
+  if (!apiKey) throw new Error('OPENAI_API_KEY not configured');
+  const { imageUrl } = await generateAndStoreOpenAIImage({
+    openai,
+    prompt,
+    size: size as '1024x1024' | '1792x1024' | '1024x1792' | '1536x1024' | '1024x1536' | 'auto',
+    quality: quality as 'standard' | 'hd' | 'low' | 'medium' | 'high' | 'auto',
+    filename: 'render.png',
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI Image API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  const url = data.data?.[0]?.url;
-  if (!url) throw new Error('No image URL returned from OpenAI');
-  return url;
+  return imageUrl;
 }

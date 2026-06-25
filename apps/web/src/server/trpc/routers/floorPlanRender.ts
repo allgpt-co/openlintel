@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { projects, jobs, uploads, rooms, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
 import OpenAI from 'openai';
+import { generateAndStoreOpenAIImage } from '../../openai-image';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -80,17 +81,15 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const response = await openai.images.generate({
-          model: 'dall-e-3',
+        const generatedImage = await generateAndStoreOpenAIImage({
+          openai,
           prompt,
-          n: 1,
           size: '1024x1024',
           quality: 'hd',
+          filename: `full_apartment_${job.id}.png`,
         });
 
         await ctx.db.update(jobs).set({ progress: 80 }).where(eq(jobs.id, job.id));
-
-        const imageUrl = response.data[0]?.url ?? null;
 
         const [updatedJob] = await ctx.db
           .update(jobs)
@@ -99,11 +98,11 @@ Architectural visualization style, ultra-realistic materials, physically accurat
             progress: 100,
             completedAt: new Date(),
             outputJson: {
-              imageUrl,
+              imageUrl: generatedImage.imageUrl,
               renderType: 'full_apartment',
               roomCount: input.roomDescriptions.length,
               prompt,
-              revisedPrompt: response.data[0]?.revised_prompt,
+              revisedPrompt: generatedImage.revisedPrompt,
             },
           })
           .where(eq(jobs.id, job.id))
@@ -187,17 +186,15 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const response = await openai.images.generate({
-          model: 'dall-e-3',
+        const generatedImage = await generateAndStoreOpenAIImage({
+          openai,
           prompt,
-          n: 1,
           size: '1792x1024',
           quality: 'hd',
+          filename: `room_render_${job.id}.png`,
         });
 
         await ctx.db.update(jobs).set({ progress: 80 }).where(eq(jobs.id, job.id));
-
-        const imageUrl = response.data[0]?.url ?? null;
 
         const [updatedJob] = await ctx.db
           .update(jobs)
@@ -206,13 +203,13 @@ Architectural visualization style, ultra-realistic materials, physically accurat
             progress: 100,
             completedAt: new Date(),
             outputJson: {
-              imageUrl,
+              imageUrl: generatedImage.imageUrl,
               roomId: input.roomId,
               roomName: room.name,
               cameraPosition: input.cameraPosition,
               cameraDirection: input.cameraDirection,
               prompt,
-              revisedPrompt: response.data[0]?.revised_prompt,
+              revisedPrompt: generatedImage.revisedPrompt,
             },
           })
           .where(eq(jobs.id, job.id))
@@ -274,17 +271,15 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const response = await openai.images.generate({
-          model: 'dall-e-3',
+        const generatedImage = await generateAndStoreOpenAIImage({
+          openai,
           prompt,
-          n: 1,
           size: '1792x1024',
           quality: 'hd',
+          filename: `furniture_edit_${job.id}.png`,
         });
 
         await ctx.db.update(jobs).set({ progress: 80 }).where(eq(jobs.id, job.id));
-
-        const imageUrl = response.data[0]?.url ?? null;
 
         const [updatedJob] = await ctx.db
           .update(jobs)
@@ -293,12 +288,12 @@ Architectural visualization style, ultra-realistic materials, physically accurat
             progress: 100,
             completedAt: new Date(),
             outputJson: {
-              imageUrl,
+              imageUrl: generatedImage.imageUrl,
               editType: 'furniture',
               editRegion: input.editRegion,
               referenceDescription: input.referenceDescription,
               prompt,
-              revisedPrompt: response.data[0]?.revised_prompt,
+              revisedPrompt: generatedImage.revisedPrompt,
             },
           })
           .where(eq(jobs.id, job.id))
@@ -361,15 +356,13 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const response = await openai.images.generate({
-          model: 'dall-e-3',
+        const generatedImage = await generateAndStoreOpenAIImage({
+          openai,
           prompt,
-          n: 1,
           size: '1792x1024',
           quality: 'hd',
+          filename: `localized_edit_${job.id}.png`,
         });
-
-        const imageUrl = response.data[0]?.url ?? null;
 
         const [updatedJob] = await ctx.db
           .update(jobs)
@@ -378,12 +371,12 @@ Architectural visualization style, ultra-realistic materials, physically accurat
             progress: 100,
             completedAt: new Date(),
             outputJson: {
-              imageUrl,
+              imageUrl: generatedImage.imageUrl,
               editType: input.editType,
               editDescription: input.editDescription,
               highlightArea: input.highlightArea,
               prompt,
-              revisedPrompt: response.data[0]?.revised_prompt,
+              revisedPrompt: generatedImage.revisedPrompt,
             },
           })
           .where(eq(jobs.id, job.id))
@@ -456,15 +449,13 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const transitionResponse = await openai.images.generate({
-          model: 'dall-e-3',
+        const transitionImage = await generateAndStoreOpenAIImage({
+          openai,
           prompt: transitionPrompt,
-          n: 1,
           size: '1792x1024',
           quality: 'hd',
+          filename: `walkthrough_transition_${job.id}.png`,
         });
-
-        const transitionImageUrl = transitionResponse.data[0]?.url ?? null;
 
         await ctx.db.update(jobs).set({ progress: 70 }).where(eq(jobs.id, job.id));
 
@@ -479,7 +470,7 @@ Architectural visualization style, ultra-realistic materials, physically accurat
             outputJson: {
               frames: [
                 { imageUrl: input.startImageUrl, label: `Start: ${startRoom?.name ?? 'Room'}` },
-                { imageUrl: transitionImageUrl, label: 'Transition' },
+                { imageUrl: transitionImage.imageUrl, label: 'Transition' },
                 { imageUrl: input.endImageUrl, label: `End: ${endRoom?.name ?? 'Room'}` },
               ],
               startRoom: startRoom?.name,
@@ -543,16 +534,13 @@ Architectural visualization style, ultra-realistic materials, physically accurat
       try {
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const response = await openai.images.generate({
-          model: 'dall-e-3',
+        const generatedImage = await generateAndStoreOpenAIImage({
+          openai,
           prompt: input.prompt,
-          n: 1,
           size: input.size,
           quality: 'hd',
+          filename: `floor_plan_edit_${job.id}.png`,
         });
-
-        const firstResult = response.data?.[0];
-        const imageUrl = firstResult?.url ?? null;
 
         const [updatedJob] = await ctx.db
           .update(jobs)
@@ -561,9 +549,9 @@ Architectural visualization style, ultra-realistic materials, physically accurat
             progress: 100,
             completedAt: new Date(),
             outputJson: {
-              imageUrl,
+              imageUrl: generatedImage.imageUrl,
               prompt: input.prompt,
-              revisedPrompt: firstResult?.revised_prompt,
+              revisedPrompt: generatedImage.revisedPrompt,
             },
           })
           .where(eq(jobs.id, job.id))

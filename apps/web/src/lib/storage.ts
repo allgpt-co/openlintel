@@ -1,10 +1,15 @@
 import { randomUUID } from 'crypto';
 import { readFile, writeFile, unlink, mkdir } from 'fs/promises';
 import { join, dirname } from 'path';
-import { existsSync } from 'fs';
 
-// Resolve uploads directory relative to monorepo root (two levels up from apps/web)
-const UPLOADS_DIR = join(process.cwd(), '..', '..', 'uploads');
+export function resolveUploadsDir(
+  cwd = process.cwd(),
+  env: { UPLOADS_DIR?: string } = process.env as { UPLOADS_DIR?: string },
+): string {
+  return env.UPLOADS_DIR || join(cwd, '..', '..', 'uploads');
+}
+
+const UPLOADS_DIR = resolveUploadsDir();
 
 export function generateStorageKey(filename: string): string {
   const ext = filename.includes('.') ? '.' + filename.split('.').pop() : '';

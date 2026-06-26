@@ -1,9 +1,7 @@
 import { z } from 'zod';
-import { cutlistResults, designVariants, rooms, projects, jobs, eq, and } from '@openlintel/db';
+import { cutlistResults, designVariants, projects, jobs, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { converseWithBedrock } from '../../bedrock';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -280,28 +278,24 @@ Rules:
 
           await db.update(jobs).set({ progress: 20 }).where(eq(jobs.id, job.id));
 
-          const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+          const { text: responseText, stopReason: finishReason } = await converseWithBedrock({
             messages: [
               { role: 'system', content: 'You are a furniture manufacturing expert. Output only valid compact JSON. Be thorough — list every structural panel for every furniture piece.' },
               { role: 'user', content: prompt },
             ],
             temperature: 0.3,
-            max_tokens: 16384,
-            response_format: { type: 'json_object' },
+            maxTokens: 16384,
           });
 
           await db.update(jobs).set({ progress: 60 }).where(eq(jobs.id, job.id));
 
-          const finishReason = completion.choices[0]?.finish_reason;
-          const responseText = completion.choices[0]?.message?.content ?? '';
-          console.log('[Cutlist] OpenAI response length:', responseText.length, 'finish_reason:', finishReason);
+          console.log('[Cutlist] Bedrock response length:', responseText.length, 'stopReason:', finishReason);
 
-          if (finishReason === 'length') {
+          if (finishReason === 'max_tokens') {
             throw new Error('Cutlist response was truncated by token limit');
           }
           if (!responseText.trim()) {
-            throw new Error(`OpenAI returned empty response (finish_reason: ${finishReason})`);
+            throw new Error(`Bedrock returned empty response (stopReason: ${finishReason})`);
           }
 
           let cutlistData: { panels: any[]; hardware: any[] };

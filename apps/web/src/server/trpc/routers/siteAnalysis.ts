@@ -3,38 +3,20 @@ import { router, protectedProcedure } from '../init';
 import {
   siteAnalysisItems, projects, eq, and,
 } from '@openlintel/db';
+import { converseWithBedrock } from '../../bedrock';
 
 /* ─── AI helper ───────────────────────────────────────────────────────── */
 
-async function callOpenAI(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 2048,
-    }),
+async function callBedrock(systemPrompt: string, userPrompt: string): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3,
+    maxTokens: 2048,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const SITE_SYSTEM_PROMPT = `You are an expert civil engineer and site planner specializing in residential and commercial land development. You have deep knowledge of:
@@ -229,7 +211,7 @@ Respond with:
   };
 
   const userPrompt = typePrompts[analysis.analysisType] ?? typePrompts.topography;
-  const content = await callOpenAI(SITE_SYSTEM_PROMPT, `Analysis Name: "${analysis.name}"\n\n${userPrompt}`);
+  const content = await callBedrock(SITE_SYSTEM_PROMPT, `Analysis Name: "${analysis.name}"\n\n${userPrompt}`);
   const result = JSON.parse(content);
 
   return {
@@ -272,7 +254,7 @@ Respond with:
   "recommendations": ["<recommendation 1>", "<recommendation 2>", ...]
 }`;
 
-  const content = await callOpenAI(SITE_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(SITE_SYSTEM_PROMPT, userPrompt);
   const result = JSON.parse(content);
 
   return {

@@ -17,7 +17,7 @@ export const apiKeyRouter = router({
   create: protectedProcedure
     .input(
       z.object({
-        provider: z.enum(['openai', 'anthropic', 'google', 'replicate']),
+        provider: z.enum(['anthropic', 'google', 'replicate']),
         label: z.string().min(1).max(100),
         key: z.string().min(1),
       }),

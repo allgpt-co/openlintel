@@ -3,38 +3,20 @@ import { router, protectedProcedure } from '../init';
 import {
   structuralElements, projects, eq, and,
 } from '@openlintel/db';
+import { converseWithBedrock } from '../../bedrock';
 
 /* ─── AI-powered structural analysis ──────────────────────────────────── */
 
-async function callOpenAI(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 2048,
-    }),
+async function callBedrock(systemPrompt: string, userPrompt: string): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3,
+    maxTokens: 2048,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const STRUCTURAL_SYSTEM_PROMPT = `You are a licensed Professional Engineer (PE) specializing in residential and light-commercial structural engineering. You follow IBC 2021, IRC 2021, NDS 2018, AISC 360, ACI 318-19, and ASCE 7-22 standards.
@@ -88,7 +70,7 @@ Respond with this exact JSON structure:
 
 If the element lacks sufficient data, still provide a reasonable recommendation based on typical residential construction practices, and note assumptions in the response.`;
 
-  const content = await callOpenAI(STRUCTURAL_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(STRUCTURAL_SYSTEM_PROMPT, userPrompt);
   const result = JSON.parse(content);
 
   return {
@@ -129,7 +111,7 @@ Respond with this exact JSON structure:
   "standard": "<code reference>"
 }`;
 
-  const content = await callOpenAI(STRUCTURAL_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(STRUCTURAL_SYSTEM_PROMPT, userPrompt);
   const result = JSON.parse(content);
 
   return {
@@ -170,7 +152,7 @@ Respond with this exact JSON structure:
   "overallAssessment": "<brief overall structural assessment>"
 }`;
 
-  const content = await callOpenAI(STRUCTURAL_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(STRUCTURAL_SYSTEM_PROMPT, userPrompt);
   const result = JSON.parse(content);
 
   return {

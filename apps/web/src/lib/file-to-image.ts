@@ -151,7 +151,7 @@ async function cadToPng(buffer: Buffer, extension: string): Promise<Buffer> {
 }
 
 /**
- * Convert any supported file buffer to a PNG image buffer suitable for GPT-4o vision.
+ * Convert any supported file buffer to a PNG image buffer suitable for vision models.
  * Supported: PNG, JPG, WEBP, GIF (passthrough), PDF (pdftoppm), DXF/DWG (ezdxf).
  */
 export async function fileToImageBuffer(

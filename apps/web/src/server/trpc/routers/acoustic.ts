@@ -3,38 +3,20 @@ import { router, protectedProcedure } from '../init';
 import {
   acousticAssessments, projects, rooms, eq, and,
 } from '@openlintel/db';
+import { converseWithBedrock } from '../../bedrock';
 
 /* ─── AI-powered acoustic analysis ──────────────────────────────── */
 
-async function callOpenAI(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 2048,
-    }),
+async function callBedrock(systemPrompt: string, userPrompt: string): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3,
+    maxTokens: 2048,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const ACOUSTIC_SYSTEM_PROMPT = `You are a Board-Certified Acoustical Consultant specializing in residential and light-commercial building acoustics. You follow IBC 2021, IRC 2021, ASTM E90, ASTM E492, ASTM E413, ASTM C423, and ANSI S12.60 standards.
@@ -115,7 +97,7 @@ Respond with this exact JSON structure:
 
 Use "pass" for code-compliant, "warning" for marginal (within 5 of code minimum), "fail" for below code.`;
 
-  const content = await callOpenAI(ACOUSTIC_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(ACOUSTIC_SYSTEM_PROMPT, userPrompt);
   const parsed = JSON.parse(content);
 
   return {

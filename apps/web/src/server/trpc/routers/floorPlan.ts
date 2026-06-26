@@ -3,14 +3,12 @@ import { projects, jobs, uploads, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
 import { getFile } from '@/lib/storage';
 import { fileToAllImageBuffers } from '@/lib/file-to-image';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { converseWithBedrock } from '../../bedrock';
 
 // ---------------------------------------------------------------------------
 // Prompt — uses relative positioning (rightOf / below) instead of x,y coords
-// GPT-4o is great at reading dimensions and spatial relationships but bad
-// at determining precise pixel coordinates. We resolve positions ourselves.
+// Vision models can read dimensions and spatial relationships while still
+// struggling with precise pixel coordinates. We resolve positions ourselves.
 // ---------------------------------------------------------------------------
 
 const FLOOR_PLAN_ANALYSIS_PROMPT = `You are an expert architectural floor plan analyzer.
@@ -205,7 +203,7 @@ function resolveLayout(rooms: any[], wallT: number): any[] {
 }
 
 // ---------------------------------------------------------------------------
-// Analyze a floor plan image with GPT-4o — returns multiple floors
+// Analyze a floor plan image with Bedrock Converse — returns multiple floors
 // ---------------------------------------------------------------------------
 
 async function analyzeSingleFloorImage(
@@ -216,10 +214,8 @@ async function analyzeSingleFloorImage(
   const base64 = imageBuffer.toString('base64');
   const dataUrl = `data:${imageMimeType};base64,${base64}`;
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
-    max_tokens: 16384,
-    response_format: { type: 'json_object' },
+  const { text } = await converseWithBedrock({
+    maxTokens: 16384,
     messages: [
       {
         role: 'user',
@@ -231,7 +227,7 @@ async function analyzeSingleFloorImage(
     ],
   });
 
-  const content = response.choices[0]?.message?.content || '{}';
+  const content = text || '{}';
 
   let parsed: any;
   try {

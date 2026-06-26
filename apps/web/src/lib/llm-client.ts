@@ -2,14 +2,15 @@ import { eq } from 'drizzle-orm';
 import { userApiKeys } from '@openlintel/db';
 import { decryptApiKey } from './crypto';
 import type { Database } from '@openlintel/db';
+import { converseWithBedrock } from '../server/bedrock';
 
 interface LLMResponse {
   content: string;
 }
 
 /**
- * Call an LLM using the user's stored (encrypted) API key.
- * Supports OpenAI, Anthropic, and Google providers.
+ * Call an LLM using Bedrock default AWS credentials or the user's stored provider key.
+ * Supports Bedrock, Anthropic, and Google providers.
  * Returns the parsed JSON from the model response.
  */
 export async function callLLM(
@@ -19,25 +20,25 @@ export async function callLLM(
   userPrompt: string,
   preferredProvider?: string,
 ): Promise<Record<string, unknown>> {
-  // Find the user's API key — prefer the specified provider, else use first available
+  // Find the user's API key — prefer the specified provider, else use first available.
+  // Bedrock uses the default AWS credentials chain and does not require a stored key.
   const keys = await db
     .select()
     .from(userApiKeys)
     .where(eq(userApiKeys.userId, userId));
 
-  if (keys.length === 0) {
-    throw new Error('No API keys configured. Add one in Settings.');
+  if (keys.length === 0 || preferredProvider === 'bedrock') {
+    const result = await callBedrock(systemPrompt, userPrompt);
+    try {
+      return JSON.parse(result.content);
+    } catch {
+      return { raw: result.content };
+    }
   }
 
   const apiKeyRow = preferredProvider
     ? keys.find((k) => k.provider === preferredProvider) ?? keys[0]
     : keys[0];
-
-  const plainKey = decryptApiKey(
-    apiKeyRow!.encryptedKey,
-    apiKeyRow!.iv,
-    apiKeyRow!.authTag,
-  );
 
   // Update lastUsedAt
   await db
@@ -48,18 +49,14 @@ export async function callLLM(
   let result: LLMResponse;
 
   switch (apiKeyRow!.provider) {
-    case 'openai':
-      result = await callOpenAI(plainKey, systemPrompt, userPrompt);
-      break;
     case 'anthropic':
-      result = await callAnthropic(plainKey, systemPrompt, userPrompt);
+      result = await callAnthropic(decryptStoredApiKey(apiKeyRow!), systemPrompt, userPrompt);
       break;
     case 'google':
-      result = await callGoogle(plainKey, systemPrompt, userPrompt);
+      result = await callGoogle(decryptStoredApiKey(apiKeyRow!), systemPrompt, userPrompt);
       break;
     default:
-      // Default to OpenAI-compatible API
-      result = await callOpenAI(plainKey, systemPrompt, userPrompt);
+      result = await callBedrock(systemPrompt, userPrompt);
   }
 
   // Try to parse JSON from response
@@ -71,36 +68,31 @@ export async function callLLM(
   }
 }
 
-async function callOpenAI(
-  apiKey: string,
+function decryptStoredApiKey(apiKeyRow: {
+  encryptedKey: string;
+  iv: string;
+  authTag: string;
+}): string {
+  return decryptApiKey(
+    apiKeyRow.encryptedKey,
+    apiKeyRow.iv,
+    apiKeyRow.authTag,
+  );
+}
+
+async function callBedrock(
   systemPrompt: string,
   userPrompt: string,
 ): Promise<LLMResponse> {
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 4096,
-    }),
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3,
+    maxTokens: 4096,
   });
-
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`OpenAI API error: ${err}`);
-  }
-
-  const data = await res.json();
-  return { content: data.choices[0].message.content };
+  return { content: text || '{}' };
 }
 
 async function callAnthropic(

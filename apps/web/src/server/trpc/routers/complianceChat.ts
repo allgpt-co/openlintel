@@ -1,35 +1,17 @@
 import { z } from 'zod';
-import { projects, rooms, complianceChatMessages, eq, and, asc } from '@openlintel/db';
+import { projects, complianceChatMessages, eq, and, asc } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
+import { converseWithBedrock, type ChatInputMessage } from '../../bedrock';
 
 /* ─── AI helper ──────────────────────────────────────────────── */
 
-async function callOpenAI(messages: { role: string; content: string }[]): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages,
-      temperature: 0.3,
-      max_tokens: 4000,
-    }),
+async function callBedrock(messages: ChatInputMessage[]): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages,
+    temperature: 0.3,
+    maxTokens: 4000,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const SYSTEM_PROMPT = `You are an expert Building Code Compliance Assistant with deep knowledge of:
@@ -138,8 +120,8 @@ export const complianceChatRouter = router({
         }
       }
 
-      // Build messages array for OpenAI
-      const aiMessages: { role: string; content: string }[] = [
+      // Build messages array for Bedrock Converse
+      const aiMessages: ChatInputMessage[] = [
         { role: 'system', content: SYSTEM_PROMPT + projectContext },
       ];
 
@@ -155,7 +137,7 @@ export const complianceChatRouter = router({
       aiMessages.push({ role: 'user', content: input.message });
 
       // Call AI
-      const raw = await callOpenAI(aiMessages);
+      const raw = await callBedrock(aiMessages);
       let answer = '';
       let citations: { code: string; section: string; text: string }[] = [];
 

@@ -3,6 +3,7 @@ import { router, protectedProcedure } from '../init';
 import {
   materialBoards, projects, rooms, eq, and,
 } from '@openlintel/db';
+import { converseWithBedrock } from '../../bedrock';
 
 // Fallback color palettes used only for initial board creation (before AI generation)
 const CATEGORY_SWATCHES: Record<string, string[]> = {
@@ -146,34 +147,16 @@ ${board.description ? `6. Align with the design brief: "${board.description}"` :
 Return ONLY the JSON object with the "materials" array.`;
 
       try {
-        const apiKey = process.env.OPENAI_API_KEY;
-        if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-        const res = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o',
-            response_format: { type: 'json_object' },
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: userPrompt },
-            ],
-            temperature: 0.4,
-            max_tokens: 4096,
-          }),
+        const { text } = await converseWithBedrock({
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+          temperature: 0.4,
+          maxTokens: 4096,
         });
 
-        if (!res.ok) {
-          const errText = await res.text();
-          throw new Error(`OpenAI API error: ${errText}`);
-        }
-
-        const data = await res.json();
-        const content = data.choices?.[0]?.message?.content ?? '{}';
+        const content = text || '{}';
         const result = JSON.parse(content) as Record<string, unknown>;
 
         const materials = Array.isArray(result.materials) ? result.materials : [];
@@ -285,4 +268,3 @@ Return ONLY the JSON object with the "materials" array.`;
       return { success: true };
     }),
 });
-

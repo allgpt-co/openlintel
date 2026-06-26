@@ -1,8 +1,9 @@
 import { z } from 'zod';
-import { projects, rooms, complianceReports, eq, and, desc } from '@openlintel/db';
+import { projects, complianceReports, eq, and, desc } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { converseWithBedrock } from '../../bedrock';
 
 // ── Building Code Rules ────────────────────────────────────────
 interface BuildingCodeRule {
@@ -73,35 +74,16 @@ for (const file of JURISDICTION_FILES) {
 
 /* ─── AI-powered compliance analysis ──────────────────────────── */
 
-async function callOpenAI(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.2,
-      max_tokens: 3000,
-    }),
+async function callBedrock(systemPrompt: string, userPrompt: string): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.2,
+    maxTokens: 3000,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const COMPLIANCE_SYSTEM_PROMPT = `You are a licensed Building Code Official and Plans Examiner with expertise in residential and light-commercial building codes. You are thoroughly familiar with:
@@ -185,7 +167,7 @@ Guidelines for assessment:
 
 Use "pass" when the room dimensions/type clearly meet requirements, "fail" when they clearly don't, "warning" when the room is marginal or additional information is needed.`;
 
-  const content = await callOpenAI(COMPLIANCE_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(COMPLIANCE_SYSTEM_PROMPT, userPrompt);
   const parsed = JSON.parse(content);
 
   return (parsed.checks ?? []).map((c: any) => ({

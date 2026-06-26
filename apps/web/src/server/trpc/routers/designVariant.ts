@@ -1,9 +1,7 @@
 import { z } from 'zod';
 import { designVariants, rooms, projects, jobs, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { BEDROCK_MODEL_ID, converseWithBedrock } from '../../bedrock';
 
 export const designVariantRouter = router({
   listByRoom: protectedProcedure
@@ -197,15 +195,13 @@ Include 5-8 furniture items, 5-6 colors, 4-6 materials. Realistic costs.`;
             .set({ progress: 30 })
             .where(eq(jobs.id, job.id));
 
-          const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+          const { text: responseText, stopReason: finishReason } = await converseWithBedrock({
             messages: [
               { role: 'system', content: 'You are an expert interior designer. Output only valid compact JSON. Keep descriptions concise.' },
               { role: 'user', content: prompt },
             ],
             temperature: 0.7,
-            max_tokens: 16384,
-            response_format: { type: 'json_object' },
+            maxTokens: 16384,
           });
 
           await db
@@ -213,16 +209,14 @@ Include 5-8 furniture items, 5-6 colors, 4-6 materials. Realistic costs.`;
             .set({ progress: 70 })
             .where(eq(jobs.id, job.id));
 
-          const finishReason = completion.choices[0]?.finish_reason;
-          const responseText = completion.choices[0]?.message?.content ?? '';
-          console.log('[Design] OpenAI response length:', responseText.length, 'finish_reason:', finishReason);
+          console.log('[Design] Bedrock response length:', responseText.length, 'stopReason:', finishReason);
 
-          if (finishReason === 'length') {
+          if (finishReason === 'max_tokens') {
             throw new Error('Design response was truncated by token limit');
           }
 
           if (!responseText.trim()) {
-            throw new Error(`OpenAI returned empty response (finish_reason: ${finishReason})`);
+            throw new Error(`Bedrock returned empty response (stopReason: ${finishReason})`);
           }
 
           let spec: Record<string, unknown>;
@@ -255,7 +249,7 @@ Include 5-8 furniture items, 5-6 colors, 4-6 materials. Realistic costs.`;
                 furnitureCount: Array.isArray(spec.furniture) ? spec.furniture.length : 0,
                 colorCount: Array.isArray(spec.colorPalette) ? spec.colorPalette.length : 0,
                 areaSqm,
-                model: 'gpt-4o-mini',
+                model: BEDROCK_MODEL_ID,
               },
             })
             .where(eq(jobs.id, job.id));

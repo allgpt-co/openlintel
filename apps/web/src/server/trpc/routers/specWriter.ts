@@ -3,38 +3,20 @@ import { router, protectedProcedure } from '../init';
 import {
   specSections, projects, rooms, eq, and,
 } from '@openlintel/db';
+import { converseWithBedrock } from '../../bedrock';
 
 /* ─── AI-powered specification writing ──────────────────────────── */
 
-async function callOpenAI(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 4096,
-    }),
+async function callBedrock(systemPrompt: string, userPrompt: string): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3,
+    maxTokens: 4096,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const SPEC_SYSTEM_PROMPT = `You are a senior construction specification writer with 20+ years of experience writing CSI MasterFormat specifications. You follow the Construction Specifications Institute (CSI) MasterFormat 2018, SectionFormat, and PageFormat standards.
@@ -91,7 +73,7 @@ Important:
 - Include submittal requirements, quality assurance, and warranty clauses
 - Cover divisions appropriate for residential: concrete (03), masonry (04), metals (05), wood (06), thermal/moisture (07), openings (08), finishes (09), specialties (10), plumbing (22), HVAC (23), electrical (26)`;
 
-  const content = await callOpenAI(SPEC_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(SPEC_SYSTEM_PROMPT, userPrompt);
   const parsed = JSON.parse(content);
   return parsed.sections ?? [];
 }
@@ -146,7 +128,7 @@ PART 3 - EXECUTION
 3.4 FIELD QUALITY CONTROL
 3.5 CLEANING`;
 
-  const content = await callOpenAI(SPEC_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(SPEC_SYSTEM_PROMPT, userPrompt);
   const parsed = JSON.parse(content);
   return parsed.content ?? '';
 }

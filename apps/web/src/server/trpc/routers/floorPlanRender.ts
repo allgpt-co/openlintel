@@ -1,10 +1,17 @@
 import { z } from 'zod';
 import { projects, jobs, uploads, rooms, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
-import OpenAI from 'openai';
-import { generateAndStoreOpenAIImage } from '../../openai-image';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+async function generateUnsupportedBedrockImage(_: {
+  prompt: string;
+  filename: string;
+  size?: string;
+  quality?: string;
+}): Promise<{ imageUrl: string; revisedPrompt: string | null }> {
+  throw new Error(
+    'Image generation is not supported by Bedrock Converse/Kimi K2.5. Use a Bedrock image model integration for rendering workflows.',
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Floor Plan Render Router
@@ -81,8 +88,7 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const generatedImage = await generateAndStoreOpenAIImage({
-          openai,
+        const generatedImage = await generateUnsupportedBedrockImage({
           prompt,
           size: '1024x1024',
           quality: 'hd',
@@ -186,8 +192,7 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const generatedImage = await generateAndStoreOpenAIImage({
-          openai,
+        const generatedImage = await generateUnsupportedBedrockImage({
           prompt,
           size: '1792x1024',
           quality: 'hd',
@@ -271,8 +276,7 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const generatedImage = await generateAndStoreOpenAIImage({
-          openai,
+        const generatedImage = await generateUnsupportedBedrockImage({
           prompt,
           size: '1792x1024',
           quality: 'hd',
@@ -356,8 +360,7 @@ Architectural visualization style, ultra-realistic materials, physically accurat
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const generatedImage = await generateAndStoreOpenAIImage({
-          openai,
+        const generatedImage = await generateUnsupportedBedrockImage({
           prompt,
           size: '1792x1024',
           quality: 'hd',
@@ -444,13 +447,12 @@ Architectural visualization style, ultra-realistic materials, physically accurat
         .where(eq(jobs.id, job.id));
 
       try {
-        // Generate intermediate transition frames using DALL-E
+        // Generate intermediate transition frames
         const transitionPrompt = `A photorealistic interior walkthrough transition view, showing a hallway or corridor connecting two rooms in a modern home. The perspective is from a person walking through the space. Professional architectural photography, natural lighting, seamless spatial transition. ${input.transitionStyle} camera movement style.`;
 
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const transitionImage = await generateAndStoreOpenAIImage({
-          openai,
+        const transitionImage = await generateUnsupportedBedrockImage({
           prompt: transitionPrompt,
           size: '1792x1024',
           quality: 'hd',
@@ -534,8 +536,7 @@ Architectural visualization style, ultra-realistic materials, physically accurat
       try {
         await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-        const generatedImage = await generateAndStoreOpenAIImage({
-          openai,
+        const generatedImage = await generateUnsupportedBedrockImage({
           prompt: input.prompt,
           size: input.size,
           quality: 'hd',

@@ -31,7 +31,6 @@ import {
 import { Settings, Key, Plus, Trash2, Eye, EyeOff, ShieldCheck, Globe, Loader2 } from 'lucide-react';
 
 const PROVIDERS = [
-  { value: 'openai', label: 'OpenAI' },
   { value: 'anthropic', label: 'Anthropic' },
   { value: 'google', label: 'Google AI' },
   { value: 'replicate', label: 'Replicate' },
@@ -42,7 +41,7 @@ export default function SettingsPage() {
   const utils = trpc.useUtils();
 
   const [open, setOpen] = useState(false);
-  const [provider, setProvider] = useState<string>('openai');
+  const [provider, setProvider] = useState<string>('anthropic');
   const [label, setLabel] = useState('');
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
@@ -53,7 +52,7 @@ export default function SettingsPage() {
     onSuccess: () => {
       utils.apiKey.list.invalidate();
       setOpen(false);
-      setProvider('openai');
+      setProvider('anthropic');
       setLabel('');
       setApiKey('');
       setShowKey(false);
@@ -74,7 +73,7 @@ export default function SettingsPage() {
   const handleCreate = () => {
     if (!label.trim() || !apiKey.trim()) return;
     createKey.mutate({
-      provider: provider as 'openai' | 'anthropic' | 'google' | 'replicate',
+      provider: provider as 'anthropic' | 'google' | 'replicate',
       label: label.trim(),
       key: apiKey.trim(),
     });

@@ -1,9 +1,7 @@
 import { z } from 'zod';
-import { bomResults, designVariants, rooms, projects, jobs, eq, and } from '@openlintel/db';
+import { bomResults, designVariants, projects, jobs, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { BEDROCK_MODEL_ID, converseWithBedrock } from '../../bedrock';
 
 export const bomRouter = router({
   listByDesignVariant: protectedProcedure
@@ -115,15 +113,13 @@ Keep specification field short (under 40 chars). Include 10-15 items.`;
             .set({ progress: 30 })
             .where(eq(jobs.id, job.id));
 
-          const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+          const { text: responseText, stopReason: finishReason } = await converseWithBedrock({
             messages: [
               { role: 'system', content: 'You are a quantity surveyor. Output only valid compact JSON with no extra whitespace or newlines. Keep specification fields under 30 characters.' },
               { role: 'user', content: prompt },
             ],
             temperature: 0.3,
-            max_tokens: 16384,
-            response_format: { type: 'json_object' },
+            maxTokens: 16384,
           });
 
           await db
@@ -131,16 +127,14 @@ Keep specification field short (under 40 chars). Include 10-15 items.`;
             .set({ progress: 70 })
             .where(eq(jobs.id, job.id));
 
-          const finishReason = completion.choices[0]?.finish_reason;
-          const responseText = completion.choices[0]?.message?.content ?? '';
-          console.log('[BOM] OpenAI response length:', responseText.length, 'finish_reason:', finishReason);
+          console.log('[BOM] Bedrock response length:', responseText.length, 'stopReason:', finishReason);
 
-          if (finishReason === 'length') {
+          if (finishReason === 'max_tokens') {
             throw new Error('BOM response was truncated by token limit');
           }
 
           if (!responseText.trim()) {
-            throw new Error(`OpenAI returned empty response (finish_reason: ${finishReason})`);
+            throw new Error(`Bedrock returned empty response (stopReason: ${finishReason})`);
           }
 
           let bomData: { items: Array<{ name: string; category: string; specification: string; quantity: number; unit: string; unitPrice: number; wasteFactor: number; total: number }>; totalCost: number; currency: string; summary?: Record<string, number> };
@@ -177,7 +171,7 @@ Keep specification field short (under 40 chars). Include 10-15 items.`;
               areaSqm,
               itemCount: items.length,
               summary: bomData.summary,
-              model: 'gpt-4o-mini',
+              model: BEDROCK_MODEL_ID,
               generatedAt: new Date().toISOString(),
             },
           });
@@ -321,15 +315,13 @@ total = quantity × unitPrice × (1 + wasteFactor). Include 3-6 items per room.`
             .set({ progress: 40 })
             .where(eq(jobs.id, job.id));
 
-          const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+          const { text: responseText } = await converseWithBedrock({
             messages: [
               { role: 'system', content: 'You are a professional quantity surveyor. Output only valid compact JSON. Keep specification fields under 40 characters.' },
               { role: 'user', content: prompt },
             ],
             temperature: 0.3,
-            max_tokens: 16384,
-            response_format: { type: 'json_object' },
+            maxTokens: 16384,
           });
 
           await db
@@ -337,8 +329,7 @@ total = quantity × unitPrice × (1 + wasteFactor). Include 3-6 items per room.`
             .set({ progress: 80 })
             .where(eq(jobs.id, job.id));
 
-          const responseText = completion.choices[0]?.message?.content ?? '';
-          if (!responseText.trim()) throw new Error('OpenAI returned empty response');
+          if (!responseText.trim()) throw new Error('Bedrock returned empty response');
 
           let bomData: any;
           try {

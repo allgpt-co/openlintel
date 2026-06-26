@@ -1,12 +1,8 @@
 import { z } from 'zod';
 import { router, protectedProcedure } from '../init';
 import {
-  exteriorDesigns, projects, jobs, uploads, eq, and,
+  exteriorDesigns, projects, jobs, eq, and,
 } from '@openlintel/db';
-import { saveFile, generateStorageKey } from '@/lib/storage';
-import OpenAI from 'openai';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 function buildExteriorPrompt(design: {
   elevationType: string | null;
@@ -131,60 +127,16 @@ export const exteriorRouter = router({
         progress: 10,
       }).where(eq(jobs.id, job.id));
 
-      // Generate image with OpenAI in the background
+      // Generate image in the background
       (async () => {
         try {
           const prompt = buildExteriorPrompt(design);
 
           await ctx.db.update(jobs).set({ progress: 30 }).where(eq(jobs.id, job.id));
 
-          const result = await openai.images.generate({
-            model: 'gpt-image-1',
-            prompt,
-            size: '1536x1024',
-            quality: 'high',
-            n: 1,
-          });
-
-          const imageData = result.data?.[0];
-          if (!imageData?.b64_json) throw new Error('No image data returned from OpenAI');
-
-          await ctx.db.update(jobs).set({ progress: 70 }).where(eq(jobs.id, job.id));
-
-          // Save generated image to storage
-          const imgBuffer = Buffer.from(imageData.b64_json, 'base64');
-          const storageKey = generateStorageKey(`exterior_${design.elevationType}.png`);
-          await saveFile(imgBuffer, storageKey, 'image/png');
-
-          // Create upload record
-          const [savedUpload] = await ctx.db.insert(uploads).values({
-            userId: ctx.userId,
-            projectId: design.projectId,
-            filename: `exterior_${design.elevationType}_render.png`,
-            mimeType: 'image/png',
-            sizeBytes: imgBuffer.length,
-            storageKey,
-            category: 'render',
-          }).returning();
-
-          const renderUrl = `/api/uploads/${encodeURIComponent(storageKey)}`;
-
-          // Update design with the real render URL
-          await ctx.db.update(exteriorDesigns).set({
-            status: 'completed',
-            renderUrl,
-          }).where(eq(exteriorDesigns.id, input.id));
-
-          await ctx.db.update(jobs).set({
-            status: 'completed',
-            progress: 100,
-            completedAt: new Date(),
-            outputJson: {
-              renderUrl,
-              uploadId: savedUpload?.id,
-              storageKey,
-            },
-          }).where(eq(jobs.id, job.id));
+          throw new Error(
+            `Exterior image generation is not supported by Bedrock Converse/Kimi K2.5. Use a Bedrock image model integration for this workflow. Prompt: ${prompt.slice(0, 120)}`,
+          );
         } catch (err) {
           console.error('[Exterior Generation Error]', err);
           const errorMessage = err instanceof Error ? err.message : 'Image generation failed';

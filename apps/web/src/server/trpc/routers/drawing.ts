@@ -1,11 +1,9 @@
 import { z } from 'zod';
 import { drawingResults, designVariants, projects, jobs, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
-import OpenAI from 'openai';
 import { generateSvg } from '@/lib/svg-generator';
 import { generateStorageKey, saveFile } from '@/lib/storage';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { BEDROCK_MODEL_ID, converseWithBedrock } from '../../bedrock';
 
 export const drawingRouter = router({
   listByDesignVariant: protectedProcedure
@@ -123,15 +121,13 @@ For each type: appropriate scale (1:50 plans, 1:25 elevations), paper size, shor
             .set({ progress: 20 })
             .where(eq(jobs.id, job.id));
 
-          const completion = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+          const { text: responseText, stopReason: finishReason } = await converseWithBedrock({
             messages: [
               { role: 'system', content: 'Output only valid compact JSON. Keep descriptions concise.' },
               { role: 'user', content: prompt },
             ],
             temperature: 0.3,
-            max_tokens: 16384,
-            response_format: { type: 'json_object' },
+            maxTokens: 16384,
           });
 
           await db
@@ -139,16 +135,14 @@ For each type: appropriate scale (1:50 plans, 1:25 elevations), paper size, shor
             .set({ progress: 50 })
             .where(eq(jobs.id, job.id));
 
-          const finishReason = completion.choices[0]?.finish_reason;
-          const responseText = completion.choices[0]?.message?.content ?? '';
-          console.log('[Drawing] OpenAI response length:', responseText.length, 'finish_reason:', finishReason);
+          console.log('[Drawing] Bedrock response length:', responseText.length, 'stopReason:', finishReason);
 
-          if (finishReason === 'length') {
+          if (finishReason === 'max_tokens') {
             throw new Error('Drawing response was truncated by token limit');
           }
 
           if (!responseText.trim()) {
-            throw new Error(`OpenAI returned empty response (finish_reason: ${finishReason})`);
+            throw new Error(`Bedrock returned empty response (stopReason: ${finishReason})`);
           }
 
           let drawingData: { drawings: Array<Record<string, unknown>> };
@@ -185,7 +179,7 @@ For each type: appropriate scale (1:50 plans, 1:25 elevations), paper size, shor
               },
               sheets: 1,
               generatedAt: new Date().toISOString(),
-              model: 'gpt-4o-mini',
+              model: BEDROCK_MODEL_ID,
             };
 
             // Generate actual SVG drawing

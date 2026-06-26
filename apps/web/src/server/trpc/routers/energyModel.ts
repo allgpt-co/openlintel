@@ -3,38 +3,20 @@ import { router, protectedProcedure } from '../init';
 import {
   energyModelItems, projects, eq, and,
 } from '@openlintel/db';
+import { converseWithBedrock } from '../../bedrock';
 
 /* ─── AI-powered energy modeling ──────────────────────────────────── */
 
-async function callOpenAI(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured in environment.');
-
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ],
-      temperature: 0.3,
-      max_tokens: 2048,
-    }),
+async function callBedrock(systemPrompt: string, userPrompt: string): Promise<string> {
+  const { text } = await converseWithBedrock({
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
+    ],
+    temperature: 0.3,
+    maxTokens: 2048,
   });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`OpenAI API error: ${errText}`);
-  }
-
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content ?? '{}';
+  return text || '{}';
 }
 
 const ENERGY_SYSTEM_PROMPT = `You are a certified Building Energy Analyst (BEA) and HERS Rater specializing in residential and light-commercial energy modeling. You follow IECC 2021, ASHRAE 90.1-2022, ENERGY STAR v3.2, and RESNET/ICC 301-2019 standards.
@@ -105,7 +87,7 @@ Respond with this exact JSON structure:
 
 Use "completed" status for code-compliant results, "warning" for below-code performance, "optimized" for exceeding code by 20%+.`;
 
-  const content = await callOpenAI(ENERGY_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(ENERGY_SYSTEM_PROMPT, userPrompt);
   const parsed = JSON.parse(content);
 
   return {
@@ -159,7 +141,7 @@ Calculate an aggregate assessment considering all model components together. Res
   "topRecommendations": ["<recommendation 1>", "<recommendation 2>"]
 }`;
 
-  const content = await callOpenAI(ENERGY_SYSTEM_PROMPT, userPrompt);
+  const content = await callBedrock(ENERGY_SYSTEM_PROMPT, userPrompt);
   const parsed = JSON.parse(content);
 
   return {

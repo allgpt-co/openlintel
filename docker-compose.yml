@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   # ---------------------------------------------------------------------------
   # Infrastructure
@@ -36,20 +34,6 @@ services:
       timeout: 5s
       retries: 5
 
-  minio:
-    image: minio/minio:latest
-    container_name: openlintel-minio
-    restart: unless-stopped
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    volumes:
-      - minio_data:/data
-
   # ---------------------------------------------------------------------------
   # Search
   # ---------------------------------------------------------------------------
@@ -84,10 +68,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:-dev-encryption-secret-32chars!!}
       LOG_LEVEL: info
@@ -96,8 +81,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      minio:
-        condition: service_started
     healthcheck:
       test: ['CMD', 'python', '-c', 'import httpx; httpx.get("http://localhost:8001/health")']
       interval: 15s
@@ -115,10 +98,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:-dev-encryption-secret-32chars!!}
       LOG_LEVEL: info
@@ -127,8 +111,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      minio:
-        condition: service_started
 
   bom-engine:
     build:
@@ -141,10 +123,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:-dev-encryption-secret-32chars!!}
     depends_on:
@@ -162,10 +145,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:-dev-encryption-secret-32chars!!}
     depends_on:
@@ -183,10 +167,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:-dev-encryption-secret-32chars!!}
     depends_on:
@@ -221,10 +206,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       MEILI_URL: http://meilisearch:7700
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-openlintel_dev_key}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
@@ -298,10 +284,11 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://openlintel:openlintel_dev@postgres:5432/openlintel
       REDIS_URL: redis://redis:6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-      MINIO_BUCKET: openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       JWT_SECRET: ${NEXTAUTH_SECRET:-dev-secret}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:-dev-encryption-secret-32chars!!}
       LOG_LEVEL: info
@@ -310,8 +297,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      minio:
-        condition: service_started
     healthcheck:
       test: ['CMD', 'python', '-c', 'import httpx; httpx.get("http://localhost:8010/health")']
       interval: 15s
@@ -332,6 +317,11 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://openlintel:openlintel_dev@postgres:5432/openlintel
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-openlintel-uploads}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
       AUTH_SECRET: ${AUTH_SECRET:-k3Qm7nT9vXwZ2rYpJ8sL4uA6dF1gH5iB0cE3fK7mN9o}
       AUTH_URL: http://54.87.127.233:3000
       NEXTAUTH_URL: http://54.87.127.233:3000
@@ -358,5 +348,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
-  minio_data:
   meilisearch_data:

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { HeadBucketCommand, S3Client } from '@aws-sdk/client-s3';
 import { users, projects, jobs, eq, and, sql, like, or, desc, count } from '@openlintel/db';
 import { router, adminProcedure } from '../init';
 
@@ -18,7 +19,7 @@ const SERVICE_URLS: Record<string, string> = {
 const INFRA_CHECKS: Record<string, { url: string; label: string }> = {
   PostgreSQL: { url: '', label: 'PostgreSQL' }, // checked via DB query
   Redis: { url: process.env.REDIS_URL || 'http://localhost:6379', label: 'Redis' },
-  MinIO: { url: process.env.MINIO_ENDPOINT || 'http://localhost:9000', label: 'MinIO' },
+  S3: { url: '', label: 'S3' }, // checked with HeadBucket
   Meilisearch: {
     url: process.env.MEILISEARCH_URL || 'http://localhost:7700',
     label: 'Meilisearch',
@@ -37,6 +38,27 @@ async function checkServiceHealth(
     const latencyMs = Date.now() - start;
     if (res.ok) return { status: 'healthy', latencyMs };
     return { status: 'degraded', latencyMs };
+  } catch {
+    return { status: 'down', latencyMs: Date.now() - start };
+  }
+}
+
+async function checkS3Health(): Promise<{
+  status: 'healthy' | 'degraded' | 'down';
+  latencyMs: number;
+}> {
+  const start = Date.now();
+  const bucket = process.env.AWS_S3_BUCKET;
+  if (!bucket) {
+    return { status: 'down', latencyMs: 0 };
+  }
+
+  try {
+    const client = new S3Client({
+      region: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1',
+    });
+    await client.send(new HeadBucketCommand({ Bucket: bucket }));
+    return { status: 'healthy', latencyMs: Date.now() - start };
   } catch {
     return { status: 'down', latencyMs: Date.now() - start };
   }
@@ -148,6 +170,10 @@ export const adminRouter = router({
       async ([name, config]) => {
         if (name === 'PostgreSQL') {
           return { name, status: dbStatus, latencyMs: dbLatency };
+        }
+        if (name === 'S3') {
+          const health = await checkS3Health();
+          return { name, ...health };
         }
         const health = await checkServiceHealth(config.url);
         return { name, ...health };

@@ -108,7 +108,7 @@ class RoomAnalyzer:
         model:
             LiteLLM model identifier (e.g. ``"openai/gpt-4o"``).
         source_image_key:
-            MinIO storage key for the room photo.
+            S3 storage key for the room photo.
         encrypted_key:
             User's encrypted API key (hex).
         iv:
@@ -130,10 +130,10 @@ class RoomAnalyzer:
             model=model,
         )
 
-        # Load the room photo from MinIO
+        # Load the room photo from S3
         try:
             image_bytes = download_file(
-                bucket=self._settings.MINIO_BUCKET,
+                bucket=self._settings.AWS_S3_BUCKET,
                 key=source_image_key,
                 settings=self._settings,
             )

@@ -1,10 +1,9 @@
 """
-MinIO / S3 object storage wrapper.
+Amazon S3 object storage wrapper.
 
-Provides a thin, async-friendly abstraction over ``boto3`` configured for the
-MinIO instance declared in ``docker-compose.yml``.  All public functions are
-synchronous (boto3 does not support ``asyncio`` natively) but are designed to
-be called from ``asyncio.to_thread`` or directly in sync code paths.
+Provides a thin, sync abstraction over ``boto3``. Public functions are
+synchronous because boto3 does not support ``asyncio`` natively; call them
+directly in sync paths or through ``asyncio.to_thread`` from async code.
 """
 
 from __future__ import annotations
@@ -13,7 +12,6 @@ import io
 from typing import TYPE_CHECKING
 
 import boto3
-from botocore.config import Config as BotoConfig
 from botocore.exceptions import ClientError
 
 from openlintel_shared.config import Settings, get_settings
@@ -26,7 +24,7 @@ _client_cache: S3Client | None = None
 
 
 def _get_client(settings: Settings | None = None) -> S3Client:
-    """Return a cached ``boto3`` S3 client configured for MinIO."""
+    """Return a cached boto3 S3 client using the AWS SDK credential chain."""
     global _client_cache  # noqa: PLW0603
     if _client_cache is not None:
         return _client_cache
@@ -36,15 +34,7 @@ def _get_client(settings: Settings | None = None) -> S3Client:
 
     _client_cache = boto3.client(
         "s3",
-        endpoint_url=settings.MINIO_ENDPOINT,
-        aws_access_key_id=settings.MINIO_ACCESS_KEY,
-        aws_secret_access_key=settings.MINIO_SECRET_KEY,
-        region_name=settings.MINIO_REGION,
-        use_ssl=settings.MINIO_USE_SSL,
-        config=BotoConfig(
-            signature_version="s3v4",
-            s3={"addressing_style": "path"},
-        ),
+        region_name=settings.AWS_REGION,
     )  # type: ignore[assignment]
     return _client_cache  # type: ignore[return-value]
 
@@ -55,26 +45,33 @@ def reset_client() -> None:
     _client_cache = None
 
 
+def _bucket_missing(exc: ClientError) -> bool:
+    error_code = str(exc.response.get("Error", {}).get("Code", ""))
+    status_code = exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+    return error_code in {"404", "NoSuchBucket", "NotFound"} or status_code == 404
+
+
+def _create_bucket_kwargs(bucket: str, region: str) -> dict[str, object]:
+    kwargs: dict[str, object] = {"Bucket": bucket}
+    if region != "us-east-1":
+        kwargs["CreateBucketConfiguration"] = {"LocationConstraint": region}
+    return kwargs
+
+
 # ── Public API ────────────────────────────────────────────────────────────────
 
 
 def ensure_bucket(bucket: str, *, settings: Settings | None = None) -> None:
-    """Create the bucket if it does not already exist.
+    """Create the S3 bucket if it does not already exist."""
+    if settings is None:
+        settings = get_settings()
 
-    Parameters
-    ----------
-    bucket:
-        The bucket name.
-    settings:
-        Optional override for configuration.
-    """
     client = _get_client(settings)
     try:
         client.head_bucket(Bucket=bucket)
     except ClientError as exc:
-        error_code = int(exc.response.get("Error", {}).get("Code", 0))
-        if error_code == 404:
-            client.create_bucket(Bucket=bucket)
+        if _bucket_missing(exc):
+            client.create_bucket(**_create_bucket_kwargs(bucket, settings.AWS_REGION))
         else:
             raise
 
@@ -87,21 +84,7 @@ def upload_file(
     *,
     settings: Settings | None = None,
 ) -> None:
-    """Upload a file to the specified bucket.
-
-    Parameters
-    ----------
-    bucket:
-        Target bucket name.
-    key:
-        Object key (path inside the bucket).
-    data:
-        File contents as ``bytes`` or a file-like object.
-    content_type:
-        MIME type stored as object metadata.
-    settings:
-        Optional override for configuration.
-    """
+    """Upload a file to the specified S3 bucket."""
     client = _get_client(settings)
     if isinstance(data, bytes):
         data = io.BytesIO(data)
@@ -119,22 +102,7 @@ def download_file(
     *,
     settings: Settings | None = None,
 ) -> bytes:
-    """Download a file and return its contents as bytes.
-
-    Parameters
-    ----------
-    bucket:
-        Source bucket name.
-    key:
-        Object key.
-    settings:
-        Optional override for configuration.
-
-    Returns
-    -------
-    bytes
-        The object's contents.
-    """
+    """Download a file from S3 and return its contents as bytes."""
     client = _get_client(settings)
     buf = io.BytesIO()
     client.download_fileobj(Bucket=bucket, Key=key, Fileobj=buf)
@@ -148,19 +116,29 @@ def delete_file(
     *,
     settings: Settings | None = None,
 ) -> None:
-    """Delete an object from a bucket.
-
-    Parameters
-    ----------
-    bucket:
-        Bucket name.
-    key:
-        Object key.
-    settings:
-        Optional override for configuration.
-    """
+    """Delete an object from an S3 bucket."""
     client = _get_client(settings)
     client.delete_object(Bucket=bucket, Key=key)
+
+
+def list_files(
+    bucket: str,
+    prefix: str = "",
+    *,
+    settings: Settings | None = None,
+) -> list[str]:
+    """List object keys in an S3 bucket under an optional prefix."""
+    client = _get_client(settings)
+    paginator = client.get_paginator("list_objects_v2")
+    keys: list[str] = []
+
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix):
+        for obj in page.get("Contents", []):
+            key = obj.get("Key")
+            if key:
+                keys.append(key)
+
+    return keys
 
 
 def generate_presigned_url(
@@ -170,24 +148,7 @@ def generate_presigned_url(
     *,
     settings: Settings | None = None,
 ) -> str:
-    """Generate a presigned GET URL for an object.
-
-    Parameters
-    ----------
-    bucket:
-        Bucket name.
-    key:
-        Object key.
-    expires:
-        Link lifetime in seconds (default 1 hour).
-    settings:
-        Optional override for configuration.
-
-    Returns
-    -------
-    str
-        The presigned URL.
-    """
+    """Generate a presigned GET URL for an S3 object."""
     client = _get_client(settings)
     url: str = client.generate_presigned_url(
         ClientMethod="get_object",

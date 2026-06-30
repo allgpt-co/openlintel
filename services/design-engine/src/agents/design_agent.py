@@ -44,7 +44,7 @@ class DesignState(TypedDict, total=False):
     style: str                          # DesignStyle value
     budget_tier: str                    # BudgetTier value
     constraints: list[str]              # User constraints
-    source_upload_key: str | None       # MinIO key for room photo
+    source_upload_key: str | None       # S3 key for room photo
     model: str                          # LiteLLM model identifier
     encrypted_key: str                  # Encrypted API key material
     iv: str

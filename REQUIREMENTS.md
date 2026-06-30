@@ -1080,7 +1080,7 @@ OpenLintel follows an **LLM-agent-first** approach: use AI agents for reasoning,
 - **Workflow Engine:** Temporal (MIT)
 - **Search:** Meilisearch (MIT)
 - **Vector Search:** pgvector (PostgreSQL License)
-- **Object Storage:** MinIO (AGPL-3.0)
+- **Object Storage:** Amazon S3
 - **Real-time Collaboration:** Y.js (MIT) + Socket.IO (MIT)
 - **Event Streaming:** NATS (Apache-2.0)
 

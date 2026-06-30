@@ -106,7 +106,7 @@ export const uploads = pgTable('uploads', {
   label: text('label'), // user-friendly display name (editable)
   mimeType: text('mime_type').notNull(),
   sizeBytes: integer('size_bytes').notNull(),
-  storageKey: text('storage_key').notNull(), // path in MinIO/S3
+  storageKey: text('storage_key').notNull(), // path in S3
   category: text('category').notNull().default('photo'), // photo, floor_plan, document
   thumbnailKey: text('thumbnail_key'),
   imageHash: text('image_hash'), // perceptual hash for dedup

@@ -233,10 +233,9 @@ Every calculation cites its source standard and clause number. Validated against
 - **GitHub:** https://github.com/pgvector/pgvector
 - **Role:** Vector similarity search in PostgreSQL — product matching, RAG retrieval.
 
-### MinIO (AGPL-3.0)
+### Amazon S3
 
-- **GitHub:** https://github.com/minio/minio
-- **Role:** Self-hosted S3-compatible object storage.
+- **Role:** Managed object storage for uploads, generated renders, exports, and thumbnails.
 
 ### Y.js + Socket.IO (MIT)
 
@@ -260,7 +259,7 @@ Every calculation cites its source standard and clause number. Validated against
 | 3D Graphics | Three.js/R3F, Model Viewer, GaussianSplats3D | 3 |
 | Optimization | OR-Tools, DeepNest, rectpack, SciPy | 4 |
 | MEP Engineering | *(LLM-driven, no tools)* | 0 |
-| Infrastructure | Temporal, Meilisearch, pgvector, MinIO, Y.js/Socket.IO, NATS | 6 |
+| Infrastructure | Temporal, Meilisearch, pgvector, Amazon S3, Y.js/Socket.IO, NATS | 6 |
 | **Total** | | **24** |
 
 *Started at 47 → cut to 31 → now 24. The VLM/LLM API handles design generation, floor plan parsing, object detection, engineering calculations, and all business logic. The 24 remaining tools do what APIs cannot: produce pixels, reconstruct 3D, write binary files, solve NP-hard problems, and run infrastructure.*
@@ -276,7 +275,7 @@ Every calculation cites its source standard and clause number. Validated against
 | BSD-3 | Yes | No | Permissive |
 | LGPL-3.0 | Yes | Weak | Library use OK |
 | GPL-3.0 | Yes | Strong | LibreDWG — compatible with our AGPL |
-| AGPL-3.0 | Yes | Strong | MinIO as standalone infra |
+| AGPL-3.0 | Yes | Strong | OpenLintel app license |
 
 **OpenLintel is AGPL-3.0** — compatible with all above.
 

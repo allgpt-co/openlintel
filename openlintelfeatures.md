@@ -35,7 +35,7 @@
 - PDF uploads (floor plan PDFs, architect drawings)
 - Automatic thumbnail generation
 - Perceptual hashing for duplicate detection
-- Storage in MinIO/S3 with configurable CDN
+- Storage in Amazon S3 with configurable CDN
 - Category tagging: photos, floor_plans, documents
 
 ### 4. Admin Panel

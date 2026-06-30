@@ -101,11 +101,11 @@ async def _run_drawing_job(
                     ifc_key: str | None = None
 
                     if drawing_data:
-                        # Generate DXF and upload to MinIO
+                        # Generate DXF and upload to S3
                         dxf_bytes = create_dxf_drawing(drawing_data, drawing_type=dtype)
                         dxf_key = f"drawings/{request.job_id}/{dtype}.dxf"
                         upload_file(
-                            settings.MINIO_BUCKET, dxf_key, dxf_bytes,
+                            settings.AWS_S3_BUCKET, dxf_key, dxf_bytes,
                             content_type="application/dxf", settings=settings,
                         )
 
@@ -113,7 +113,7 @@ async def _run_drawing_job(
                         svg_bytes = create_svg_drawing(drawing_data, drawing_type=dtype)
                         svg_key = f"drawings/{request.job_id}/{dtype}.svg"
                         upload_file(
-                            settings.MINIO_BUCKET, svg_key, svg_bytes,
+                            settings.AWS_S3_BUCKET, svg_key, svg_bytes,
                             content_type="image/svg+xml", settings=settings,
                         )
 
@@ -122,7 +122,7 @@ async def _run_drawing_job(
                             ifc_bytes = create_ifc_drawing(drawing_data, drawing_type=dtype)
                             ifc_key = f"drawings/{request.job_id}/{dtype}.ifc"
                             upload_file(
-                                settings.MINIO_BUCKET, ifc_key, ifc_bytes,
+                                settings.AWS_S3_BUCKET, ifc_key, ifc_bytes,
                                 content_type="application/x-step", settings=settings,
                             )
                         except ImportError:

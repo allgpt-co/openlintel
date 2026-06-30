@@ -58,7 +58,7 @@ class VLMGenerator:
         prompt:
             The design generation prompt with style, budget, and constraints.
         source_image_key:
-            Optional MinIO storage key for the source room photo.
+            Optional S3 storage key for the source room photo.
             If provided, the image is included as a multi-modal input.
         encrypted_key:
             User's encrypted API key (hex).
@@ -138,7 +138,7 @@ class VLMGenerator:
         prompt:
             The image generation prompt.
         source_image_key:
-            Optional source room photo key in MinIO.
+            Optional source room photo key in S3.
         encrypted_key:
             User's encrypted API key.
         iv:
@@ -214,7 +214,7 @@ class VLMGenerator:
         prompt:
             The text prompt.
         source_image_key:
-            Optional MinIO key for the source room photo.
+            Optional S3 key for the source room photo.
 
         Returns
         -------
@@ -227,7 +227,7 @@ class VLMGenerator:
         if source_image_key:
             try:
                 image_bytes = download_file(
-                    bucket=self._settings.MINIO_BUCKET,
+                    bucket=self._settings.AWS_S3_BUCKET,
                     key=source_image_key,
                     settings=self._settings,
                 )

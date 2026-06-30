@@ -2,7 +2,7 @@
 Assets router — retrieve presigned URLs for stored media assets and thumbnails.
 
 Assets are identified by ``media_id``.  The router looks up the corresponding
-object in MinIO by listing objects with the media_id prefix, then generates a
+object in Amazon S3 by listing objects with the media_id prefix, then generates a
 time-limited presigned URL.
 """
 
@@ -11,7 +11,6 @@ from __future__ import annotations
 from typing import Annotated
 
 import boto3
-from botocore.config import Config as BotoConfig
 from botocore.exceptions import ClientError
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -27,15 +26,10 @@ _PRESIGN_EXPIRY: int = 3600
 
 
 def _get_s3_client(settings: Settings):  # noqa: ANN202
-    """Create a boto3 S3 client configured for MinIO."""
-    endpoint = settings.MINIO_ENDPOINT.rstrip("/")
+    """Create a boto3 S3 client using the AWS SDK credential chain."""
     return boto3.client(
         "s3",
-        endpoint_url=endpoint,
-        aws_access_key_id=settings.MINIO_ACCESS_KEY,
-        aws_secret_access_key=settings.MINIO_SECRET_KEY,
-        region_name=settings.MINIO_REGION,
-        config=BotoConfig(signature_version="s3v4"),
+        region_name=settings.AWS_REGION,
     )
 
 
@@ -45,14 +39,14 @@ def _find_object_key(
     media_id: str,
     suffix: str = "",
 ) -> str | None:
-    """Locate an object key in MinIO by listing objects whose key contains the media_id.
+    """Locate an object key in S3 by listing objects whose key contains the media_id.
 
     Parameters
     ----------
     s3_client:
         boto3 S3 client.
     bucket:
-        Name of the S3/MinIO bucket.
+        Name of the S3 bucket.
     media_id:
         UUID of the media asset.
     suffix:
@@ -106,7 +100,7 @@ def _generate_presigned_url(
     key: str,
     expires_in: int = _PRESIGN_EXPIRY,
 ) -> str:
-    """Generate a presigned GET URL for a MinIO/S3 object."""
+    """Generate a presigned GET URL for an S3 object."""
     return s3_client.generate_presigned_url(
         "get_object",
         Params={"Bucket": bucket, "Key": key},
@@ -125,9 +119,9 @@ async def get_media_url(
     user_id: Annotated[str, Depends(get_current_user)],
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> MediaURLResponse:
-    """Look up the media asset in MinIO and return a presigned download URL."""
+    """Look up the media asset in S3 and return a presigned download URL."""
     s3 = _get_s3_client(settings)
-    bucket = settings.MINIO_BUCKET
+    bucket = settings.AWS_S3_BUCKET
 
     # Find the original file — scan all keys containing the media_id and
     # return the one that is NOT a thumbnail.
@@ -166,7 +160,7 @@ async def get_thumbnail_url(
 ) -> MediaURLResponse:
     """Look up the thumbnail for the media asset and return a presigned URL."""
     s3 = _get_s3_client(settings)
-    bucket = settings.MINIO_BUCKET
+    bucket = settings.AWS_S3_BUCKET
 
     key = _find_object_key(s3, bucket, media_id, suffix="_thumb.jpg")
     if key is None:

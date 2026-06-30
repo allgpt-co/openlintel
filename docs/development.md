@@ -24,7 +24,7 @@ pnpm run db:migrate
 pnpm run dev
 ```
 
-This starts PostgreSQL, Redis, MinIO (S3-compatible storage), and Elasticsearch in Docker,
+This starts PostgreSQL, Redis, and Meilisearch in Docker. File storage uses Amazon S3,
 then runs the web app natively for fast iteration.
 
 ## Service-by-Service Setup

@@ -1,6 +1,6 @@
 """
 Upload router — accepts multipart file uploads, validates, optimizes,
-generates thumbnails, stores in MinIO, and returns metadata with presigned URLs.
+generates thumbnails, stores in Amazon S3, and returns metadata with presigned URLs.
 """
 
 from __future__ import annotations
@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 from typing import Annotated
 
 import boto3
-from botocore.config import Config as BotoConfig
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 from PIL import Image
 
@@ -27,18 +26,10 @@ router = APIRouter(prefix="/api/v1/media", tags=["media"])
 
 
 def _get_s3_client(settings: Settings):  # noqa: ANN202
-    """Create a boto3 S3 client configured for MinIO."""
-    endpoint = settings.MINIO_ENDPOINT
-    # Strip trailing slash if present
-    endpoint = endpoint.rstrip("/")
-
+    """Create a boto3 S3 client using the AWS SDK credential chain."""
     return boto3.client(
         "s3",
-        endpoint_url=endpoint,
-        aws_access_key_id=settings.MINIO_ACCESS_KEY,
-        aws_secret_access_key=settings.MINIO_SECRET_KEY,
-        region_name=settings.MINIO_REGION,
-        config=BotoConfig(signature_version="s3v4"),
+        region_name=settings.AWS_REGION,
     )
 
 
@@ -48,7 +39,7 @@ def _generate_presigned_url(
     key: str,
     expires_in: int = 3600,
 ) -> str:
-    """Generate a presigned GET URL for an object in MinIO/S3."""
+    """Generate a presigned GET URL for an S3 object."""
     return s3_client.generate_presigned_url(
         "get_object",
         Params={"Bucket": bucket, "Key": key},
@@ -121,7 +112,7 @@ def _build_metadata(
     summary="Upload a media file",
     description=(
         "Accept a multipart file upload, validate format and size, optimize the "
-        "image, generate a thumbnail, store both in MinIO, and return metadata "
+        "image, generate a thumbnail, store both in Amazon S3, and return metadata "
         "with presigned download URLs."
     ),
 )
@@ -173,9 +164,9 @@ async def upload_media(
     storage_key = f"uploads/{user_id}/{date_prefix}/{media_id}{ext}"
     thumbnail_key = f"uploads/{user_id}/{date_prefix}/{media_id}_thumb.jpg" if thumbnail_bytes else ""
 
-    # ── Upload to MinIO ───────────────────────────────────────────────────
+    # ── Upload to S3 ──────────────────────────────────────────────────────
     s3 = _get_s3_client(settings)
-    bucket = settings.MINIO_BUCKET
+    bucket = settings.AWS_S3_BUCKET
 
     s3.put_object(
         Bucket=bucket,

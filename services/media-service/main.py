@@ -2,7 +2,7 @@
 Media Service — FastAPI application for OpenLintel.
 
 Handles file upload validation, image optimization, thumbnail generation,
-and metadata extraction.  Stores assets in MinIO (S3-compatible object storage).
+and metadata extraction.  Stores assets in Amazon S3.
 """
 
 from __future__ import annotations
@@ -11,14 +11,12 @@ import logging
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
-import boto3
-from botocore.config import Config as BotoConfig
-from botocore.exceptions import ClientError
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from openlintel_shared.config import get_settings
+from openlintel_shared.storage import ensure_bucket
 
 from src.routers import assets, upload
 
@@ -26,47 +24,24 @@ logger = logging.getLogger("media-service")
 
 
 # ---------------------------------------------------------------------------
-# Lifespan — ensure MinIO bucket exists on startup
+# Lifespan — ensure S3 bucket exists on startup
 # ---------------------------------------------------------------------------
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application lifespan handler.
 
-    On startup: ensure the configured MinIO bucket exists (create it if not).
+    On startup: ensure the configured S3 bucket exists (create it if not).
     """
     settings = get_settings()
-    endpoint = settings.MINIO_ENDPOINT.rstrip("/")
-    bucket = settings.MINIO_BUCKET
-
-    s3 = boto3.client(
-        "s3",
-        endpoint_url=endpoint,
-        aws_access_key_id=settings.MINIO_ACCESS_KEY,
-        aws_secret_access_key=settings.MINIO_SECRET_KEY,
-        region_name=settings.MINIO_REGION,
-        config=BotoConfig(signature_version="s3v4"),
-    )
+    bucket = settings.AWS_S3_BUCKET
 
     try:
-        s3.head_bucket(Bucket=bucket)
-        logger.info("MinIO bucket '%s' already exists.", bucket)
-    except ClientError:
-        logger.info("Creating MinIO bucket '%s' ...", bucket)
-        try:
-            s3.create_bucket(
-                Bucket=bucket,
-                CreateBucketConfiguration={"LocationConstraint": settings.MINIO_REGION},
-            )
-            logger.info("MinIO bucket '%s' created successfully.", bucket)
-        except ClientError as exc:
-            # If the error is BucketAlreadyOwnedByYou, that's fine
-            error_code = exc.response.get("Error", {}).get("Code", "")
-            if error_code in ("BucketAlreadyOwnedByYou", "BucketAlreadyExists"):
-                logger.info("MinIO bucket '%s' already exists (race condition).", bucket)
-            else:
-                logger.error("Failed to create MinIO bucket '%s': %s", bucket, exc)
-                raise
+        ensure_bucket(bucket, settings=settings)
+        logger.info("S3 bucket '%s' is ready.", bucket)
+    except Exception:
+        logger.exception("Failed to initialize S3 bucket '%s'.", bucket)
+        raise
 
     yield  # App is running
 

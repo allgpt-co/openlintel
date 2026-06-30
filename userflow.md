@@ -274,7 +274,7 @@ draft
    └── Max size: 10MB per file
 4. Upload progress bar shown (10% → 30% → 80% → 100%)
 5. API call: POST /api/upload with FormData
-6. File stored in MinIO/S3
+6. File stored in Amazon S3
 7. Thumbnail auto-generated (256×256px)
 8. Image hash computed for deduplication
 9. Photo appears in room's photo gallery
@@ -446,7 +446,7 @@ Generates multiple AI-designed interior variants for each room, considering styl
    ├── Calls VLM (OpenAI/Anthropic/Google via LiteLLM)
    ├── Generates design specification JSON
    ├── Creates render image(s)
-   └── Stores renders in MinIO/S3
+   └── Stores renders in Amazon S3
 7. Frontend polls job status every 2 seconds
 8. Progress bar shown (0-100%)
 9. On completion:
@@ -1929,7 +1929,7 @@ Tab 3 — Invoices:
    │   ├── Database (PostgreSQL)
    │   ├── Cache (Redis)
    │   ├── Search (Meilisearch)
-   │   ├── Storage (MinIO/S3)
+   │   ├── Storage (Amazon S3)
    │   ├── Design Engine
    │   ├── Vision Engine
    │   ├── BOM Engine

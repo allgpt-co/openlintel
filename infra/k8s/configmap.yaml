@@ -27,10 +27,8 @@ data:
   REDIS_PORT: "6379"
   REDIS_URL: "redis://redis.openlintel.svc.cluster.local:6379"
 
-  MINIO_ENDPOINT: minio.openlintel.svc.cluster.local
-  MINIO_PORT: "9000"
-  MINIO_USE_SSL: "false"
-  MINIO_BUCKET: openlintel-uploads
+  AWS_REGION: us-east-1
+  AWS_S3_BUCKET: openlintel-uploads
 
   MEILISEARCH_HOST: "http://meilisearch.openlintel.svc.cluster.local:7700"
 

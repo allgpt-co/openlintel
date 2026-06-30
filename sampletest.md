@@ -192,7 +192,7 @@
   1. Open any room detail page
   2. Click "Upload Photo"
   3. Select a JPEG image (< 10MB)
-- **Expected:** File uploaded to S3/MinIO, thumbnail generated, appears in room gallery
+- **Expected:** File uploaded to Amazon S3, thumbnail generated, appears in room gallery
 
 ### TC-UPLOAD-002: Upload Floor Plan PDF
 - **Steps:**

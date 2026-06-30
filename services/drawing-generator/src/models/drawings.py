@@ -220,7 +220,7 @@ class DrawingFile(BaseModel):
     format: DrawingFormat
     filename: str
     size_bytes: int
-    storage_key: str = Field(default="", description="MinIO storage key, if persisted")
+    storage_key: str = Field(default="", description="S3 storage key, if persisted")
     download_url: str = Field(default="", description="Presigned download URL")
 
 

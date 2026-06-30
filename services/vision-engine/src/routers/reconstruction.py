@@ -3,7 +3,7 @@ Photo-to-3D reconstruction API routes.
 
 Accepts room photos, estimates depth using monocular depth estimation,
 calibrates using a reference object, and extracts room dimensions.
-Generates a simple glTF mesh and stores it in MinIO.
+Generates a simple glTF mesh and stores it in Amazon S3.
 """
 
 from __future__ import annotations
@@ -170,7 +170,7 @@ async def _run_reconstruction(
                 from openlintel_shared.storage import upload_file
 
                 upload_file(
-                    settings.MINIO_BUCKET, mesh_key, mesh_bytes,
+                    settings.AWS_S3_BUCKET, mesh_key, mesh_bytes,
                     content_type="model/gltf-binary", settings=settings,
                 )
             except Exception as mesh_exc:

@@ -402,7 +402,7 @@ def build_pdf():
     story.append(Paragraph(
         "<b>Technical Architecture:</b> OpenLintel is built as a modern microservices platform with "
         "11 specialized services (10 Python + 1 TypeScript), a Next.js 15 frontend with React Server Components, "
-        "PostgreSQL with pgvector for AI-powered product matching, Redis for caching, MinIO/S3 for media storage, "
+        "PostgreSQL with pgvector for AI-powered product matching, Redis for caching, Amazon S3 for media storage, "
         "and real-time collaboration via Y.js CRDT. The entire system is containerized with Docker Compose "
         "for consistent deployment.",
         styles["BodyText2"]

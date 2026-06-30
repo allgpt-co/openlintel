@@ -52,7 +52,7 @@ interface StorageMetrics {
   label: string;
 }
 
-const INFRASTRUCTURE_SERVICES = ['PostgreSQL', 'Redis', 'MinIO', 'Meilisearch'];
+const INFRASTRUCTURE_SERVICES = ['PostgreSQL', 'Redis', 'S3', 'Meilisearch'];
 
 const MICROSERVICES = [
   { name: 'media-service', port: 8001 },
@@ -438,7 +438,7 @@ export default function AdminSystemPage() {
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-base">
                       <HardDrive className="h-4 w-4" />
-                      MinIO Object Storage
+                      S3 Object Storage
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

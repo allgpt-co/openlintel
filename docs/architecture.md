@@ -44,7 +44,7 @@ Engine  Engine         Engine
 | Database | PostgreSQL 16 + pgvector | pgvector | Reliable, spatial data, vector search |
 | Cache | Redis 7 | — | Session, real-time, job queues |
 | Search | Meilisearch | Meilisearch | Fast, typo-tolerant product search |
-| File Storage | S3 / GCS / MinIO | MinIO | Scalable binary storage, self-hostable |
+| File Storage | Amazon S3 | S3 | Scalable binary storage for uploads, renders, and exports |
 | Real-time | WebSocket | Y.js, Socket.IO | Collaborative editing, live updates |
 | Event Streaming | NATS | NATS | High-performance pub/sub messaging |
 | Workflow Engine | Temporal | Temporal | Durable long-running workflows |

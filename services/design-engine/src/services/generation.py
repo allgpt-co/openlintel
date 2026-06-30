@@ -5,7 +5,7 @@ Manages the full lifecycle of a design generation job:
 
 1. Create job record in the database.
 2. Run the LangGraph design agent for each requested variant.
-3. Store generated images in MinIO.
+3. Store generated images in Amazon S3.
 4. Update job progress, status, and output in the database.
 5. Create ``design_variants`` rows for completed designs.
 """
@@ -136,7 +136,7 @@ class GenerationService:
         api_key_material:
             ``{"encrypted_key": ..., "iv": ..., "auth_tag": ...}``
         source_upload_key:
-            MinIO key for the source room photo (or ``None``).
+            S3 key for the source room photo (or ``None``).
         """
         factory = _get_session_factory(self._settings)
 
@@ -289,7 +289,7 @@ class GenerationService:
         agent_result: dict[str, Any],
         variant_index: int,
     ) -> str:
-        """Store a generated design variant in the database and MinIO.
+        """Store a generated design variant in the database and S3.
 
         Parameters
         ----------
@@ -324,7 +324,7 @@ class GenerationService:
         spec = agent_result.get("final_spec")
         prompt_used = agent_result.get("prompt", "")
 
-        # Store design image in MinIO if available
+        # Store design image in S3 if available
         render_urls: list[str] = []
         image_data = agent_result.get("final_image_data")
         if image_data:
@@ -334,7 +334,7 @@ class GenerationService:
                 image_bytes = base64.b64decode(image_data)
                 await asyncio.to_thread(
                     upload_file,
-                    self._settings.MINIO_BUCKET,
+                    self._settings.AWS_S3_BUCKET,
                     storage_key,
                     image_bytes,
                     "image/png",
@@ -342,7 +342,7 @@ class GenerationService:
                 )
                 presigned = await asyncio.to_thread(
                     generate_presigned_url,
-                    self._settings.MINIO_BUCKET,
+                    self._settings.AWS_S3_BUCKET,
                     storage_key,
                     3600,
                     settings=self._settings,

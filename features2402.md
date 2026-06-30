@@ -13,7 +13,7 @@ OpenLintel is an end-to-end home design automation platform that automates the f
 |---|---------|-------------|-----------|
 | 1 | **Authentication & User Management** | NextAuth v5 with email/password + OAuth, RBAC (user/admin), user preferences (currency, units, locale) | `apps/web/src/lib/auth.ts`, `packages/db/src/schema/auth.ts` |
 | 2 | **Project & Room Management** | Create/list/delete projects; add rooms with type, dimensions, floor number; 15+ room types supported | `apps/web/src/server/trpc/routers/project.ts`, `room.ts` |
-| 3 | **File Upload System** | Image & PDF upload (max 10MB), thumbnail generation, perceptual hashing for dedup, MinIO/S3 storage | `apps/web/src/app/api/upload/route.ts` |
+| 3 | **File Upload System** | Image & PDF upload (max 10MB), thumbnail generation, perceptual hashing for dedup, Amazon S3 storage | `apps/web/src/app/api/upload/route.ts` |
 | 4 | **Admin Panel** | Platform stats, user management, system health monitoring, job queue monitoring | `apps/web/src/app/(admin)/admin/` |
 
 ### AI & Design
@@ -131,7 +131,7 @@ OpenLintel is an end-to-end home design automation platform that automates the f
 | Database | PostgreSQL + pgvector |
 | ORM | Drizzle ORM |
 | ML | SAM2, LangGraph, multi-provider VLMs (OpenAI/Anthropic/Google) |
-| Storage | MinIO / S3 |
+| Storage | Amazon S3 |
 | Cache | Redis |
 | Search | Meilisearch |
 | Payments | Stripe, Razorpay |

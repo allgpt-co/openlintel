@@ -116,8 +116,8 @@ pnpm install
 cp .env.example .env
 # Fill in required values (ask your team lead)
 
-# 4. Start the database
-docker-compose up -d postgres redis minio meilisearch
+# 4. Start local infrastructure
+docker-compose up -d postgres redis meilisearch
 
 # 5. Run database migrations
 pnpm db:push
@@ -142,7 +142,6 @@ cd services/bom-engine && python main.py
 |---------|-----|
 | Web App | http://localhost:3000 |
 | API (tRPC) | http://localhost:3000/api/trpc |
-| MinIO Console | http://localhost:9001 |
 | Meilisearch | http://localhost:7700 |
 | Design Engine | http://localhost:8001 |
 | Vision Engine | http://localhost:8010 |

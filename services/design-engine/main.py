@@ -36,7 +36,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     Startup:
         - Configure structured logging.
-        - Ensure the MinIO storage bucket exists.
+        - Ensure the S3 storage bucket exists.
 
     Shutdown:
         - Dispose of the async DB engine.
@@ -53,10 +53,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     # Ensure storage bucket exists for design outputs
     try:
-        ensure_bucket(settings.MINIO_BUCKET, settings=settings)
-        logger.info("minio_bucket_ready", bucket=settings.MINIO_BUCKET)
+        ensure_bucket(settings.AWS_S3_BUCKET, settings=settings)
+        logger.info("s3_bucket_ready", bucket=settings.AWS_S3_BUCKET)
     except Exception:
-        logger.exception("minio_bucket_init_failed", bucket=settings.MINIO_BUCKET)
+        logger.exception("s3_bucket_init_failed", bucket=settings.AWS_S3_BUCKET)
 
     yield  # ── App is running ──
 

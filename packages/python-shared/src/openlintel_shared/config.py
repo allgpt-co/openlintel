@@ -30,13 +30,9 @@ class Settings(BaseSettings):
     # ── Redis ─────────────────────────────────────────────────────────────────
     REDIS_URL: str = "redis://localhost:6379"
 
-    # ── MinIO / S3 ────────────────────────────────────────────────────────────
-    MINIO_ENDPOINT: str = "http://localhost:9000"
-    MINIO_ACCESS_KEY: str = "minioadmin"
-    MINIO_SECRET_KEY: str = "minioadmin"
-    MINIO_BUCKET: str = "openlintel-uploads"
-    MINIO_REGION: str = "us-east-1"
-    MINIO_USE_SSL: bool = False
+    # ── Amazon S3 ─────────────────────────────────────────────────────────────
+    AWS_REGION: str = "us-east-1"
+    AWS_S3_BUCKET: str = "openlintel-uploads"
 
     # ── Auth / Security ───────────────────────────────────────────────────────
     JWT_SECRET: str = "replace-with-a-secure-random-string"

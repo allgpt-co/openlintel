@@ -301,7 +301,7 @@ flowchart TD
     A[Project Page] --> B[Floor Plan Tab /project/id/floor-plan]
 
     B --> C[Upload Floor Plan Image/PDF]
-    C --> D[File Upload to S3/MinIO]
+    C --> D[File Upload to Amazon S3]
     D --> E[Create Job: floor_plan_digitize]
 
     E --> F[Vision Engine Processes]
@@ -425,7 +425,7 @@ flowchart TD
     J --> L
     K --> L
 
-    L --> M[Store in S3/MinIO]
+    L --> M[Store in Amazon S3]
     M --> N[View Gallery /project/id/drawings]
 
     N --> O{Actions}

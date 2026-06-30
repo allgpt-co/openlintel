@@ -146,7 +146,7 @@ async def _run_file_aware_digitization(
             from openlintel_shared.storage import download_file
             from openlintel_shared.config import get_settings as _get_settings
             _settings = _get_settings()
-            bucket = _settings.MINIO_BUCKET
+            bucket = _settings.AWS_S3_BUCKET
             file_bytes = await asyncio.to_thread(
                 download_file, bucket, storage_key
             )

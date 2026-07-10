@@ -1,51 +1,38 @@
-name: Build Python Image and Deploy
+name: Build and Deploy
 
 on:
-  workflow_run:
-    workflows:
-      - Security Audit
-    types:
-      - completed
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
   ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-  COOLIFY_WEBHOOK_URL: ${{ vars.COOLIFY_BACKEND_WEBHOOK || vars.COOLIFY_WEBHOOK_URL }}
+  COOLIFY_WEBHOOK_URL: ${{ vars.COOLIFY_WEBHOOK_URL || vars.COOLIFY_BACKEND_WEBHOOK }}
+  DOCKER_BUILD_CONTEXT: ${{ vars.DOCKER_BUILD_CONTEXT || '.' }}
+  DOCKERFILE_PATH: ${{ vars.DOCKERFILE_PATH || 'apps/web/Dockerfile' }}
+
+concurrency:
+  group: openlintel-production-deploy
+  cancel-in-progress: false
 
 jobs:
+  security-audit:
+    name: Security audit
+    uses: ./.github/workflows/security-audit.yml
+
   build-and-deploy:
-    name: Build, push to ECR, and deploy to Coolify
+    name: Build image, push to ECR, and deploy to Coolify
     runs-on: self-hosted
+    needs: security-audit
     permissions:
-      id-token: write
       contents: read
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (
-        github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.event == 'push' &&
-        github.event.workflow_run.head_branch == 'main'
-      )
+      id-token: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
-
-      - name: Run Trivy security audit
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          scanners: vuln,secret,config
-          format: table
-          severity: HIGH,CRITICAL
-          exit-code: '1'
-          hide-progress: true
-          timeout: 10m
-          skip-dirs: .git,venv,.venv,__pycache__,.pytest_cache
 
       - name: Validate deployment configuration
         shell: bash
@@ -66,12 +53,22 @@ jobs:
           fi
 
           if [[ -z "$COOLIFY_WEBHOOK_URL" ]]; then
-            echo "::error::Set repository variable COOLIFY_BACKEND_WEBHOOK or COOLIFY_WEBHOOK_URL."
+            echo "::error::Repository variable COOLIFY_WEBHOOK_URL or COOLIFY_BACKEND_WEBHOOK is required."
             missing=1
           fi
 
           if [[ -z "$COOLIFY_API_TOKEN" ]]; then
             echo "::error::Repository secret COOLIFY_API_TOKEN is required."
+            missing=1
+          fi
+
+          if [[ ! -f "$DOCKERFILE_PATH" ]]; then
+            echo "::error::Dockerfile not found at $DOCKERFILE_PATH."
+            missing=1
+          fi
+
+          if [[ ! -d "$DOCKER_BUILD_CONTEXT" ]]; then
+            echo "::error::Docker build context not found at $DOCKER_BUILD_CONTEXT."
             missing=1
           fi
 
@@ -89,7 +86,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Resolve image URI
+      - name: Resolve image metadata
         id: image
         shell: bash
         env:
@@ -98,6 +95,11 @@ jobs:
           repository="${ECR_REPOSITORY#http://}"
           repository="${repository#https://}"
           repository="${repository%/}"
+
+          if [[ -z "$repository" ]]; then
+            echo "::error::ECR_REPOSITORY resolved to an empty value."
+            exit 1
+          fi
 
           if [[ "$repository" == *":"* ]]; then
             echo "::error::ECR_REPOSITORY must not include an image tag."
@@ -110,31 +112,42 @@ jobs:
             image_uri="$ECR_REGISTRY/$repository"
           fi
 
+          short_sha="${GITHUB_SHA::12}"
           echo "image_uri=$image_uri" >> "$GITHUB_OUTPUT"
+          echo "sha_tag=sha-$short_sha" >> "$GITHUB_OUTPUT"
           echo "Resolved image URI: $image_uri"
+          echo "Resolved immutable tag: sha-$short_sha"
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         env:
           IMAGE_URI: ${{ steps.image.outputs.image_uri }}
-          IMAGE_TAG: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          SHA_TAG: ${{ steps.image.outputs.sha_tag }}
         run: |
           docker build --pull \
-            -t "$IMAGE_URI:$IMAGE_TAG" \
-            -t "$IMAGE_URI:latest" \
-            .
+            --file "$DOCKERFILE_PATH" \
+            --label "org.opencontainers.image.source=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --tag "$IMAGE_URI:$SHA_TAG" \
+            --tag "$IMAGE_URI:latest" \
+            "$DOCKER_BUILD_CONTEXT"
 
-          docker push "$IMAGE_URI:$IMAGE_TAG"
+      - name: Push Docker image to ECR
+        env:
+          IMAGE_URI: ${{ steps.image.outputs.image_uri }}
+          SHA_TAG: ${{ steps.image.outputs.sha_tag }}
+        run: |
+          docker push "$IMAGE_URI:$SHA_TAG"
           docker push "$IMAGE_URI:latest"
 
-      - name: Trigger Coolify deploy
+      - name: Trigger Coolify deployment
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
         run: |
-          curl --fail --show-error --silent \
+          curl --fail-with-body --show-error --silent \
             --retry 3 \
             --retry-delay 5 \
-            -X POST \
-            -H "Authorization: Bearer $COOLIFY_API_TOKEN" \
+            --request POST \
+            --header "Authorization: Bearer $COOLIFY_API_TOKEN" \
             "$COOLIFY_WEBHOOK_URL"
 
-          echo "Coolify deploy webhook triggered."
+          echo "Coolify deployment webhook triggered."

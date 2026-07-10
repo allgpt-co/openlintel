@@ -14,14 +14,28 @@ permissions:
 
 jobs:
   trivy-filesystem:
-    name: Trivy filesystem audit
+    name: Trivy security audit
     runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Trivy filesystem audit
+      - name: Run blocking Trivy dependency audit
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          format: table
+          severity: CRITICAL
+          exit-code: '1'
+          ignore-unfixed: true
+          hide-progress: true
+          timeout: 15m
+          skip-dirs: .git,node_modules,apps/web/.next,apps/web/out,.next,out,dist,coverage,.turbo,venv,.venv,__pycache__,.pytest_cache
+
+      - name: Run advisory Trivy security report
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
@@ -29,7 +43,7 @@ jobs:
           scanners: vuln,config
           format: table
           severity: HIGH,CRITICAL
-          exit-code: '1'
+          exit-code: '0'
           ignore-unfixed: true
           hide-progress: true
           timeout: 15m

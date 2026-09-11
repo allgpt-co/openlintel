@@ -1,0 +1,208 @@
+async (page) => {
+  const check = (condition, message) => {
+    if (!condition) throw new Error(message);
+  };
+  const base = page.url();
+  const at = (path) => base + path;
+  const errors = [];
+  const failedRequests = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('response', (response) => {
+    if (response.status() >= 400) failedRequests.push(`${response.status()} ${response.url()}`);
+  });
+  const results = [];
+  const routes = [
+    '',
+    'how-it-works/',
+    'sample-project/',
+    'for-design-studios/',
+    'for-architects/',
+    'open-source/',
+    'sample-project/summary/',
+  ];
+  for (const width of [360, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 950 });
+    for (const route of routes) {
+      await page.goto(at(route));
+      await page.evaluate(() => document.fonts.ready);
+      await page.locator('h1').waitFor();
+      const dimensions = await page.evaluate(() => ({
+        viewport: innerWidth,
+        content: document.documentElement.scrollWidth,
+      }));
+      check(
+        dimensions.content <= dimensions.viewport + 1,
+        `${route || 'home'} overflows at ${width}px: ${dimensions.content}`,
+      );
+      check((await page.locator('h1').count()) === 1, 'Exactly one page heading');
+      if (route === 'sample-project/') {
+        for (const chapter of ['brief', 'design', 'drawings', 'materials', 'handoff']) {
+          await page.evaluate((id) => {
+            location.hash = id;
+          }, chapter);
+          await page.locator(`#${chapter}`).waitFor({ state: 'visible' });
+          check(
+            await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+            `Sample ${chapter} overflows at ${width}px`,
+          );
+        }
+        await page.evaluate(() => {
+          location.hash = 'brief';
+        });
+        await page.locator('#brief').waitFor({ state: 'visible' });
+        await page.evaluate(() => window.scrollTo(0, 0));
+      }
+      if (width === 390 || width === 1440) {
+        // Trigger native lazy loading before the full-page visual review.
+        await page.evaluate(async () => {
+          for (const image of document.images) image.loading = 'eager';
+          await Promise.all(
+            [...document.images]
+              .filter((image) => image.getAttribute('src'))
+              .map((image) => image.decode().catch(() => {})),
+          );
+        });
+        const filename = route ? route.replaceAll('/', '-').replace(/-$/, '') : 'home';
+        await page.screenshot({
+          path: `output/playwright/${filename}-${width}.png`,
+          fullPage: true,
+        });
+      }
+    }
+    results.push(
+      `Seven pages and all five sample chapters have no horizontal overflow at ${width}px`,
+    );
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(at('sample-project/'));
+  check(
+    (await page.locator('[data-chapter]:visible').count()) === 1,
+    'Only one enhanced chapter is visible',
+  );
+  await page.getByRole('link', { name: 'Next: the design' }).click();
+  await page.locator('#design').waitFor({ state: 'visible' });
+  check(page.url().endsWith('#design'), 'Chapter navigation updates the hash');
+  await page.getByRole('button', { name: /Deep Olive/ }).click();
+  check(
+    await page.locator('[data-concept-panel="deep-olive"]').isVisible(),
+    'Alternative concept is visible',
+  );
+  check(
+    !(await page.locator('[data-concept-panel="quiet-oak"]').isVisible()),
+    'Selected concept panel is hidden while comparing',
+  );
+  await page.getByRole('link', { name: 'Next: the drawings' }).click();
+  await page.locator('#drawings').waitFor({ state: 'visible' });
+  check(
+    (await page.locator('#drawings .sample-notice').textContent()).includes('Quiet Oak'),
+    'Downstream artifacts retain the selected sample direction',
+  );
+  await page.getByRole('button', { name: 'WR-02 / Joinery elevation' }).click();
+  const expand = page.locator('[data-drawing-panel="elevation"] [data-expand-drawing]');
+  await expand.click();
+  check(await page.getByRole('dialog').isVisible(), 'Drawing dialog opens');
+  await page.keyboard.press('Escape');
+  check(!(await page.getByRole('dialog').isVisible()), 'Escape closes drawing dialog');
+  check(
+    await expand.evaluate((element) => element === document.activeElement),
+    'Focus returns to drawing trigger',
+  );
+  await page.goBack();
+  await page.locator('#design').waitFor({ state: 'visible' });
+  await page.goForward();
+  await page.locator('#drawings').waitFor({ state: 'visible' });
+  await page.reload();
+  await page.locator('#drawings').waitFor({ state: 'visible' });
+  await page.getByRole('link', { name: 'Next: the materials' }).click();
+  await page.locator('#materials').waitFor({ state: 'visible' });
+  check(
+    (await page.locator('#materials tbody tr').count()) === 6,
+    'All six material references are present',
+  );
+  await page.getByRole('link', { name: 'Next: the handoff' }).click();
+  await page.locator('#handoff').waitFor({ state: 'visible' });
+  for (const link of await page.locator('#handoff a[download]').all()) {
+    const pending = page.waitForEvent('download');
+    await link.click();
+    const download = await pending;
+    check(!(await download.failure()), `Download completes: ${download.suggestedFilename()}`);
+  }
+  results.push(
+    'Five-chapter journey, concept comparison, fixed selection, drawing dialog, focus restoration, history, refresh, and three downloads pass',
+  );
+  const popupEvent = page.waitForEvent('popup');
+  await page.getByRole('link', { name: /Open the project summary/ }).click();
+  const popup = await popupEvent;
+  await popup.waitForLoadState();
+  await popup.evaluate(() => {
+    window.print = () => {
+      window.__printInvoked = true;
+    };
+  });
+  await popup.getByRole('button', { name: /Print this summary/ }).click();
+  check(await popup.evaluate(() => window.__printInvoked), 'Print action invokes browser print');
+  await popup.emulateMedia({ media: 'print' });
+  check(!(await popup.locator('.site-header').isVisible()), 'Print layout excludes navigation');
+  await popup.close();
+  results.push('Printable summary opens and invokes print');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(at('sample-project/'));
+  await page.getByLabel('Choose a chapter').selectOption('materials');
+  await page.locator('#materials').waitFor({ state: 'visible' });
+  await page.getByRole('button', { name: 'Menu' }).click();
+  check(await page.locator('#main-nav').isVisible(), 'Mobile menu opens');
+  await page.keyboard.press('Escape');
+  check(!(await page.locator('#main-nav').isVisible()), 'Mobile menu closes with Escape');
+  await page.getByRole('button', { name: 'Menu' }).click();
+  await page.locator('.nav-disclosure summary').click();
+  await page.getByRole('link', { name: 'Interior design studios', exact: true }).click();
+  check(page.url().includes('for-design-studios'), 'Professional navigation works on mobile');
+  results.push('Mobile chapter selector, navigation disclosure, and keyboard close pass');
+
+  const browser = page.context().browser();
+  const noJsContext = await browser.newContext({
+    javaScriptEnabled: false,
+    viewport: { width: 390, height: 844 },
+  });
+  const noJsPage = await noJsContext.newPage();
+  await noJsPage.goto(at('sample-project/'));
+  check(
+    (await noJsPage.locator('[data-chapter]:visible').count()) === 5,
+    'All chapters readable without JavaScript',
+  );
+  check(
+    (await noJsPage.locator('[data-concept-panel]:visible').count()) === 2,
+    'Both concepts readable without JavaScript',
+  );
+  check(await noJsPage.locator('#main-nav').isVisible(), 'Navigation available without JavaScript');
+  check(
+    (await noJsPage.locator('a[download]').count()) === 3,
+    'Downloads available without JavaScript',
+  );
+  await noJsContext.close();
+  const reducedContext = await browser.newContext({
+    reducedMotion: 'reduce',
+    viewport: { width: 1280, height: 1000 },
+  });
+  const reducedPage = await reducedContext.newPage();
+  await reducedPage.goto(at(''));
+  check(
+    (await reducedPage.evaluate(
+      () => getComputedStyle(document.documentElement).scrollBehavior,
+    )) === 'auto',
+    'Reduced motion disables smooth scrolling',
+  );
+  await reducedPage.evaluate(() => {
+    document.documentElement.style.zoom = '2';
+  });
+  check(
+    await reducedPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+    'Homepage remains within a 1280px desktop viewport at 200% zoom',
+  );
+  await reducedContext.close();
+  results.push('No-JavaScript reading, reduced motion, and 200% zoom pass');
+  check(errors.length === 0, `Browser errors: ${errors.join('; ')}`);
+  check(failedRequests.length === 0, `Failed requests: ${failedRequests.join('; ')}`);
+  return { status: 'passed', results, browserErrors: errors, failedRequests };
+};

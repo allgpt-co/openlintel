@@ -1,0 +1,137 @@
+{
+  "name": "The Window Room",
+  "label": "Illustrative sample project",
+  "description": "A place to read. A place to gather. A little more room for everyday life.",
+  "dimensions": { "lengthMm": 5000, "widthMm": 4000, "heightMm": 2800 },
+  "selectedConcept": "quiet-oak",
+  "constraints": [
+    "Retain the existing oak floor",
+    "Keep the window and entrance positions",
+    "Bring reading, conversation, and storage into one room"
+  ],
+  "concepts": [
+    {
+      "id": "quiet-oak",
+      "name": "Quiet Oak",
+      "image": "room",
+      "description": "Pale oak, warm mineral walls, and linen. A calm material palette lets the light and the existing floor lead.",
+      "selected": true
+    },
+    {
+      "id": "deep-olive",
+      "name": "Deep Olive",
+      "image": "alternative",
+      "description": "Darker joinery and olive upholstery give the same room a deeper character. An alternative study; Quiet Oak continues into the sample drawings.",
+      "selected": false
+    }
+  ],
+  "chapters": [
+    {
+      "id": "brief",
+      "number": "01",
+      "name": "The brief",
+      "title": "Begin with how life happens.",
+      "intro": "The room already has good light and a floor worth keeping. The brief is to make everyday life feel a little more considered."
+    },
+    {
+      "id": "design",
+      "number": "02",
+      "name": "The design",
+      "title": "Give the room a point of view.",
+      "intro": "Explore two material directions within the same space. Quiet Oak is the selected route through this illustrative project."
+    },
+    {
+      "id": "drawings",
+      "number": "03",
+      "name": "The drawings",
+      "title": "Make the intention readable.",
+      "intro": "A furnished plan locates the decisions. A joinery elevation describes their proportions. These sample drawings are prepared for review."
+    },
+    {
+      "id": "materials",
+      "number": "04",
+      "name": "The materials",
+      "title": "Give every selection a reference.",
+      "intro": "Connect what you see in the room to a material, an application, and a note that someone else can follow."
+    },
+    {
+      "id": "handoff",
+      "number": "05",
+      "name": "The handoff",
+      "title": "Bring the details together.",
+      "intro": "One brief. One selected direction. A small, coordinated set of sample artifacts to inspect, download, and discuss."
+    }
+  ],
+  "drawings": [
+    {
+      "id": "plan",
+      "reference": "WR-01",
+      "name": "Furnished plan",
+      "filename": "window-room-plan.svg",
+      "note": "Room layout and furniture positions · dimensions in mm"
+    },
+    {
+      "id": "elevation",
+      "reference": "WR-02",
+      "name": "Joinery elevation",
+      "filename": "window-room-elevation.svg",
+      "note": "J-01 storage concept · dimensions in mm"
+    }
+  ],
+  "materials": [
+    {
+      "id": "FIN-01",
+      "name": "Existing oak flooring",
+      "application": "Room floor",
+      "quantity": 20,
+      "unit": "m²",
+      "note": "Retain; room footprint only, verify condition on site",
+      "color": "#c2a17a"
+    },
+    {
+      "id": "J-01",
+      "name": "Pale oak joinery",
+      "application": "West-wall storage",
+      "quantity": 3,
+      "unit": "modules",
+      "note": "800 mm nominal module width; see WR-02",
+      "color": "#b59972"
+    },
+    {
+      "id": "FIN-02",
+      "name": "Warm mineral finish",
+      "application": "Walls",
+      "quantity": null,
+      "unit": "m²",
+      "note": "Surface area and preparation to be surveyed",
+      "color": "#dcd4c7"
+    },
+    {
+      "id": "F-01",
+      "name": "Linen two-seat sofa",
+      "application": "Conversation area",
+      "quantity": 1,
+      "unit": "item",
+      "note": "Illustrative selection; final model to be specified",
+      "color": "#e0d7c6"
+    },
+    {
+      "id": "F-02",
+      "name": "Oak reading chair",
+      "application": "Window corner",
+      "quantity": 1,
+      "unit": "item",
+      "note": "Oak frame with linen upholstery",
+      "color": "#9c8063"
+    },
+    {
+      "id": "T-01",
+      "name": "Undyed wool rug",
+      "application": "Central seating area",
+      "quantity": 1,
+      "unit": "item",
+      "note": "2400 × 1800 mm illustrative size",
+      "color": "#c7beae"
+    }
+  ]
+}

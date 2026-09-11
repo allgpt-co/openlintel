@@ -123,3 +123,7 @@ uploads/
 *.p12
 credentials.json
 service-account.json
+
+# Marketing browser verification artifacts
+output/playwright/
+.playwright-cli/

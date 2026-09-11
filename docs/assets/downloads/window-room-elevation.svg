@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" role="img" aria-labelledby="title desc"><title id="title">The Window Room — Joinery elevation</title><desc id="desc">Illustrative sample project. J-01 storage concept · dimensions in mm. Pending professional review. Diagram scale varies with display size.</desc><defs><pattern id="wood" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 0v8" stroke="#b7a788" stroke-width=".6"/></pattern><marker id="tick" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="8" markerHeight="8"><path d="M1 7L7 1" stroke="#73766c"/></marker></defs><rect width="900" height="700" fill="#f6f3eb"/><style>text{font-family:Arial,sans-serif;fill:#41483d;font-size:13px}.small{font-size:11px;letter-spacing:1px}.dim{stroke:#858a7e;stroke-width:1;fill:none;marker-start:url(#tick);marker-end:url(#tick)}.fine{stroke:#969a8d;stroke-width:1;fill:none}.label{font-size:12px;font-weight:bold;letter-spacing:1px}</style>
+    <text x="72" y="50" class="small">WR-02 / QUIET OAK</text><text x="670" y="50" class="small">WEST WALL / J-01</text>
+    <path d="M110 100V565H790V100" class="fine"/><path d="M105 565H795" stroke="#424b3e" stroke-width="5"/>
+    <rect x="230" y="444" width="432" height="121" fill="url(#wood)" stroke="#767e6b" stroke-width="2"/>
+    <path d="M374 445V565M518 445V565M230 462H662" class="fine"/>
+    <path d="M230 338H662M230 240H662M230 142H662" stroke="#a78c66" stroke-width="9"/>
+    <path d="M250 338V142M446 338V142M642 338V142" stroke="#b69d79" stroke-width="4"/>
+    <path d="M275 235v-50h14v50M292 235v-45h12v45M308 235v-55h12v55M535 333v-48h18v48M558 333v-60h14v60" fill="#c6bba7" stroke="#8d917f"/>
+    <path d="M357 330q-20-20-5-40h25q15 20-5 40Z" fill="#b9ac90"/>
+    <text x="281" y="505" class="label">J-01</text><text x="610" y="402" class="small">OAK VENEER</text>
+    <path d="M230 600H662" class="dim"/><text x="426" y="621">2400</text>
+    <path d="M230 419H374M374 419H518M518 419H662" class="dim"/><text x="286" y="407">800</text><text x="430" y="407">800</text><text x="574" y="407">800</text>
+    <path d="M182 444V565" class="dim"/><text x="161" y="522" transform="rotate(-90 161 522)">675</text>
+    <text x="76" y="80" class="small">NOMINAL DIMENSIONS / FIXINGS AND TOLERANCES TO BE DEVELOPED</text><path d="M50 640H850" class="fine"/><text x="55" y="665" class="label">OPENLINTEL / THE WINDOW ROOM</text><text x="55" y="685" class="small">ILLUSTRATIVE SAMPLE PROJECT · PENDING REVIEW · DO NOT SCALE</text><text x="745" y="669" class="small">WR-02 · R0</text></svg>

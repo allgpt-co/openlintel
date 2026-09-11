@@ -15,6 +15,10 @@
   },
   "packageManager": "pnpm@9.15.4",
   "scripts": {
+    "marketing:build": "node apps/marketing/build.mjs",
+    "marketing:preview": "node apps/marketing/preview.mjs",
+    "marketing:check": "node --test apps/marketing/check.test.mjs",
+    "marketing:smoke": "node apps/marketing/smoke.mjs",
     "dev": "pnpm --filter @openlintel/web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",

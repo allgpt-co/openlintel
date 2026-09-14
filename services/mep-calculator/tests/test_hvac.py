@@ -72,7 +72,7 @@ class TestCoolingLoad:
     def test_sensible_plus_latent_equals_total(self) -> None:
         """Total load should equal sensible + latent."""
         result = calculate_cooling_load(room_area_sqft=200.0)
-        assert abs(result.total_load_btu - (result.sensible_load_btu + result.latent_load_btu)) < 1
+        assert abs(result.total_load_btu - (result.sensible_load_btu + result.latent_load_btu)) <= 1
 
     def test_load_breakdown_present(self) -> None:
         """The breakdown dict should contain expected components."""

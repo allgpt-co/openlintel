@@ -89,7 +89,6 @@ import {
 import { cn } from '@openlintel/ui';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Projects', href: '/dashboard', icon: FolderKanban },
   { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   { name: 'Portfolios', href: '/portfolios', icon: Briefcase },
@@ -207,10 +206,14 @@ export function Sidebar({ projectId: propProjectId }: { projectId?: string }) {
       <nav className="flex-1 space-y-1 px-3 py-2 overflow-y-auto">
         <div className="mb-4">
           <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Main
+            Dashboard
           </p>
           {navigation.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive =
+              item.href === '/dashboard'
+                ? pathname === '/dashboard' || pathname.startsWith('/project')
+                : pathname === item.href || pathname.startsWith(item.href + '/');
+
             return (
               <Link
                 key={item.name}

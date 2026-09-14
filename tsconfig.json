@@ -23,6 +23,12 @@
       "@openlintel/config/*": ["./packages/config/src/*"]
     }
   },
-  "include": [],
+  "include": [
+    "packages/*/src/**/*",
+    "apps/*/src/**/*",
+    "*.js",
+    "*.ts",
+    "*.mjs"
+  ],
   "exclude": ["node_modules", "dist", "build", ".next", "out"]
 }

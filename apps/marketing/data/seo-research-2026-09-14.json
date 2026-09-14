@@ -1,0 +1,1565 @@
+{
+  "researchedAt": "2026-09-14",
+  "provider": "DataForSEO",
+  "market": "United States",
+  "language": "en",
+  "endpoints": [
+    "dataforseo_labs/google/keyword_overview",
+    "dataforseo_labs/google/keyword_ideas",
+    "dataforseo_labs/google/domain_rank_overview",
+    "dataforseo_labs/google/bulk_keyword_difficulty",
+    "serp/google/organic/live/advanced"
+  ],
+  "notes": [
+    "Search volumes are estimates, overlap across keywords, and are not traffic forecasts.",
+    "Missing volumes and difficulty are null, not zero.",
+    "The bulk difficulty check returned all zeros for 14 terms with absent overview difficulty. Not used as proof of low competition.",
+    "Domain overview returned no ranking records. This does not establish zero traffic.",
+    "openlintel.com did not resolve from the research environment. No verified GSC or GA4 baseline was available.",
+    "Page-target intent assessments are editorial interpretations, not provider classifications. The snapshot is internal research and is not emitted to the public site."
+  ],
+  "keywords": [
+    {
+      "keyword": "ai interior design",
+      "searchVolume": 6600,
+      "difficulty": 41,
+      "updated": "2026-08-29 00:34:51 +00:00",
+      "monthlySearches": {
+        "2026-07": 5400,
+        "2026-06": 4400,
+        "2026-05": 5400,
+        "2026-04": 5400,
+        "2026-03": 6600,
+        "2026-02": 6600,
+        "2026-01": 8100,
+        "2025-12": 5400,
+        "2025-11": 6600,
+        "2025-10": 6600,
+        "2025-09": 8100,
+        "2025-08": 8100
+      }
+    },
+    {
+      "keyword": "ai interior design software",
+      "searchVolume": 210,
+      "difficulty": 37,
+      "updated": "2026-08-29 07:49:23 +00:00",
+      "monthlySearches": {
+        "2026-07": 50,
+        "2026-06": 50,
+        "2026-05": 70,
+        "2026-04": 50,
+        "2026-03": 140,
+        "2026-02": 140,
+        "2026-01": 210,
+        "2025-12": 70,
+        "2025-11": 590,
+        "2025-10": 880,
+        "2025-09": 140,
+        "2025-08": 110
+      }
+    },
+    {
+      "keyword": "bill of materials interior design",
+      "searchVolume": null,
+      "difficulty": null,
+      "updated": "2026-06-12 20:04:18 +00:00",
+      "monthlySearches": null
+    },
+    {
+      "keyword": "ff&e schedule template",
+      "searchVolume": 50,
+      "difficulty": null,
+      "updated": "2026-09-13 23:30:37 +00:00",
+      "monthlySearches": {
+        "2026-08": 30,
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 50,
+        "2026-04": 70,
+        "2026-03": 50,
+        "2026-02": 40,
+        "2026-01": 50,
+        "2025-12": 40,
+        "2025-11": 70,
+        "2025-10": 70,
+        "2025-09": 50
+      }
+    },
+    {
+      "keyword": "ff&e specification",
+      "searchVolume": 50,
+      "difficulty": null,
+      "updated": "2026-09-12 16:08:05 +00:00",
+      "monthlySearches": {
+        "2026-08": 20,
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 30,
+        "2026-04": 40,
+        "2026-03": 70,
+        "2026-02": 30,
+        "2026-01": 40,
+        "2025-12": 40,
+        "2025-11": 40,
+        "2025-10": 40,
+        "2025-09": 140
+      }
+    },
+    {
+      "keyword": "finish schedule template",
+      "searchVolume": 90,
+      "difficulty": null,
+      "updated": "2026-08-29 10:17:41 +00:00",
+      "monthlySearches": {
+        "2026-07": 40,
+        "2026-06": 90,
+        "2026-05": 50,
+        "2026-04": 90,
+        "2026-03": 70,
+        "2026-02": 70,
+        "2026-01": 90,
+        "2025-12": 90,
+        "2025-11": 90,
+        "2025-10": 90,
+        "2025-09": 140,
+        "2025-08": 90
+      }
+    },
+    {
+      "keyword": "floor plan software",
+      "searchVolume": 4400,
+      "difficulty": 45,
+      "updated": "2026-09-13 08:36:15 +00:00",
+      "monthlySearches": {
+        "2026-08": 1300,
+        "2026-07": 1300,
+        "2026-06": 1300,
+        "2026-05": 1600,
+        "2026-04": 1900,
+        "2026-03": 2400,
+        "2026-02": 1600,
+        "2026-01": 6600,
+        "2025-12": 8100,
+        "2025-11": 8100,
+        "2025-10": 6600,
+        "2025-09": 12100
+      }
+    },
+    {
+      "keyword": "furniture schedule template",
+      "searchVolume": 30,
+      "difficulty": null,
+      "updated": "2026-08-29 16:08:42 +00:00",
+      "monthlySearches": {
+        "2026-07": 30,
+        "2026-06": 10,
+        "2026-05": 30,
+        "2026-04": 50,
+        "2026-03": 30,
+        "2026-02": 30,
+        "2026-01": 20,
+        "2025-12": 40,
+        "2025-11": 40,
+        "2025-10": 30,
+        "2025-09": 20,
+        "2025-08": 30
+      }
+    },
+    {
+      "keyword": "how to measure a room",
+      "searchVolume": 1300,
+      "difficulty": null,
+      "updated": "2026-08-24 13:54:05 +00:00",
+      "monthlySearches": {
+        "2026-07": 1300,
+        "2026-06": 1300,
+        "2026-05": 1300,
+        "2026-04": 1600,
+        "2026-03": 1600,
+        "2026-02": 1300,
+        "2026-01": 1300,
+        "2025-12": 1000,
+        "2025-11": 1000,
+        "2025-10": 1000,
+        "2025-09": 1000,
+        "2025-08": 1300
+      }
+    },
+    {
+      "keyword": "interior design brief template",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-23 15:55:56 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 20,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design budget template",
+      "searchVolume": 50,
+      "difficulty": 4,
+      "updated": "2026-08-29 12:07:58 +00:00",
+      "monthlySearches": {
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 50,
+        "2026-04": 50,
+        "2026-03": 50,
+        "2026-02": 50,
+        "2026-01": 50,
+        "2025-12": 50,
+        "2025-11": 40,
+        "2025-10": 40,
+        "2025-09": 30,
+        "2025-08": 50
+      }
+    },
+    {
+      "keyword": "interior design checklist",
+      "searchVolume": 50,
+      "difficulty": null,
+      "updated": "2026-08-21 19:16:06 +00:00",
+      "monthlySearches": {
+        "2026-07": 50,
+        "2026-06": 30,
+        "2026-05": 40,
+        "2026-04": 30,
+        "2026-03": 50,
+        "2026-02": 50,
+        "2026-01": 50,
+        "2025-12": 50,
+        "2025-11": 90,
+        "2025-10": 70,
+        "2025-09": 50,
+        "2025-08": 50
+      }
+    },
+    {
+      "keyword": "interior design client onboarding",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-21 18:53:03 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design client questionnaire",
+      "searchVolume": 140,
+      "difficulty": null,
+      "updated": "2026-09-13 08:00:21 +00:00",
+      "monthlySearches": {
+        "2026-08": 90,
+        "2026-07": 110,
+        "2026-06": 140,
+        "2026-05": 140,
+        "2026-04": 140,
+        "2026-03": 170,
+        "2026-02": 140,
+        "2026-01": 170,
+        "2025-12": 110,
+        "2025-11": 110,
+        "2025-10": 140,
+        "2025-09": 140
+      }
+    },
+    {
+      "keyword": "interior design contract template",
+      "searchVolume": 390,
+      "difficulty": 1,
+      "updated": "2026-09-13 03:08:48 +00:00",
+      "monthlySearches": {
+        "2026-08": 170,
+        "2026-07": 260,
+        "2026-06": 210,
+        "2026-05": 390,
+        "2026-04": 320,
+        "2026-03": 480,
+        "2026-02": 480,
+        "2026-01": 480,
+        "2025-12": 320,
+        "2025-11": 390,
+        "2025-10": 480,
+        "2025-09": 880
+      }
+    },
+    {
+      "keyword": "interior design drawing checklist",
+      "searchVolume": null,
+      "difficulty": null,
+      "updated": "2026-06-17 07:17:37 +00:00",
+      "monthlySearches": null
+    },
+    {
+      "keyword": "interior design mood board",
+      "searchVolume": 2900,
+      "difficulty": 21,
+      "updated": "2026-08-23 20:22:29 +00:00",
+      "monthlySearches": {
+        "2026-07": 1600,
+        "2026-06": 1600,
+        "2026-05": 2400,
+        "2026-04": 2900,
+        "2026-03": 2900,
+        "2026-02": 3600,
+        "2026-01": 3600,
+        "2025-12": 2900,
+        "2025-11": 2900,
+        "2025-10": 4400,
+        "2025-09": 4400,
+        "2025-08": 3600
+      }
+    },
+    {
+      "keyword": "interior design presentation",
+      "searchVolume": 260,
+      "difficulty": null,
+      "updated": "2026-09-12 17:05:00 +00:00",
+      "monthlySearches": {
+        "2026-08": 170,
+        "2026-07": 140,
+        "2026-06": 170,
+        "2026-05": 320,
+        "2026-04": 320,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 210,
+        "2025-12": 260,
+        "2025-11": 320,
+        "2025-10": 320,
+        "2025-09": 260
+      }
+    },
+    {
+      "keyword": "interior design procurement",
+      "searchVolume": 70,
+      "difficulty": null,
+      "updated": "2026-09-13 23:46:48 +00:00",
+      "monthlySearches": {
+        "2026-08": 50,
+        "2026-07": 50,
+        "2026-06": 90,
+        "2026-05": 70,
+        "2026-04": 70,
+        "2026-03": 90,
+        "2026-02": 90,
+        "2026-01": 70,
+        "2025-12": 40,
+        "2025-11": 40,
+        "2025-10": 70,
+        "2025-09": 210
+      }
+    },
+    {
+      "keyword": "interior design project management software",
+      "searchVolume": 170,
+      "difficulty": 29,
+      "updated": "2026-08-29 08:39:50 +00:00",
+      "monthlySearches": {
+        "2026-07": 170,
+        "2026-06": 110,
+        "2026-05": 170,
+        "2026-04": 210,
+        "2026-03": 170,
+        "2026-02": 140,
+        "2026-01": 140,
+        "2025-12": 90,
+        "2025-11": 90,
+        "2025-10": 170,
+        "2025-09": 590,
+        "2025-08": 170
+      }
+    },
+    {
+      "keyword": "interior design project timeline",
+      "searchVolume": 10,
+      "difficulty": 9,
+      "updated": "2026-08-23 01:45:52 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 20,
+        "2026-03": 30,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 20,
+        "2025-10": 10,
+        "2025-09": 20,
+        "2025-08": 20
+      }
+    },
+    {
+      "keyword": "interior design proposal template",
+      "searchVolume": 210,
+      "difficulty": null,
+      "updated": "2026-09-13 21:02:44 +00:00",
+      "monthlySearches": {
+        "2026-08": 90,
+        "2026-07": 140,
+        "2026-06": 140,
+        "2026-05": 140,
+        "2026-04": 140,
+        "2026-03": 170,
+        "2026-02": 170,
+        "2026-01": 140,
+        "2025-12": 170,
+        "2025-11": 260,
+        "2025-10": 320,
+        "2025-09": 480
+      }
+    },
+    {
+      "keyword": "interior design punch list",
+      "searchVolume": 10,
+      "difficulty": 21,
+      "updated": "2026-08-24 06:21:49 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design questionnaire",
+      "searchVolume": 70,
+      "difficulty": null,
+      "updated": "2026-09-13 14:50:30 +00:00",
+      "monthlySearches": {
+        "2026-08": 50,
+        "2026-07": 50,
+        "2026-06": 50,
+        "2026-05": 70,
+        "2026-04": 90,
+        "2026-03": 90,
+        "2026-02": 90,
+        "2026-01": 110,
+        "2025-12": 40,
+        "2025-11": 90,
+        "2025-10": 90,
+        "2025-09": 110
+      }
+    },
+    {
+      "keyword": "interior design scope of work template",
+      "searchVolume": 30,
+      "difficulty": null,
+      "updated": "2026-09-12 13:52:03 +00:00",
+      "monthlySearches": {
+        "2026-08": 20,
+        "2026-07": 40,
+        "2026-06": 30,
+        "2026-05": 40,
+        "2026-04": 40,
+        "2026-03": 30,
+        "2026-02": 20,
+        "2026-01": 30,
+        "2025-12": 30,
+        "2025-11": 30,
+        "2025-10": 20,
+        "2025-09": 20
+      }
+    },
+    {
+      "keyword": "interior design software",
+      "searchVolume": 6600,
+      "difficulty": 63,
+      "updated": "2026-08-28 21:37:37 +00:00",
+      "monthlySearches": {
+        "2026-07": 6600,
+        "2026-06": 4400,
+        "2026-05": 4400,
+        "2026-04": 3600,
+        "2026-03": 4400,
+        "2026-02": 4400,
+        "2026-01": 6600,
+        "2025-12": 9900,
+        "2025-11": 8100,
+        "2025-10": 9900,
+        "2025-09": 8100,
+        "2025-08": 5400
+      }
+    },
+    {
+      "keyword": "interior design software for professionals",
+      "searchVolume": 70,
+      "difficulty": 47,
+      "updated": "2026-09-12 05:35:46 +00:00",
+      "monthlySearches": {
+        "2026-08": 30,
+        "2026-07": 40,
+        "2026-06": 30,
+        "2026-05": 40,
+        "2026-04": 70,
+        "2026-03": 50,
+        "2026-02": 50,
+        "2026-01": 110,
+        "2025-12": 170,
+        "2025-11": 70,
+        "2025-10": 140,
+        "2025-09": 90
+      }
+    },
+    {
+      "keyword": "interior design space planning",
+      "searchVolume": 1000,
+      "difficulty": null,
+      "updated": "2026-08-23 20:00:29 +00:00",
+      "monthlySearches": {
+        "2026-07": 1300,
+        "2026-06": 260,
+        "2026-05": 480,
+        "2026-04": 720,
+        "2026-03": 590,
+        "2026-02": 720,
+        "2026-01": 3600,
+        "2025-12": 480,
+        "2025-11": 480,
+        "2025-10": 590,
+        "2025-09": 880,
+        "2025-08": 2900
+      }
+    },
+    {
+      "keyword": "interior design spec sheet template",
+      "searchVolume": 70,
+      "difficulty": null,
+      "updated": "2026-09-14 01:30:56 +00:00",
+      "monthlySearches": {
+        "2026-08": 40,
+        "2026-07": 70,
+        "2026-06": 70,
+        "2026-05": 50,
+        "2026-04": 70,
+        "2026-03": 110,
+        "2026-02": 90,
+        "2026-01": 70,
+        "2025-12": 50,
+        "2025-11": 70,
+        "2025-10": 140,
+        "2025-09": 70
+      }
+    },
+    {
+      "keyword": "interior design specification sheet",
+      "searchVolume": 70,
+      "difficulty": null,
+      "updated": "2026-08-29 05:43:39 +00:00",
+      "monthlySearches": {
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 50,
+        "2026-04": 90,
+        "2026-03": 70,
+        "2026-02": 70,
+        "2026-01": 50,
+        "2025-12": 70,
+        "2025-11": 90,
+        "2025-10": 110,
+        "2025-09": 90,
+        "2025-08": 50
+      }
+    },
+    {
+      "keyword": "interior design workflow",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-28 21:04:10 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 20,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 30,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "material schedule template",
+      "searchVolume": 20,
+      "difficulty": 44,
+      "updated": "2026-09-14 07:45:50 +00:00",
+      "monthlySearches": {
+        "2026-08": 20,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 20,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 20,
+        "2025-12": 30,
+        "2025-11": 20,
+        "2025-10": 20,
+        "2025-09": 10
+      }
+    },
+    {
+      "keyword": "open source floor plan software",
+      "searchVolume": 90,
+      "difficulty": 19,
+      "updated": "2026-09-13 12:32:21 +00:00",
+      "monthlySearches": {
+        "2026-08": 110,
+        "2026-07": 90,
+        "2026-06": 90,
+        "2026-05": 110,
+        "2026-04": 90,
+        "2026-03": 90,
+        "2026-02": 90,
+        "2026-01": 140,
+        "2025-12": 90,
+        "2025-11": 140,
+        "2025-10": 90,
+        "2025-09": 70
+      }
+    },
+    {
+      "keyword": "open source interior design software",
+      "searchVolume": 20,
+      "difficulty": 25,
+      "updated": "2026-08-29 07:52:03 +00:00",
+      "monthlySearches": {
+        "2026-07": 30,
+        "2026-06": 20,
+        "2026-05": 20,
+        "2026-04": 20,
+        "2026-03": 40,
+        "2026-02": 20,
+        "2026-01": 30,
+        "2025-12": 20,
+        "2025-11": 20,
+        "2025-10": 20,
+        "2025-09": 40,
+        "2025-08": 20
+      }
+    },
+    {
+      "keyword": "room data sheet template",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-29 18:04:01 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 20,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 20,
+        "2026-02": 20,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10,
+        "2025-08": 30
+      }
+    },
+    {
+      "keyword": "room measurement template",
+      "searchVolume": 20,
+      "difficulty": 34,
+      "updated": "2026-08-29 18:31:41 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 20,
+        "2026-04": 20,
+        "2026-03": 20,
+        "2026-02": 10,
+        "2026-01": 20,
+        "2025-12": 10,
+        "2025-11": 20,
+        "2025-10": 10,
+        "2025-09": 20,
+        "2025-08": 30
+      }
+    },
+    {
+      "keyword": "ff&e meaning",
+      "searchVolume": 4400,
+      "difficulty": null,
+      "updated": "2026-09-13 17:35:22 +00:00",
+      "monthlySearches": {
+        "2026-08": 4400,
+        "2026-07": 3600,
+        "2026-06": 3600,
+        "2026-05": 4400,
+        "2026-04": 4400,
+        "2026-03": 4400,
+        "2026-02": 4400,
+        "2026-01": 4400,
+        "2025-12": 3600,
+        "2025-11": 3600,
+        "2025-10": 4400,
+        "2025-09": 4400
+      }
+    },
+    {
+      "keyword": "ff&e schedule",
+      "searchVolume": 110,
+      "difficulty": null,
+      "updated": "2026-08-28 21:38:36 +00:00",
+      "monthlySearches": {
+        "2026-07": 110,
+        "2026-06": 110,
+        "2026-05": 110,
+        "2026-04": 140,
+        "2026-03": 140,
+        "2026-02": 110,
+        "2026-01": 90,
+        "2025-12": 110,
+        "2025-11": 90,
+        "2025-10": 140,
+        "2025-09": 70,
+        "2025-08": 70
+      }
+    },
+    {
+      "keyword": "finish schedule",
+      "searchVolume": 320,
+      "difficulty": null,
+      "updated": "2026-08-29 08:23:45 +00:00",
+      "monthlySearches": {
+        "2026-07": 320,
+        "2026-06": 260,
+        "2026-05": 320,
+        "2026-04": 390,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 260,
+        "2025-12": 260,
+        "2025-11": 390,
+        "2025-10": 390,
+        "2025-09": 320,
+        "2025-08": 390
+      }
+    },
+    {
+      "keyword": "furniture specification sheet",
+      "searchVolume": 90,
+      "difficulty": null,
+      "updated": "2026-08-29 07:09:06 +00:00",
+      "monthlySearches": {
+        "2026-07": 70,
+        "2026-06": 90,
+        "2026-05": 90,
+        "2026-04": 110,
+        "2026-03": 110,
+        "2026-02": 70,
+        "2026-01": 70,
+        "2025-12": 70,
+        "2025-11": 70,
+        "2025-10": 110,
+        "2025-09": 90,
+        "2025-08": 70
+      }
+    },
+    {
+      "keyword": "interior design client presentation",
+      "searchVolume": 20,
+      "difficulty": null,
+      "updated": "2026-08-28 22:03:39 +00:00",
+      "monthlySearches": {
+        "2026-07": 30,
+        "2026-06": 20,
+        "2026-05": 10,
+        "2026-04": 20,
+        "2026-03": 30,
+        "2026-02": 30,
+        "2026-01": 50,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 20,
+        "2025-09": 20,
+        "2025-08": 20
+      }
+    },
+    {
+      "keyword": "interior design concept board",
+      "searchVolume": 210,
+      "difficulty": null,
+      "updated": "2026-09-12 20:53:30 +00:00",
+      "monthlySearches": {
+        "2026-08": 140,
+        "2026-07": 110,
+        "2026-06": 110,
+        "2026-05": 110,
+        "2026-04": 210,
+        "2026-03": 210,
+        "2026-02": 260,
+        "2026-01": 320,
+        "2025-12": 140,
+        "2025-11": 170,
+        "2025-10": 260,
+        "2025-09": 210
+      }
+    },
+    {
+      "keyword": "interior design consultation checklist",
+      "searchVolume": null,
+      "difficulty": null,
+      "updated": "2026-06-18 17:52:12 +00:00",
+      "monthlySearches": null
+    },
+    {
+      "keyword": "interior design deliverables",
+      "searchVolume": 10,
+      "difficulty": 22,
+      "updated": "2026-08-29 05:26:18 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design drawing set",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-22 23:47:55 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 20,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 20,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design material board",
+      "searchVolume": 260,
+      "difficulty": 1,
+      "updated": "2026-09-12 09:22:17 +00:00",
+      "monthlySearches": {
+        "2026-08": 170,
+        "2026-07": 170,
+        "2026-06": 140,
+        "2026-05": 320,
+        "2026-04": 390,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 260,
+        "2025-12": 320,
+        "2025-11": 390,
+        "2025-10": 320,
+        "2025-09": 260
+      }
+    },
+    {
+      "keyword": "interior design mood board examples",
+      "searchVolume": 320,
+      "difficulty": 8,
+      "updated": "2026-08-28 23:13:26 +00:00",
+      "monthlySearches": {
+        "2026-07": 210,
+        "2026-06": 210,
+        "2026-05": 390,
+        "2026-04": 390,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 320,
+        "2025-12": 320,
+        "2025-11": 260,
+        "2025-10": 390,
+        "2025-09": 480,
+        "2025-08": 320
+      }
+    },
+    {
+      "keyword": "interior design phases",
+      "searchVolume": 140,
+      "difficulty": null,
+      "updated": "2026-09-13 19:31:43 +00:00",
+      "monthlySearches": {
+        "2026-08": 110,
+        "2026-07": 110,
+        "2026-06": 110,
+        "2026-05": 140,
+        "2026-04": 170,
+        "2026-03": 170,
+        "2026-02": 170,
+        "2026-01": 170,
+        "2025-12": 110,
+        "2025-11": 110,
+        "2025-10": 170,
+        "2025-09": 170
+      }
+    },
+    {
+      "keyword": "interior design presentation templates",
+      "searchVolume": 140,
+      "difficulty": null,
+      "updated": "2026-08-23 08:24:26 +00:00",
+      "monthlySearches": {
+        "2026-07": 90,
+        "2026-06": 90,
+        "2026-05": 140,
+        "2026-04": 140,
+        "2026-03": 140,
+        "2026-02": 170,
+        "2026-01": 140,
+        "2025-12": 90,
+        "2025-11": 110,
+        "2025-10": 210,
+        "2025-09": 210,
+        "2025-08": 170
+      }
+    },
+    {
+      "keyword": "interior design process",
+      "searchVolume": 320,
+      "difficulty": null,
+      "updated": "2026-08-28 23:08:42 +00:00",
+      "monthlySearches": {
+        "2026-07": 90,
+        "2026-06": 170,
+        "2026-05": 320,
+        "2026-04": 320,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 390,
+        "2025-12": 260,
+        "2025-11": 210,
+        "2025-10": 260,
+        "2025-09": 480,
+        "2025-08": 390
+      }
+    },
+    {
+      "keyword": "interior design procurement process",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-29 10:43:10 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design project checklist",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-09-12 17:33:44 +00:00",
+      "monthlySearches": {
+        "2026-08": 10,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-01": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10
+      }
+    },
+    {
+      "keyword": "interior design project management",
+      "searchVolume": 480,
+      "difficulty": null,
+      "updated": "2026-08-29 08:03:50 +00:00",
+      "monthlySearches": {
+        "2026-07": 480,
+        "2026-06": 480,
+        "2026-05": 590,
+        "2026-04": 480,
+        "2026-03": 590,
+        "2026-02": 480,
+        "2026-01": 590,
+        "2025-12": 390,
+        "2025-11": 390,
+        "2025-10": 590,
+        "2025-09": 720,
+        "2025-08": 590
+      }
+    },
+    {
+      "keyword": "interior design questionnaire template",
+      "searchVolume": 30,
+      "difficulty": null,
+      "updated": "2026-09-14 04:54:23 +00:00",
+      "monthlySearches": {
+        "2026-08": 30,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 30,
+        "2026-04": 50,
+        "2026-03": 70,
+        "2026-02": 10,
+        "2026-01": 20,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 40
+      }
+    },
+    {
+      "keyword": "interior design resources",
+      "searchVolume": 210,
+      "difficulty": 20,
+      "updated": "2026-09-13 07:07:35 +00:00",
+      "monthlySearches": {
+        "2026-08": 70,
+        "2026-07": 50,
+        "2026-06": 50,
+        "2026-05": 110,
+        "2026-04": 590,
+        "2026-03": 110,
+        "2026-02": 90,
+        "2026-01": 260,
+        "2025-12": 90,
+        "2025-11": 90,
+        "2025-10": 1000,
+        "2025-09": 140
+      }
+    },
+    {
+      "keyword": "interior design site survey checklist",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-08-22 20:06:26 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "interior design spec sheet",
+      "searchVolume": 70,
+      "difficulty": 1,
+      "updated": "2026-09-13 20:30:50 +00:00",
+      "monthlySearches": {
+        "2026-08": 50,
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 50,
+        "2026-04": 90,
+        "2026-03": 70,
+        "2026-02": 70,
+        "2026-01": 50,
+        "2025-12": 70,
+        "2025-11": 90,
+        "2025-10": 110,
+        "2025-09": 90
+      }
+    },
+    {
+      "keyword": "interior design templates",
+      "searchVolume": 320,
+      "difficulty": null,
+      "updated": "2026-09-14 06:46:32 +00:00",
+      "monthlySearches": {
+        "2026-08": 170,
+        "2026-07": 170,
+        "2026-06": 210,
+        "2026-05": 320,
+        "2026-04": 260,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 390,
+        "2025-12": 260,
+        "2025-11": 260,
+        "2025-10": 390,
+        "2025-09": 880
+      }
+    },
+    {
+      "keyword": "interior elevation drawings",
+      "searchVolume": 260,
+      "difficulty": null,
+      "updated": "2026-08-29 15:41:20 +00:00",
+      "monthlySearches": {
+        "2026-07": 140,
+        "2026-06": 110,
+        "2026-05": 260,
+        "2026-04": 390,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 260,
+        "2025-12": 260,
+        "2025-11": 320,
+        "2025-10": 390,
+        "2025-09": 390,
+        "2025-08": 170
+      }
+    },
+    {
+      "keyword": "mood board vs concept board",
+      "searchVolume": 20,
+      "difficulty": null,
+      "updated": "2026-08-29 19:31:53 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 20,
+        "2026-04": 20,
+        "2026-03": 20,
+        "2026-02": 30,
+        "2026-01": 20,
+        "2025-12": 10,
+        "2025-11": 20,
+        "2025-10": 30,
+        "2025-09": 20,
+        "2025-08": 10
+      }
+    },
+    {
+      "keyword": "reflected ceiling plan",
+      "searchVolume": 1900,
+      "difficulty": null,
+      "updated": "2026-09-13 14:09:21 +00:00",
+      "monthlySearches": {
+        "2026-08": 1600,
+        "2026-07": 1600,
+        "2026-06": 1300,
+        "2026-05": 1900,
+        "2026-04": 2900,
+        "2026-03": 2400,
+        "2026-02": 1900,
+        "2026-01": 1600,
+        "2025-12": 1900,
+        "2025-11": 2900,
+        "2025-10": 2900,
+        "2025-09": 1900
+      }
+    },
+    {
+      "keyword": "spec sheet template interior design",
+      "searchVolume": 40,
+      "difficulty": 2,
+      "updated": "2026-08-25 00:23:57 +00:00",
+      "monthlySearches": {
+        "2026-07": 50,
+        "2026-06": 40,
+        "2026-05": 50,
+        "2026-04": 50,
+        "2026-03": 30,
+        "2026-02": 30,
+        "2026-01": 30,
+        "2025-12": 30,
+        "2025-11": 40,
+        "2025-10": 30,
+        "2025-09": 20,
+        "2025-08": 20
+      }
+    }
+  ],
+  "serps": [
+    {
+      "keyword": "interior design spec sheet template",
+      "features": ["images", "organic", "related_searches"],
+      "organic": [
+        {
+          "title": "Interior Design Spec Sheet (FF&E) Free Template + Guide",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-spec-sheet-with-template"
+        },
+        {
+          "title": "Free Template: Interior Design Spec Sheet & Guide",
+          "url": "https://www.pinterest.com/pin/free-template-interior-design-spec-sheet-guide-in-2024--381961612166354217/"
+        },
+        {
+          "title": "Interior Design Spec Sheet Template: Structure, Cut ...",
+          "url": "https://thesheet.co/blog/the-essential-guide-to-structuring-interior-design-spec-sheets"
+        },
+        {
+          "title": "Interior Design Specification Sheets",
+          "url": "https://www.etsy.com/listing/1277838326/interior-design-specification-sheets"
+        },
+        {
+          "title": "Interior Design Specification Templates",
+          "url": "https://programa.design/blog/interior-design-specification-templates"
+        },
+        {
+          "title": "DesignSpec",
+          "url": "https://designspec.com/"
+        },
+        {
+          "title": "How to Create Interior Design Spec Sheets & Avoid Mistakes",
+          "url": "https://blog.designfiles.co/interior-design-spec-sheet/"
+        },
+        {
+          "title": "Specification Sheet | Myrtle House - Elizabeth Burns Design",
+          "url": "http://www.elizabethburnsdesign.com/blog/2014/8/19/specification-sheet-myrtle-house"
+        },
+        {
+          "title": "Interior Design Specification Template",
+          "url": "https://www.pinterest.com/ideas/interior-design-specification-template/922165488546/"
+        }
+      ]
+    },
+    {
+      "keyword": "interior design client questionnaire",
+      "features": ["organic", "ai_overview", "images", "related_searches"],
+      "organic": [
+        {
+          "title": "CLIENT QUESTIONNAIRE 1 - PROPERTY INFORMATION",
+          "url": "https://ambiencehomedesign.com/questionnaire-eng.pdf"
+        },
+        {
+          "title": "Client Design Questionnaire",
+          "url": "https://www.tylarkins.com/design-questionnaire"
+        },
+        {
+          "title": "what questions do you have on your client intake form?",
+          "url": "https://www.reddit.com/r/InteriorDesign/comments/x8y76m/interior_designers_what_questions_do_you_have_on/"
+        },
+        {
+          "title": "Interior Design Client Questionnaire Templates",
+          "url": "https://it.pinterest.com/maisiainteriordesign/interior-design-client-questionnaire-templates/"
+        },
+        {
+          "title": "Interior Design Questionnaire for Clients + PDF Template",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-write-client-questionnaire-with-template"
+        },
+        {
+          "title": "Interior Design Questionnaire \u2014 Top 25 Questions to Ask ...",
+          "url": "https://medium.com/@orient.gg/interior-design-questionnaire-top-25-questions-to-ask-new-clients-286395bc8c89"
+        },
+        {
+          "title": "Interior design questionnaire: 30 insightful questions to ask",
+          "url": "https://contentsnare.com/form-templates/interior-design-questionnaire/"
+        },
+        {
+          "title": "Client Design Questionnaire for Interior Designers",
+          "url": "https://www.dakotadesigncompany.com/the-design-library/p/full-service-design-questionnaire"
+        }
+      ]
+    },
+    {
+      "keyword": "interior design mood board examples",
+      "features": ["images", "organic", "people_also_ask", "related_searches"],
+      "organic": [
+        {
+          "title": "How To Make An Interior Design Mood Board (3 ...",
+          "url": "https://www.greenhousestudio.co/home-garden/how-to-create-mood-board-interior-design"
+        },
+        {
+          "title": "45 Interior Design Mood Boards ideas",
+          "url": "https://uk.pinterest.com/sketchuphub/interior-design-mood-boards/"
+        },
+        {
+          "title": "Art of the Mood Board: Visual Storytelling ...",
+          "url": "https://www.theinteriordesigninstitute.com/us/en/blog-the-art-of-the-mood-board-crafting-visual-narratives-that-captivate-your-clients"
+        },
+        {
+          "title": "Interior Design Moodboard - Template & Example",
+          "url": "https://milanote.com/templates/interior-design/interior-design-moodboard"
+        },
+        {
+          "title": "7 Interior Design Mood Board Ideas: Luxury Concepts & ...",
+          "url": "https://www.rockymountainhardware.com/interior-design-mood-board-ideas/"
+        },
+        {
+          "title": "Interior Design Mood Board Images",
+          "url": "https://stock.adobe.com/search?k=interior+design+mood+board"
+        },
+        {
+          "title": "Free printable and customizable mood board templates",
+          "url": "https://www.canva.com/photo-collages/templates/mood-boards/"
+        },
+        {
+          "title": "INTERIOR DESIGN How To Create a Mood Board Step by ...",
+          "url": "https://www.youtube.com/watch?v=EJRwAxdQyLM"
+        },
+        {
+          "title": "How to make an interior design mood board",
+          "url": "https://galathome.com/2019/08/16/how-to-make-an-interior-design-mood-board/"
+        }
+      ]
+    },
+    {
+      "keyword": "interior design space planning",
+      "features": [
+        "ai_overview",
+        "organic",
+        "video",
+        "people_also_ask",
+        "local_pack",
+        "images",
+        "related_searches",
+        "google_reviews"
+      ],
+      "organic": [
+        {
+          "title": "Why Space Planning Matters in Interior Design \u2014 L+P",
+          "url": "https://larkandpalm.com/blog/importance-of-space-planning-in-interior-design"
+        },
+        {
+          "title": "Space Planning",
+          "url": "https://interiordesignstudent.com/study-notes/space-planning/"
+        },
+        {
+          "title": "Space planning for interior designers: a step-by-step guide",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-guide-to-space-planning"
+        },
+        {
+          "title": "FLOOR PLAN DESIGN FOR REMODELS - SPACE ...",
+          "url": "https://www.tamifaulknerdesign.com/blog/floor/plan/design/tips/remodels/space/planning/101"
+        },
+        {
+          "title": "Design Science: The Principles of Space Planning",
+          "url": "https://www.youtube.com/watch?v=rjhQRN6hrKU"
+        },
+        {
+          "title": "The Art of Space Planning In Interior Design",
+          "url": "https://www.brookelang.com/blog/the-art-of-space-planning-in-interior-design"
+        },
+        {
+          "title": "The Ultimate Guide to Space Planning: Creating Functional ...",
+          "url": "https://cloverdesigns.us/the-ultimate-guide-to-space-planning-creating-functional-and-beautiful-interiors/"
+        }
+      ]
+    }
+  ],
+  "pageTargets": [
+    {
+      "path": "resources/",
+      "primaryKeyword": "interior design resources",
+      "estimatedMonthlySearches": 210,
+      "intentAssessment": "Mixed resource discovery",
+      "wave": 1
+    },
+    {
+      "path": "templates/",
+      "primaryKeyword": "interior design templates",
+      "estimatedMonthlySearches": 320,
+      "intentAssessment": "Editable resource discovery",
+      "wave": 1
+    },
+    {
+      "path": "templates/interior-design-client-questionnaire/",
+      "primaryKeyword": "interior design client questionnaire",
+      "estimatedMonthlySearches": 140,
+      "intentAssessment": "Downloadable questionnaire",
+      "wave": 1
+    },
+    {
+      "path": "templates/interior-design-brief/",
+      "primaryKeyword": "interior design brief template",
+      "estimatedMonthlySearches": 10,
+      "intentAssessment": "Downloadable brief",
+      "wave": 2
+    },
+    {
+      "path": "templates/interior-design-proposal/",
+      "primaryKeyword": "interior design proposal template",
+      "estimatedMonthlySearches": 210,
+      "intentAssessment": "Downloadable proposal outline",
+      "wave": 1
+    },
+    {
+      "path": "templates/interior-design-scope-of-work/",
+      "primaryKeyword": "interior design scope of work template",
+      "estimatedMonthlySearches": 30,
+      "intentAssessment": "Downloadable scope outline",
+      "wave": 2
+    },
+    {
+      "path": "templates/interior-design-budget/",
+      "primaryKeyword": "interior design budget template",
+      "estimatedMonthlySearches": 50,
+      "intentAssessment": "Editable spreadsheet",
+      "wave": 1
+    },
+    {
+      "path": "templates/interior-design-spec-sheet/",
+      "primaryKeyword": "interior design spec sheet template",
+      "estimatedMonthlySearches": 70,
+      "intentAssessment": "Editable specification sheet",
+      "wave": 1
+    },
+    {
+      "path": "templates/ffe-schedule/",
+      "primaryKeyword": "ff&e schedule template",
+      "estimatedMonthlySearches": 50,
+      "intentAssessment": "Editable room-item register",
+      "wave": 1
+    },
+    {
+      "path": "templates/finish-schedule/",
+      "primaryKeyword": "finish schedule template",
+      "estimatedMonthlySearches": 90,
+      "intentAssessment": "Editable surface register",
+      "wave": 1
+    },
+    {
+      "path": "templates/room-data-sheet/",
+      "primaryKeyword": "room data sheet template",
+      "estimatedMonthlySearches": 10,
+      "intentAssessment": "Editable requirements register",
+      "wave": 2
+    },
+    {
+      "path": "templates/interior-design-project-timeline/",
+      "primaryKeyword": "interior design project timeline",
+      "estimatedMonthlySearches": 10,
+      "intentAssessment": "Editable phase planner",
+      "wave": 3
+    },
+    {
+      "path": "templates/interior-design-site-survey-checklist/",
+      "primaryKeyword": "interior design site survey checklist",
+      "estimatedMonthlySearches": 10,
+      "intentAssessment": "Editable survey record",
+      "wave": 2
+    },
+    {
+      "path": "templates/interior-design-presentation/",
+      "primaryKeyword": "interior design presentation templates",
+      "estimatedMonthlySearches": 140,
+      "intentAssessment": "Presentation storyboard; DOCX not PowerPoint",
+      "wave": 3
+    },
+    {
+      "path": "resources/interior-design-mood-board-examples/",
+      "primaryKeyword": "interior design mood board examples",
+      "estimatedMonthlySearches": 320,
+      "intentAssessment": "Annotated visual examples",
+      "wave": 1
+    },
+    {
+      "path": "resources/interior-design-material-board/",
+      "primaryKeyword": "interior design material board",
+      "estimatedMonthlySearches": 260,
+      "intentAssessment": "Material review guide",
+      "wave": 2
+    },
+    {
+      "path": "resources/interior-design-concept-board/",
+      "primaryKeyword": "interior design concept board",
+      "estimatedMonthlySearches": 210,
+      "intentAssessment": "Concept development guide",
+      "wave": 2
+    },
+    {
+      "path": "resources/interior-design-space-planning/",
+      "primaryKeyword": "interior design space planning",
+      "estimatedMonthlySearches": 1000,
+      "intentAssessment": "Educational; results also include local services",
+      "wave": 1
+    },
+    {
+      "path": "resources/how-to-measure-a-room/",
+      "primaryKeyword": "how to measure a room",
+      "estimatedMonthlySearches": 1300,
+      "intentAssessment": "Measurement documentation guide",
+      "wave": 2
+    },
+    {
+      "path": "resources/interior-design-process/",
+      "primaryKeyword": "interior design process",
+      "estimatedMonthlySearches": 320,
+      "intentAssessment": "Educational phase guide",
+      "wave": 2
+    },
+    {
+      "path": "resources/interior-design-procurement/",
+      "primaryKeyword": "interior design procurement",
+      "estimatedMonthlySearches": 70,
+      "intentAssessment": "Coordination guide; not a purchasing service",
+      "wave": 3
+    },
+    {
+      "path": "resources/interior-elevation-drawings/",
+      "primaryKeyword": "interior elevation drawings",
+      "estimatedMonthlySearches": 260,
+      "intentAssessment": "Drawing-reading guide",
+      "wave": 3
+    },
+    {
+      "path": "resources/reflected-ceiling-plan/",
+      "primaryKeyword": "reflected ceiling plan",
+      "estimatedMonthlySearches": 1900,
+      "intentAssessment": "Introductory drawing guide; not installation design",
+      "wave": 3
+    },
+    {
+      "path": "resources/ffe-in-interior-design/",
+      "primaryKeyword": "ff&e meaning",
+      "estimatedMonthlySearches": 4400,
+      "intentAssessment": "Design-specific definition; broader demand includes accounting",
+      "wave": 3
+    },
+    {
+      "path": "resources/interior-design-project-management/",
+      "primaryKeyword": "interior design project management",
+      "estimatedMonthlySearches": 480,
+      "intentAssessment": "Decision and handoff guide; not SaaS claims",
+      "wave": 3
+    },
+    {
+      "path": "resources/interior-design-drawing-checklist/",
+      "primaryKeyword": "interior design drawing checklist",
+      "estimatedMonthlySearches": null,
+      "intentAssessment": "Workflow support; volume unavailable",
+      "wave": 3
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import process from 'node:process';
+import { URL } from 'node:url';
 const base = process.env.MARKETING_BASE_PATH || '/';
 if (!base.startsWith('/') || /[?#\\]|\.\./.test(base))
   throw new Error(
@@ -48,8 +50,8 @@ export const pages = [
   },
   {
     path: 'open-source/',
-    title: 'An open foundation for your practice',
+    title: 'Open-source interior design software',
     description:
-      'Explore the OpenLintel source code, development documentation, and contribution paths. An open-source project for residential design workflows.',
+      'Explore OpenLintel’s open-source interior design software, setup requirements, illustrative workflow, and editable resources for residential design professionals.',
   },
 ];

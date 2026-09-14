@@ -1,8 +1,358 @@
 {
   "generator": "OpenLintel marketing",
   "basePath": "/",
+  "pages": [
+    {
+      "id": "home",
+      "path": "",
+      "kind": "marketing"
+    },
+    {
+      "id": "how-it-works/",
+      "path": "how-it-works/",
+      "kind": "marketing"
+    },
+    {
+      "id": "sample-project/",
+      "path": "sample-project/",
+      "kind": "marketing"
+    },
+    {
+      "id": "for-design-studios/",
+      "path": "for-design-studios/",
+      "kind": "marketing"
+    },
+    {
+      "id": "for-architects/",
+      "path": "for-architects/",
+      "kind": "marketing"
+    },
+    {
+      "id": "open-source/",
+      "path": "open-source/",
+      "kind": "marketing"
+    },
+    {
+      "id": "summary",
+      "path": "sample-project/summary/",
+      "kind": "summary"
+    },
+    {
+      "id": "resources",
+      "path": "resources/",
+      "kind": "hub",
+      "wave": 1
+    },
+    {
+      "id": "templates",
+      "path": "templates/",
+      "kind": "hub",
+      "wave": 1
+    },
+    {
+      "id": "client-questionnaire",
+      "path": "templates/interior-design-client-questionnaire/",
+      "kind": "template",
+      "wave": 1,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-client-questionnaire-blank.docx",
+          "label": "Download blank template",
+          "format": "DOCX",
+          "size": 10150
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-client-questionnaire-example.docx",
+          "label": "Download worked example",
+          "format": "DOCX",
+          "size": 10438
+        }
+      ]
+    },
+    {
+      "id": "design-brief",
+      "path": "templates/interior-design-brief/",
+      "kind": "template",
+      "wave": 2,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-brief-blank.docx",
+          "label": "Download blank template",
+          "format": "DOCX",
+          "size": 9990
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-brief-example.docx",
+          "label": "Download worked example",
+          "format": "DOCX",
+          "size": 10292
+        }
+      ]
+    },
+    {
+      "id": "proposal",
+      "path": "templates/interior-design-proposal/",
+      "kind": "template",
+      "wave": 1,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-proposal-blank.docx",
+          "label": "Download blank template",
+          "format": "DOCX",
+          "size": 9895
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-proposal-example.docx",
+          "label": "Download worked example",
+          "format": "DOCX",
+          "size": 10248
+        }
+      ]
+    },
+    {
+      "id": "scope-of-work",
+      "path": "templates/interior-design-scope-of-work/",
+      "kind": "template",
+      "wave": 2,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-scope-of-work-blank.docx",
+          "label": "Download blank template",
+          "format": "DOCX",
+          "size": 9922
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-scope-of-work-example.docx",
+          "label": "Download worked example",
+          "format": "DOCX",
+          "size": 10214
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "path": "templates/interior-design-budget/",
+      "kind": "template",
+      "wave": 1,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-budget.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "size": 14131
+        }
+      ]
+    },
+    {
+      "id": "spec-sheet",
+      "path": "templates/interior-design-spec-sheet/",
+      "kind": "template",
+      "wave": 1,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-spec-sheet.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "size": 11624
+        }
+      ]
+    },
+    {
+      "id": "ffe-schedule",
+      "path": "templates/ffe-schedule/",
+      "kind": "template",
+      "wave": 1,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/ffe-schedule.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "size": 11859
+        }
+      ]
+    },
+    {
+      "id": "finish-schedule",
+      "path": "templates/finish-schedule/",
+      "kind": "template",
+      "wave": 1,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/finish-schedule.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "size": 11778
+        }
+      ]
+    },
+    {
+      "id": "room-data",
+      "path": "templates/room-data-sheet/",
+      "kind": "template",
+      "wave": 2,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/room-data-sheet.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "size": 11124
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "path": "templates/interior-design-project-timeline/",
+      "kind": "template",
+      "wave": 3,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-project-timeline.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "size": 11446
+        }
+      ]
+    },
+    {
+      "id": "site-survey",
+      "path": "templates/interior-design-site-survey-checklist/",
+      "kind": "template",
+      "wave": 2,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx",
+          "label": "Download blank template",
+          "format": "DOCX",
+          "size": 9973
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-site-survey-checklist-example.docx",
+          "label": "Download worked example",
+          "format": "DOCX",
+          "size": 10239
+        }
+      ]
+    },
+    {
+      "id": "presentation",
+      "path": "templates/interior-design-presentation/",
+      "kind": "template",
+      "wave": 3,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-blank.docx",
+          "label": "Download blank template",
+          "format": "DOCX",
+          "size": 9985
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-example.docx",
+          "label": "Download worked example",
+          "format": "DOCX",
+          "size": 10313
+        }
+      ]
+    },
+    {
+      "id": "mood-board",
+      "path": "resources/interior-design-mood-board-examples/",
+      "kind": "guide",
+      "wave": 1
+    },
+    {
+      "id": "material-board",
+      "path": "resources/interior-design-material-board/",
+      "kind": "guide",
+      "wave": 2
+    },
+    {
+      "id": "concept-board",
+      "path": "resources/interior-design-concept-board/",
+      "kind": "guide",
+      "wave": 2
+    },
+    {
+      "id": "space-planning",
+      "path": "resources/interior-design-space-planning/",
+      "kind": "guide",
+      "wave": 1
+    },
+    {
+      "id": "measure-room",
+      "path": "resources/how-to-measure-a-room/",
+      "kind": "guide",
+      "wave": 2
+    },
+    {
+      "id": "design-process",
+      "path": "resources/interior-design-process/",
+      "kind": "guide",
+      "wave": 2
+    },
+    {
+      "id": "procurement",
+      "path": "resources/interior-design-procurement/",
+      "kind": "guide",
+      "wave": 3
+    },
+    {
+      "id": "elevation-guide",
+      "path": "resources/interior-elevation-drawings/",
+      "kind": "guide",
+      "wave": 3
+    },
+    {
+      "id": "rcp-guide",
+      "path": "resources/reflected-ceiling-plan/",
+      "kind": "guide",
+      "wave": 3
+    },
+    {
+      "id": "ffe-guide",
+      "path": "resources/ffe-in-interior-design/",
+      "kind": "guide",
+      "wave": 3
+    },
+    {
+      "id": "project-management",
+      "path": "resources/interior-design-project-management/",
+      "kind": "guide",
+      "wave": 3
+    },
+    {
+      "id": "drawing-checklist",
+      "path": "resources/interior-design-drawing-checklist/",
+      "kind": "guide",
+      "wave": 3
+    }
+  ],
   "files": [
     ".nojekyll",
+    "assets/diagrams/decisions.svg",
+    "assets/diagrams/drawing-index.svg",
+    "assets/diagrams/ffe.svg",
+    "assets/diagrams/measure.svg",
+    "assets/diagrams/process.svg",
+    "assets/diagrams/procurement.svg",
+    "assets/diagrams/rcp.svg",
+    "assets/downloads/templates/ffe-schedule.xlsx",
+    "assets/downloads/templates/finish-schedule.xlsx",
+    "assets/downloads/templates/interior-design-brief-blank.docx",
+    "assets/downloads/templates/interior-design-brief-example.docx",
+    "assets/downloads/templates/interior-design-budget.xlsx",
+    "assets/downloads/templates/interior-design-client-questionnaire-blank.docx",
+    "assets/downloads/templates/interior-design-client-questionnaire-example.docx",
+    "assets/downloads/templates/interior-design-presentation-blank.docx",
+    "assets/downloads/templates/interior-design-presentation-example.docx",
+    "assets/downloads/templates/interior-design-project-timeline.xlsx",
+    "assets/downloads/templates/interior-design-proposal-blank.docx",
+    "assets/downloads/templates/interior-design-proposal-example.docx",
+    "assets/downloads/templates/interior-design-scope-of-work-blank.docx",
+    "assets/downloads/templates/interior-design-scope-of-work-example.docx",
+    "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx",
+    "assets/downloads/templates/interior-design-site-survey-checklist-example.docx",
+    "assets/downloads/templates/interior-design-spec-sheet.xlsx",
+    "assets/downloads/templates/room-data-sheet.xlsx",
     "assets/downloads/window-room-elevation.svg",
     "assets/downloads/window-room-materials.csv",
     "assets/downloads/window-room-plan.svg",
@@ -37,9 +387,35 @@
     "how-it-works/index.html",
     "index.html",
     "open-source/index.html",
+    "resources/ffe-in-interior-design/index.html",
+    "resources/how-to-measure-a-room/index.html",
+    "resources/index.html",
+    "resources/interior-design-concept-board/index.html",
+    "resources/interior-design-drawing-checklist/index.html",
+    "resources/interior-design-material-board/index.html",
+    "resources/interior-design-mood-board-examples/index.html",
+    "resources/interior-design-process/index.html",
+    "resources/interior-design-procurement/index.html",
+    "resources/interior-design-project-management/index.html",
+    "resources/interior-design-space-planning/index.html",
+    "resources/interior-elevation-drawings/index.html",
+    "resources/reflected-ceiling-plan/index.html",
     "robots.txt",
     "sample-project/index.html",
     "sample-project/summary/index.html",
-    "sitemap.xml"
+    "sitemap.xml",
+    "templates/ffe-schedule/index.html",
+    "templates/finish-schedule/index.html",
+    "templates/index.html",
+    "templates/interior-design-brief/index.html",
+    "templates/interior-design-budget/index.html",
+    "templates/interior-design-client-questionnaire/index.html",
+    "templates/interior-design-presentation/index.html",
+    "templates/interior-design-project-timeline/index.html",
+    "templates/interior-design-proposal/index.html",
+    "templates/interior-design-scope-of-work/index.html",
+    "templates/interior-design-site-survey-checklist/index.html",
+    "templates/interior-design-spec-sheet/index.html",
+    "templates/room-data-sheet/index.html"
   ]
 }

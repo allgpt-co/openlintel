@@ -1,3 +1,19 @@
+## Resource-library verification — September 14, 2026
+
+This section covers the new resource library. The Lighthouse results below are historical measurements of the earlier site and have **not** been rerun for this expansion.
+
+- 33 HTML documents: seven existing documents plus 26 new pages (two hubs, twelve guides, twelve templates).
+- 18 editable Office downloads: six XLSX workbooks and twelve DOCX files (six blank/example pairs).
+- Static checks pass for both root and `/openlintel/` builds, including link/fragment resolution, unique headings/titles/descriptions, canonicals, sitemap coverage, structured data, hub/related inbound links, manifest byte sizes, preserved files, and the compressed page budget.
+- Office archives parse successfully, contain the expected fields/sheets, are macro-free, and regenerate with identical SHA-256 hashes. Budget tests cover known values, missing inputs, zero values, rounding, and negative variance.
+- Playwright CLI checks all 33 pages at 360, 390, 768, 1024, and 1440 px. Existing sample interactions remain covered. Resource navigation, download filenames/byte sizes, no-JavaScript reading, print styles, keyboard access, reduced motion, and 200% zoom pass without browser errors or failed requests.
+- A complete browser run also passed against the `/openlintel/` subdirectory preview.
+- Source ESLint and Prettier checks pass; the frozen dependency lockfile validates. A repeat full build produces byte-identical owned outputs. The largest combined compressed HTML/CSS/JS payload is 16,330 bytes, below the 200,000-byte budget (images and fonts excluded).
+- Browser review found and fixed desktop navigation overflow at 200% zoom after adding Resources. The navigation now wraps without changing the mobile menu behavior.
+- Representative screenshots are in ignored `output/playwright/`. No GA4 or other external browser requests were introduced.
+- All 18 Office files opened and rendered in LibreOffice 24.2.7, extracted into `/tmp` for verification only (not a project dependency). Representative questionnaire and spreadsheet pages were visually reviewed. An edited budget recalculated to 2,500 total and -1,000 variance; zero remained zero and missing prices remained unresolved. Spreadsheet instructions print without horizontal page splitting; Word review notes no longer leave an orphaned heading. Artifacts are in ignored `output/playwright/office/`.
+- Production DNS/HTTPS, hosting publication, and Search Console access remain unverified. No production deployment or traffic uplift is claimed.
+
 # Verification — 11 September 2026
 
 The marketing site was built and checked locally. It has not been published to GitHub Pages or the custom domain.

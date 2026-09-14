@@ -11,15 +11,26 @@ async (page) => {
     if (response.status() >= 400) failedRequests.push(`${response.status()} ${response.url()}`);
   });
   const results = [];
-  const routes = [
+  const manifest = await (await page.request.get(at('marketing-manifest.json'))).json();
+  const routes = manifest.pages.map((item) => item.path);
+  const resourceRoutes = manifest.pages.filter((item) =>
+    ['guide', 'template', 'hub'].includes(item.kind),
+  );
+  const externalRequests = [];
+  const origin = await page.evaluate(() => location.origin);
+  page.on('request', (request) => {
+    if (!request.url().startsWith(origin + '/')) externalRequests.push(request.url());
+  });
+  const captureRoutes = new Set([
     '',
-    'how-it-works/',
     'sample-project/',
-    'for-design-studios/',
-    'for-architects/',
-    'open-source/',
-    'sample-project/summary/',
-  ];
+    'resources/',
+    'templates/',
+    'templates/interior-design-client-questionnaire/',
+    'templates/interior-design-budget/',
+    'resources/interior-design-mood-board-examples/',
+    'resources/reflected-ceiling-plan/',
+  ]);
   for (const width of [360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 950 });
     for (const route of routes) {
@@ -52,7 +63,7 @@ async (page) => {
         await page.locator('#brief').waitFor({ state: 'visible' });
         await page.evaluate(() => window.scrollTo(0, 0));
       }
-      if (width === 390 || width === 1440) {
+      if ((width === 390 || width === 1440) && captureRoutes.has(route)) {
         // Trigger native lazy loading before the full-page visual review.
         await page.evaluate(async () => {
           for (const image of document.images) image.loading = 'eager';
@@ -70,7 +81,7 @@ async (page) => {
       }
     }
     results.push(
-      `Seven pages and all five sample chapters have no horizontal overflow at ${width}px`,
+      `All ${routes.length} pages and all five sample chapters have no horizontal overflow at ${width}px`,
     );
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -180,6 +191,25 @@ async (page) => {
     (await noJsPage.locator('a[download]').count()) === 3,
     'Downloads available without JavaScript',
   );
+  for (const record of resourceRoutes) {
+    await noJsPage.goto(at(record.path));
+    check(await noJsPage.locator('h1').isVisible(), `${record.path}: heading without JavaScript`);
+    check(
+      await noJsPage.locator('.breadcrumbs').isVisible(),
+      `${record.path}: breadcrumb without JavaScript`,
+    );
+    if (record.kind === 'template') {
+      check(
+        (await noJsPage.locator('[data-resource-download]').count()) === record.downloads.length,
+        'All Office downloads available without JavaScript',
+      );
+      const href = await noJsPage.locator('[data-resource-download]').first().getAttribute('href');
+      check(
+        (await noJsPage.request.get(origin + href)).ok(),
+        'Office resource available without JavaScript',
+      );
+    }
+  }
   await noJsContext.close();
   const reducedContext = await browser.newContext({
     reducedMotion: 'reduce',
@@ -200,8 +230,80 @@ async (page) => {
     await reducedPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
     'Homepage remains within a 1280px desktop viewport at 200% zoom',
   );
+  for (const route of [
+    'resources/',
+    'templates/interior-design-budget/',
+    'resources/interior-design-mood-board-examples/',
+  ]) {
+    await reducedPage.goto(at(route));
+    await reducedPage.evaluate(() => {
+      document.documentElement.style.zoom = '2';
+    });
+    check(
+      await reducedPage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      `${route}: 200% zoom`,
+    );
+  }
   await reducedContext.close();
   results.push('No-JavaScript reading, reduced motion, and 200% zoom pass');
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(at('templates/'));
+  await page
+    .locator('.resource-card')
+    .getByRole('link', { name: 'Interior design client questionnaire', exact: true })
+    .click();
+  check(
+    page.url().endsWith('/templates/interior-design-client-questionnaire/'),
+    'Hub-to-template journey',
+  );
+  await page.getByRole('link', { name: 'Editable download', exact: true }).click();
+  check(page.url().endsWith('#download'), 'Table of contents navigation');
+  await page.locator('[data-sample-link]').click();
+  check(page.url().endsWith('sample-project/#brief'), 'Resource-to-sample journey');
+  await page.goBack();
+  check(
+    page.url().includes('interior-design-client-questionnaire'),
+    'Browser history returns to resource',
+  );
+  for (const record of manifest.pages.filter((item) => item.kind === 'template')) {
+    await page.goto(at(record.path));
+    for (const metadata of record.downloads) {
+      const anchor = page.locator(`[data-resource-download][href$="${metadata.path}"]`);
+      const pending = page.waitForEvent('download');
+      await anchor.click();
+      const download = await pending;
+      check(!(await download.failure()), `Office download: ${metadata.path}`);
+      check(
+        download.suggestedFilename() === metadata.path.split('/').pop(),
+        'Correct Office filename',
+      );
+      const response = await page.request.get(at(metadata.path));
+      check(
+        (await response.body()).length === metadata.size && metadata.size > 1000,
+        'Office bytes match manifest',
+      );
+    }
+  }
+  await page.goto(at('templates/interior-design-client-questionnaire/'));
+  await page.keyboard.press('Tab');
+  check(
+    await page.locator('.skip-link').evaluate((el) => el === document.activeElement),
+    'Keyboard starts at skip link',
+  );
+  await page.keyboard.press('Enter');
+  await page.waitForURL('**#main');
+  check(page.url().endsWith('#main'), 'Keyboard skip link targets content');
+  await page.emulateMedia({ media: 'print' });
+  check(!(await page.locator('.article-toc').isVisible()), 'Print excludes article navigation');
+  check(await page.locator('.document-preview').isVisible(), 'Print retains the resource preview');
+  await page.emulateMedia({ media: 'screen' });
+  check(
+    externalRequests.length === 0,
+    `Unexpected external requests: ${externalRequests.join('; ')}`,
+  );
+  results.push(
+    'Resource hubs, TOCs, sample links, history, 18 Office downloads, no-JavaScript resources, print, keyboard, and no tracking requests pass',
+  );
   check(errors.length === 0, `Browser errors: ${errors.join('; ')}`);
   check(failedRequests.length === 0, `Failed requests: ${failedRequests.join('; ')}`);
   return { status: 'passed', results, browserErrors: errors, failedRequests };

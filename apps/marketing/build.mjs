@@ -1,14 +1,20 @@
+import process from 'node:process';
+import console from 'node:console';
 import { readFile, mkdir, writeFile, readdir, copyFile } from 'node:fs/promises';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { config, pages, absolute, esc } from './config.mjs';
+import { config, absolute, esc } from './config.mjs';
 import { shell } from './components.mjs';
 import { home, workflow, sample, audience, openSource, summary } from './pages.mjs';
 import { drawingSvg } from './drawings.mjs';
+import { createRegistry, publishedPages } from './registry.mjs';
+import { hub, resourcePage, diagramLabels, diagramSvg } from './resources.mjs';
+import { generateDownloads } from './documents.mjs';
 
 const source = dirname(fileURLToPath(import.meta.url));
 export const output = resolve(process.env.MARKETING_OUT_DIR || join(source, '../../docs'));
 const project = JSON.parse(await readFile(join(source, 'data/project.json'), 'utf8'));
+const pages = publishedPages(createRegistry(project));
 const written = [];
 async function emit(path, content) {
   const target = join(output, path);
@@ -31,23 +37,36 @@ async function assets(directory, relative = '') {
 
 // Only explicitly owned files are written. Existing Markdown and CNAME are preserved.
 await assets(join(source, 'assets'));
-const renderers = [
-  () => home(project),
-  () => workflow(project),
-  () => sample(project),
-  () => audience('studio'),
-  () => audience('architect'),
-  openSource,
-];
-for (const [index, page] of pages.entries())
-  await emit(`${page.path}index.html`, shell(page, renderers[index]()));
-const summaryPage = {
-  path: 'sample-project/summary/',
-  title: 'The Window Room — printable sample summary',
-  description:
-    'The illustrative Window Room brief, drawing references, and partial material schedule. Quiet Oak, revision R0, pending review.',
+const renderers = {
+  home: () => home(project),
+  'how-it-works/': () => workflow(project),
+  'sample-project/': () => sample(project),
+  'for-design-studios/': () => audience('studio'),
+  'for-architects/': () => audience('architect'),
+  'open-source/': openSource,
+  summary: () => summary(project),
 };
-await emit(`${summaryPage.path}index.html`, shell(summaryPage, summary(project)));
+for (const page of pages) {
+  if (page.kind === 'template') {
+    const downloads = await generateDownloads(page);
+    for (const download of downloads) await emit(download.path, download.buffer);
+    page.downloads = downloads.map(({ path, label, format, size }) => ({
+      path,
+      label,
+      format,
+      size,
+    }));
+  }
+  const content =
+    page.kind === 'hub'
+      ? hub(page, pages)
+      : ['guide', 'template'].includes(page.kind)
+        ? resourcePage(page, pages, project)
+        : renderers[page.id]();
+  await emit(`${page.path}index.html`, shell(page, content));
+}
+for (const type of Object.keys(diagramLabels))
+  await emit(`assets/diagrams/${type}.svg`, diagramSvg(type));
 for (const drawing of project.drawings)
   await emit(`assets/downloads/${drawing.filename}`, drawingSvg(project, drawing.id));
 const csvCell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
@@ -81,18 +100,29 @@ await emit(
 );
 await emit(
   'sitemap.xml',
-  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...pages, summaryPage].map((page) => `<url><loc>${esc(absolute(page.path))}</loc></url>`).join('')}</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map((page) => `<url><loc>${esc(absolute(page.path))}</loc>${page.modified ? `<lastmod>${page.modified}</lastmod>` : ''}</url>`).join('')}</urlset>\n`,
 );
 await emit('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${absolute('sitemap.xml')}\n`);
 await emit('.nojekyll', '');
 await emit(
   'marketing-manifest.json',
   JSON.stringify(
-    { generator: 'OpenLintel marketing', basePath: config.base, files: written.sort() },
+    {
+      generator: 'OpenLintel marketing',
+      basePath: config.base,
+      pages: pages.map(({ id, path, kind, wave, downloads }) => ({
+        id,
+        path,
+        kind,
+        wave,
+        downloads,
+      })),
+      files: written.sort(),
+    },
     null,
     2,
   ) + '\n',
 );
 console.log(
-  `Built ${pages.length} marketing pages, a printable summary, and ${project.drawings.length + 1} downloads in ${output}`,
+  `Built ${pages.length} HTML pages, ${pages.filter((p) => p.kind === 'template').length} editable resources, and sample downloads in ${output}`,
 );

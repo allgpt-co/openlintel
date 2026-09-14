@@ -1,7 +1,9 @@
+import process from 'node:process';
+import console from 'node:console';
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, URL } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import { config } from './config.mjs';
 
@@ -15,6 +17,8 @@ const mime = {
   '.svg': 'image/svg+xml',
   '.webp': 'image/webp',
   '.woff2': 'font/woff2',
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   '.csv': 'text/csv; charset=utf-8',
   '.xml': 'application/xml',
   '.txt': 'text/plain; charset=utf-8',

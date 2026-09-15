@@ -126,4 +126,5 @@ service-account.json
 
 # Marketing browser verification artifacts
 output/playwright/
+output/seo/
 .playwright-cli/

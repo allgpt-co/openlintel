@@ -30,6 +30,9 @@ async (page) => {
     'templates/interior-design-budget/',
     'resources/interior-design-mood-board-examples/',
     'resources/reflected-ceiling-plan/',
+    'pilot/',
+    'product-status/',
+    'resources/interior-design-specification-change/',
   ]);
   for (const width of [360, 390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 950 });
@@ -234,6 +237,8 @@ async (page) => {
     'resources/',
     'templates/interior-design-budget/',
     'resources/interior-design-mood-board-examples/',
+    'pilot/',
+    'product-status/',
   ]) {
     await reducedPage.goto(at(route));
     await reducedPage.evaluate(() => {

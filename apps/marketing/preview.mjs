@@ -5,6 +5,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { Buffer } from 'node:buffer';
 import { config } from './config.mjs';
 
 const root = resolve(
@@ -25,7 +26,9 @@ const mime = {
   '.json': 'application/json',
 };
 const port = Number(process.env.PORT || 4173);
-createServer(async (request, response) => {
+const server = createServer(async (request, response) => {
+  // Preview servers are not a production publishing target.
+  response.setHeader('X-Robots-Tag', 'noindex, nofollow');
   try {
     if (!['GET', 'HEAD'].includes(request.method)) {
       response.writeHead(405, { Allow: 'GET, HEAD' });
@@ -40,6 +43,13 @@ createServer(async (request, response) => {
       return;
     }
     if (!pathname.startsWith(config.base)) throw new Error('Outside base path');
+    if (pathname.endsWith('/index.html')) {
+      response.writeHead(301, {
+        Location: pathname.slice(0, -'index.html'.length) + requestUrl.search,
+      });
+      response.end();
+      return;
+    }
     let file = resolve(root, '.' + '/' + pathname.slice(config.base.length));
     if (file !== root && !file.startsWith(root + sep)) throw new Error('Outside preview root');
     const info = await stat(file);
@@ -69,9 +79,20 @@ createServer(async (request, response) => {
     response.writeHead(200, headers);
     response.end(request.method === 'HEAD' ? undefined : body);
   } catch {
-    response.writeHead(404, { 'Content-Type': 'text/plain' });
-    response.end('Page not found');
+    let body;
+    try {
+      body = await readFile(resolve(root, '404.html'));
+    } catch {
+      body = Buffer.from('Page not found');
+    }
+    response.writeHead(404, {
+      'Content-Type': body[0] === 60 ? 'text/html; charset=utf-8' : 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-cache',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Length': body.length,
+    });
+    response.end(request.method === 'HEAD' ? undefined : body);
   }
 }).listen(port, '0.0.0.0', () =>
-  console.log(`OpenLintel preview: http://localhost:${port}${config.base}`),
+  console.log(`OpenLintel preview: http://localhost:${server.address().port}${config.base}`),
 );

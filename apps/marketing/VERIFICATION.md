@@ -1,3 +1,24 @@
+# SEO implementation verification — September 15, 2026
+
+## Current local release candidate
+
+- **45 registered pages plus a custom 404**: six core pages, six pilot/trust/privacy pages, two hubs, eighteen guides, twelve templates, and one printable summary. **43 indexable sitemap URLs**; summary, confirmation and 404 are intentionally noindex. Existing URLs are preserved.
+- **37 automated tests passed**, covering root/subpath builds, metadata and publication rules, content integrity, Office generation/revision dates, form activation gates, conservative hash-owned cleanup, real preview routing, production-audit failure regressions, verified-property analytics reporting, and private report permissions/symlink defenses.
+- Full Playwright CLI smoke passed at both `/` and `/openlintel/`: all 45 pages at 360, 390, 768, 1024 and 1440 px; all five sample chapters; history, keyboard/focus, print, no-JavaScript reading, reduced motion, 200% zoom, and all 18 Office plus three sample downloads. Zero browser errors or failed requests. Metadata-only copy/date refinements and CSV newline normalization were subsequently rechecked by the static and served-output suites.
+- Separate configured growth fixture passed across five viewport sizes: actual Formspree JSON success contract, validation/rejection/malformed/rate-limit/network paths, native no-JavaScript POST, direct confirmation without conversion, no pre-consent analytics, allowlisted PII-free events, consent/attribution expiry, blocked storage, cross-tab withdrawal/timer teardown, and marketing-only cookie removal. Vendor requests were intercepted; **no live submissions or Google collection** were sent. Mocked integration tests do not prove real provider delivery or GA behavior.
+- Served-output audits passed **715/715 checks** for root and subpath previews. These are explicitly local checks, not production signoff. Checks cover public routes and physical files, exact reviewed bytes, MIME types, canonical/indexing directives, sitemap membership, genuine 404s and trailing-slash redirects.
+- Source lint and code formatting passed. Repeated builds are deterministic. The CSV now follows the repository's LF policy so Git normalization cannot invalidate its deployed SHA-256. CI verifies that checked-in `docs/` artifacts match the source build and public release configuration, without deploying or contacting integration vendors.
+- Original CNAME, technical Markdown and application deployment workflow are preserved. Internal operations materials, blank register schemas, research evidence and analytics exports are not copied into public assets. Existing 18 Office files remain parseable, macro-free and deterministic; **LibreOffice visual rendering and Lighthouse were not rerun for this release**. Earlier results below are historical, not current scores.
+- Representative pilot desktop/mobile and guide screenshots were visually reviewed. The existing visual identity and ungated resource access are retained. All practitioner-review assignments remain pending; automated checks do not certify professional correctness.
+
+## External status and remaining gates
+
+Read-only GitHub inspection confirmed Pages serves `main:/docs`, with `openlintel.com` configured, HTTPS enforcement false and no certificate returned. Public DNS checks found no apex address records and an unresolved www host. The public release audit **failed with ENOTFOUND**. A built Pages status is not proof of this local revision being deployed.
+
+This local verification did not change DNS/hosting settings, submit a sitemap, activate a real pilot form, create a GA property, send outreach, or establish traffic uplift. Commit, merge and deployment state must be checked separately in GitHub; passing local checks is not proof of public availability. Pilot intake and analytics remain disabled pending verified account/contact details, real delivery/runtime checks, operational ownership, privacy review and the release checks in [the launch runbook](operations/LAUNCH.md). Six-month editorial review, outreach, pilot outcomes and reporting remain ongoing external work.
+
+---
+
 ## Resource-library verification — September 14, 2026
 
 This section covers the new resource library. The Lighthouse results below are historical measurements of the earlier site and have **not** been rerun for this expansion.

@@ -1,3 +1,6 @@
+import { workflowGuides } from './workflow-guides.mjs';
+import { enrichExistingGuide } from './guide-guidance.mjs';
+
 const section = (id, title, paragraphs, items = []) => ({ id, title, paragraphs, items });
 const aia = {
   title: 'AIA: defining the architect’s basic services',
@@ -7,9 +10,9 @@ const leica = {
   title: 'Leica Geosystems: room measurements and diagonal verification',
   url: 'https://shop.leica-geosystems.com/measurement-tools/disto/blog/video/speed-precision-smart-room-diagonals',
 };
-const autodesk = {
-  title: 'Autodesk: reflected ceiling plan orientation',
-  url: 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Revit-How-to-display-a-top-down-view-including-the-ceiling-grid-for-printing.html',
+const bricsys = {
+  title: 'Bricsys documentation: define a reflected ceiling plan',
+  url: 'https://help.bricsys.com/en-us/document/bricscad-bim/design-documentation/define-reflected-ceiling-plan',
 };
 
 export const guides = [
@@ -389,10 +392,10 @@ export const guides = [
     intro:
       'A reflected ceiling plan, or RCP, communicates information at the ceiling. It is a distinct view with its own legend and coordination needs, not simply a furnished floor plan with a few lighting symbols added.',
     visual: 'rcp',
-    sources: [autodesk],
+    sources: [bricsys],
     sections: [
       section('orientation', 'Understand the reflected view', [
-        'Autodesk describes the view as if a mirror were placed on the floor. That reflected convention helps the ceiling information relate to the plan below. Read the drawing orientation and view title instead of rotating or mirroring it by guesswork.',
+        'Bricsys describes reflected ceiling plans as mirror images of the ceiling, useful for showing ceiling installations. That reflected convention helps the ceiling information relate to the plan below. Read the drawing orientation and view title instead of rotating or mirroring it by guesswork.',
         'The teaching diagram on this page is newly authored for the library. It uses the sample room’s nominal footprint, but it is not an existing Window Room deliverable, a measured ceiling survey, or an application export.',
       ]),
       section('legend', 'Read the legend and heights', [
@@ -577,11 +580,14 @@ export const guides = [
     related: ['elevation-guide', 'rcp-guide', 'site-survey'],
     sample: 'handoff',
   },
-].map((item) => ({
-  ...item,
-  kind: 'guide',
-  path: `resources/${item.slug}/`,
-  status: 'published',
-  modified: '2026-09-14',
-  sources: item.sources || [],
-}));
+]
+  .map(enrichExistingGuide)
+  .concat(workflowGuides)
+  .map((item) => ({
+    ...item,
+    kind: 'guide',
+    path: `resources/${item.slug}/`,
+    status: 'published',
+    modified: '2026-09-15',
+    sources: item.sources || [],
+  }));

@@ -5,6 +5,11 @@ import { Document, Packer, Paragraph, TextRun, HeadingLevel, Footer, PageNumber 
 export const exampleNotice =
   'Illustrative teaching extension of The Window Room; not a client record, supplier quote, site survey, or construction-ready document. Pending professional review.';
 const fixedDate = new Date('2026-09-14T00:00:00Z');
+const editorialDate = (definition) => {
+  const date = new Date(`${definition.modified || '2026-09-14'}T00:00:00Z`);
+  if (!Number.isFinite(date.getTime())) throw new Error('Invalid Office editorial date.');
+  return date;
+};
 
 // Office archives otherwise embed the time of each build in ZIP entry headers.
 async function reproducible(buffer) {
@@ -46,7 +51,7 @@ async function workbook(definition) {
   book.creator = 'OpenLintel';
   book.lastModifiedBy = 'OpenLintel';
   book.created = fixedDate;
-  book.modified = fixedDate;
+  book.modified = editorialDate(definition);
   book.title = definition.title;
   book.subject = 'Editable professional planning resource';
   book.calcProperties.fullCalcOnLoad = true;
@@ -226,7 +231,9 @@ async function document(definition, example) {
     p(example ? 'Worked example • Pending review' : 'Blank editable template', {
       heading: HeadingLevel.SUBTITLE,
     }),
-    p('OpenLintel • Educational planning resource • September 14, 2026'),
+    p(
+      `OpenLintel • Educational planning resource • ${editorialDate(definition).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}`,
+    ),
     p(exampleNotice),
     p('How to use', { heading: HeadingLevel.HEADING_1 }),
     p(definition.use),
@@ -293,8 +300,9 @@ async function document(definition, example) {
   archive.file(
     'docProps/core.xml',
     (await core.async('string')).replace(
-      /(<dcterms:(?:created|modified)[^>]*>)[^<]+/g,
-      '$1' + fixedDate.toISOString(),
+      /(<dcterms:(created|modified)[^>]*>)[^<]+/g,
+      (_, tag, kind) =>
+        tag + (kind === 'modified' ? editorialDate(definition) : fixedDate).toISOString(),
     ),
   );
   return reproducible(await archive.generateAsync({ type: 'nodebuffer' }));

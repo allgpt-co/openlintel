@@ -1,6 +1,7 @@
 import { pages as marketingPages } from './config.mjs';
 import { templateDefinitions } from './content/templates.mjs';
 import { guides } from './content/guides.mjs';
+import { growthPages } from './growth-pages.mjs';
 
 export const clusters = [
   {
@@ -34,8 +35,9 @@ export const hubs = [
     path: 'resources/',
     kind: 'hub',
     status: 'published',
+    indexable: true,
     wave: 1,
-    modified: '2026-09-14',
+    modified: '2026-09-15',
     title: 'Interior design resources for a connected workflow',
     description:
       'Practical interior design guides and editable templates, from the first client questionnaire to drawing review and project handoff.',
@@ -45,8 +47,9 @@ export const hubs = [
     path: 'templates/',
     kind: 'hub',
     status: 'published',
+    indexable: true,
     wave: 1,
-    modified: '2026-09-14',
+    modified: '2026-09-15',
     title: 'Free interior design templates',
     description:
       'Download editable interior design questionnaires, briefs, proposals, schedules, and budget spreadsheets with blank templates and illustrative examples.',
@@ -65,7 +68,20 @@ export function validateRegistry(records) {
       throw new Error(`Invalid or duplicate path: ${page.path}`);
     if (!['published', 'draft'].includes(page.status))
       throw new Error(`Invalid status: ${page.id}`);
+    if (typeof page.indexable !== 'boolean')
+      throw new Error(`Explicit boolean indexable metadata required: ${page.id}`);
     if (!page.title || !page.description) throw new Error(`Missing metadata: ${page.id}`);
+    for (const name of ['modified', 'published']) {
+      if (
+        page[name] !== undefined &&
+        (!/^\d{4}-\d{2}-\d{2}$/.test(page[name]) ||
+          !Number.isFinite(Date.parse(page[name])) ||
+          new Date(page[name]).toISOString().slice(0, 10) !== page[name])
+      )
+        throw new Error(`Invalid ${name} date: ${page.id}`);
+    }
+    if (page.published && page.modified && page.published > page.modified)
+      throw new Error(`Publication date follows modified date: ${page.id}`);
     ids.add(page.id);
     paths.add(page.path);
   }
@@ -87,18 +103,21 @@ export function createRegistry(project) {
       id: page.path || 'home',
       kind: 'marketing',
       status: 'published',
+      indexable: true,
     })),
     {
       id: 'summary',
       kind: 'summary',
       status: 'published',
+      indexable: false,
       path: 'sample-project/summary/',
       title: 'The Window Room — printable sample summary',
       description:
         'The illustrative Window Room brief, drawing references, and partial material schedule. Quiet Oak, revision R0, pending review.',
     },
     ...hubs,
-    ...templateDefinitions(project),
-    ...guides,
+    ...growthPages,
+    ...templateDefinitions(project).map((page) => ({ indexable: true, ...page })),
+    ...guides.map((page) => ({ indexable: true, ...page })),
   ]);
 }

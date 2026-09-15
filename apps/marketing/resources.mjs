@@ -5,6 +5,26 @@ import { displayRows } from './documents.mjs';
 
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`;
 const paragraphs = (items) => items.map((text) => `<p>${esc(text)}</p>`).join('');
+export function editorialDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value || ''))
+    throw new Error('An editorial date must use YYYY-MM-DD.');
+  const date = new Date(`${value}T00:00:00Z`);
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value)
+    throw new Error(`Invalid editorial date: ${value}`);
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
+}
+function teachingTable(table) {
+  if (!table) return '';
+  return `<div class="table-scroll resource-table" tabindex="0" role="region" aria-label="${esc(table.caption)}; scroll horizontally"><table><caption>${esc(table.caption)}</caption><thead><tr>${table.headers.map((header) => `<th scope="col">${esc(header)}</th>`).join('')}</tr></thead><tbody>${table.rows.map((row) => `<tr>${row.map((value, i) => (i === 0 ? `<th scope="row">${esc(value)}</th>` : `<td>${esc(value)}</td>`)).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function authoredSection(section) {
+  return `<section id="${esc(section.id)}"><h2>${esc(section.title)}</h2>${paragraphs(section.paragraphs || [])}${section.items?.length ? list(section.items) : ''}${teachingTable(section.table)}${section.links?.length ? `<ul>${section.links.map((link) => `<li><a href="${url(link.href)}">${esc(link.label)}</a></li>`).join('')}</ul>` : ''}</section>`;
+}
 export function breadcrumbs(page) {
   const parent = page.kind === 'template' ? 'templates' : 'resources';
   return `<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="${url()}">Home</a></li>${page.kind === 'hub' ? '' : `<li><a href="${url(`${parent}/`)}">${parent === 'templates' ? 'Templates' : 'Resources'}</a></li>`}<li aria-current="page">${esc(page.kind === 'hub' ? (page.id === 'templates' ? 'Templates' : 'Resources') : page.title)}</li></ol></nav>`;
@@ -27,7 +47,7 @@ export function hub(page, registry) {
     )
     .join(
       '',
-    )}<section class="resource-editorial"><h2>Adapt the structure. Verify the project.</h2><p>These are educational planning resources, not legal agreements, construction documents, or professional certification. Worked examples are clearly labeled teaching extensions of The Window Room. Replace them with your own verified information and obtain appropriate project review.</p><p>Guides are authored by OpenLintel with AI assistance. No independent professional review is claimed. We cite external references where used; original examples are illustrative, not completed client work.</p></section></div>`;
+    )}<section class="resource-editorial"><h2>Adapt the structure. Verify the project.</h2><p>These are educational planning resources, not legal agreements, construction documents, or professional certification. Worked examples are clearly labeled teaching extensions of The Window Room. Replace them with your own verified information and obtain appropriate project review.</p><p>Guides are authored by OpenLintel with AI assistance. No independent professional review is claimed. We cite external references where used; original examples are illustrative, not completed client work.</p><p><a href="${url('editorial-policy/')}">Read our editorial and review policy</a></p></section></div>`;
 }
 function visual(page, project) {
   if (page.visual === 'mood-boards')
@@ -119,7 +139,7 @@ function templatePreview(page) {
     .join('')}</tbody></table></div>`;
 }
 function downloads(page) {
-  return `<section id="download" class="download-panel"><h2>Make it your own</h2><p>${page.format === 'xlsx' ? 'One workbook with Instructions, Blank Template, and Worked Example sheets. Twenty editable rows; duplicate or extend the template for your project.' : 'Separate blank and worked-example documents. Edit the blank copy in Word or a compatible document editor.'}</p><div class="download-actions">${page.downloads.map((d, i) => `<a class="${i === 0 ? 'button' : 'text-link'}" data-resource-download href="${url(d.path)}" download>${esc(d.label)} <span class="download-size">${d.format} · ${(d.size / 1024).toFixed(1)} KB</span></a>`).join('')}</div><p class="micro">Free download · No account · No information uploaded to OpenLintel</p></section>`;
+  return `<section id="download" class="download-panel"><h2>Make it your own</h2><p>${page.format === 'xlsx' ? 'One workbook with Instructions, Blank Template, and Worked Example sheets. Twenty editable rows; duplicate or extend the template for your project.' : 'Separate blank and worked-example documents. Edit the blank copy in Word or a compatible document editor.'}</p><div class="download-actions">${page.downloads.map((d, i) => `<a class="${i === 0 ? 'button' : 'text-link'}" data-resource-download data-resource-id="${esc(page.id)}" data-resource-format="${d.format.toLowerCase()}" data-resource-variant="${page.format === 'xlsx' ? 'workbook' : i === 0 ? 'blank' : 'example'}" href="${url(d.path)}" download>${esc(d.label)} <span class="download-size">${d.format} · ${(d.size / 1024).toFixed(1)} KB</span></a>`).join('')}</div><p class="micro">Free download · No account · No information uploaded to OpenLintel</p></section>`;
 }
 export function resourcePage(page, registry, project) {
   const template = page.kind === 'template';
@@ -127,17 +147,29 @@ export function resourcePage(page, registry, project) {
     ? [
         { id: 'preview', title: 'Worked example & fields' },
         { id: 'use', title: 'How to use it' },
+        ...(page.sections || []),
         { id: 'review', title: 'Review before use' },
         { id: 'download', title: 'Editable download' },
       ]
     : page.sections;
   const article = template
-    ? `<section id="preview"><h2>Worked example & fields</h2><p class="sample-notice">Illustrative teaching extension of The Window Room. Pending review; not a client record, supplier quote, site survey, or construction-ready document.</p>${templatePreview(page)}${page.columns ? `<h3>What each field records</h3><dl class="field-guide">${page.columns.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${esc(c.help)}</dd></div>`).join('')}</dl>` : ''}</section><section id="use"><h2>How to use this template</h2><p>${esc(page.use)}</p><ol>${page.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol></section><section id="review"><h2>Review before use</h2>${list(page.mistakes)}</section>${downloads(page)}`
-    : `${visual(page, project)}${page.sections.map((s) => `<section id="${s.id}"><h2>${esc(s.title)}</h2>${paragraphs(s.paragraphs)}${s.items.length ? list(s.items) : ''}</section>`).join('')}<section id="checklist"><h2>Before you move on</h2>${list(page.checklist)}</section>`;
-  return `<div class="wrap resource-page">${breadcrumbs(page)}<header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Editable ${page.format.toUpperCase()}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('open-source/')}">OpenLintel</a> · Updated <time datetime="${page.modified}">September 14, 2026</time> · Educational resource</p>${template ? '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>' : ''}</header><div class="article-layout"><aside class="article-toc"><nav aria-label="On this page"><p class="eyebrow">On this page</p><ol>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.title)}</a></li>`).join('')}${template ? '' : '<li><a href="#checklist">Review checklist</a></li>'}</ol></nav></aside><article class="resource-body">${article}<section class="article-sources"><h2>About this resource</h2><p>Authored by OpenLintel with AI assistance. Examples are illustrative and have not received independent professional review. Adapt the structure to your practice and verify project-specific information. No legal agreement, regulatory compliance, or construction readiness is represented.</p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section><section class="sample-bridge"><h2>See the information connect</h2><p>Follow the corresponding chapter of The Window Room: one illustrative brief, one selected direction, and coordinated sample references.</p><a class="text-link" data-sample-link href="${url(`sample-project/#${page.sample}`)}">Explore the sample ${page.sample === 'handoff' ? 'handoff' : page.sample}</a></section></article></div><section class="related-resources"><h2>The next useful step</h2><div class="resource-grid">${page.related
-    .map((id) => registry.find((p) => p.id === id))
-    .map(card)
-    .join(
-      '',
-    )}</div><a class="text-link" href="${url(template ? 'templates/' : 'resources/')}">Back to ${template ? 'all templates' : 'all resources'}</a></section></div>`;
+    ? `<section id="preview"><h2>Worked example & fields</h2><p class="sample-notice">Illustrative teaching extension of The Window Room. Pending review; not a client record, supplier quote, site survey, or construction-ready document.</p>${templatePreview(page)}${page.columns ? `<h3>What each field records</h3><dl class="field-guide">${page.columns.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${esc(c.help)}</dd></div>`).join('')}</dl>` : ''}</section>
+       <section id="use"><h2>How to use this template</h2><p>${esc(page.use)}</p><ol>${page.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol></section>
+       ${(page.sections || []).map(authoredSection).join('')}
+       <section id="review"><h2>Review before use</h2>${list(page.mistakes)}${page.unitsNote ? `<h3>Units, source information, and US use</h3><p>${esc(page.unitsNote)}</p>` : ''}</section>${downloads(page)}`
+    : `${visual(page, project)}${page.sections.map(authoredSection).join('')}<section id="checklist"><h2>Before you move on</h2>${list(page.checklist)}</section>`;
+  return `<div class="wrap resource-page">${breadcrumbs(page)}
+    <header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Editable ${page.format.toUpperCase()}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('about/')}">OpenLintel</a> · Updated <time datetime="${esc(page.modified)}">${editorialDate(page.modified)}</time> · Educational resource</p>${template ? '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>' : ''}</header>
+    <div class="article-layout"><aside class="article-toc"><nav aria-label="On this page"><p class="eyebrow">On this page</p><ol>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.title)}</a></li>`).join('')}${template ? '' : '<li><a href="#checklist">Review checklist</a></li>'}</ol></nav></aside>
+    <article class="resource-body">${article}
+      <section class="article-sources"><h2>About this resource</h2><p>Authored by OpenLintel with AI assistance. Examples are illustrative and have not received independent professional review. Adapt the structure to your practice and verify project-specific information. No legal agreement, regulatory compliance, or construction readiness is represented.</p><p><a href="${url('editorial-policy/')}">Authorship, review boundaries, sources, and corrections</a></p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section>
+      <section class="sample-bridge"><h2>See the information connect</h2><p>Follow the corresponding chapter of The Window Room: one illustrative brief, one selected direction, and coordinated sample references.</p><a class="text-link" data-sample-link data-source-page-id="${esc(page.id)}" href="${url(`sample-project/#${page.sample}`)}">Explore the sample ${page.sample === 'handoff' ? 'handoff' : page.sample}</a></section>
+      <section class="sample-bridge"><h2>Discuss your studio’s workflow</h2><p>${esc(page.pilot || 'Discuss documentation and coordination challenges in a pilot discovery conversation. OpenLintel is in active development, not a hosted trial.')}</p><a class="text-link" data-pilot-cta data-source-page-id="${esc(page.id)}" href="${url('pilot/')}">Request a pilot discovery conversation</a></section>
+    </article></div>
+    <section class="related-resources"><h2>The next useful step</h2><div class="resource-grid">${page.related
+      .map((id) => registry.find((p) => p.id === id))
+      .map(card)
+      .join(
+        '',
+      )}</div><a class="text-link" href="${url(template ? 'templates/' : 'resources/')}">Back to ${template ? 'all templates' : 'all resources'}</a></section></div>`;
 }

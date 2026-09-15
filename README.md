@@ -1,6 +1,8 @@
 # OpenLintel
 
-**End-to-end home design automation** — from room photos to finished living spaces, with every cut list, wire run, and pipe fitting accounted for.
+**Open-source, AI-assisted interior design workflows** — exploring how residential studios can connect design decisions, drawings, and material information, requiring project-specific professional review.
+
+> **Active development, not a verified hosted product.** The public marketing site provides an illustrative worked example and editable educational resources. It does not demonstrate that the application can complete every workflow below. Construction, fabrication, engineering, compliance, accuracy, and savings claims require separate verification. See the [product-status page](https://openlintel.com/product-status/) and [marketing launch runbook](apps/marketing/operations/LAUNCH.md).
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -9,11 +11,11 @@
 
 ## The Problem
 
-Designing and renovating a home today involves juggling 10-15 different professionals, WhatsApp-based "version control," opaque pricing with 30-60% markup stacking, and zero coordination between trades. Interior designers produce pretty renders but not manufacturing instructions. Carpenters eyeball measurements. Electricians and plumbers discover conflicts after walls are sealed. Material waste averages 10-15%.
+Residential design work can spread a brief, drawings, selections, revisions, and approvals across different documents and tools. When those records disagree, the next person needs to establish which information is current and which assumptions remain unresolved.
 
-**OpenLintel exists to fix all of that.**
+OpenLintel explores a more inspectable workflow: carry consistent room, item, drawing, and revision references through a project, while keeping professional responsibilities visible. This is a product direction, not a measured claim about industry costs or project outcomes.
 
-## What This Project Does
+## Intended Workflow — Development Direction
 
 ```
 Photos/Floor Plans
@@ -25,7 +27,7 @@ Photos/Floor Plans
    Technical Drawings ──> AutoCAD DWG, elevations, sections, RCP
         |
         v
-   Bill of Materials ──> Room-by-room, category-wise, exact quantities
+   Bill of Materials ──> Room-by-room, category-wise quantities for review
         |
         v
    CNC Cut Lists ──> Nesting-optimized, grain direction, edge banding
@@ -43,14 +45,16 @@ Photos/Floor Plans
    Handover ──> As-built drawings, warranty tracking, maintenance calendar
 ```
 
-## Key Capabilities
+## Capability Areas in the Repository
+
+The following table describes development areas, not a production feature checklist. Source code, mock data, or a route existing does not establish a tested end-to-end capability. Validate a named release and configured services before representing a workflow as available.
 
 | Capability | Description |
 |-----------|-------------|
 | **Photo to 3D** | Upload room photos, get reconstructed 3D models with AI-estimated dimensions |
 | **AI Design Generation** | Multiple design variants per room based on style, budget, and spatial constraints |
 | **Auto-Generated Drawings** | Floor plans, elevations, sections, RCP, MEP layouts — DWG/PDF output |
-| **Factory-Ready Cut Lists** | CNC-compatible panel cut lists with grain direction, edge banding, hardware boring |
+| **Cut List Development** | Panel cut-list and nesting work; fabrication suitability requires separate validation |
 | **Nesting Optimization** | Maximize yield from standard 8x4 sheets, track reusable offcuts |
 | **Electrical Engineering** | Load calculations, circuit grouping, panel schedules, wire gauge sizing |
 | **Plumbing Engineering** | Pipe sizing, slope calculations, drainage design, waterproofing specs |
@@ -123,7 +127,7 @@ Photos/Floor Plans
 
 ```bash
 # Clone the repository
-git clone https://github.com/rahuliitk/openlintel.git
+git clone https://github.com/allgpt-co/openlintel.git
 cd openlintel
 
 # Copy environment template
@@ -253,8 +257,8 @@ We welcome contributions from developers, designers, architects, engineers, and 
 
 ## Community
 
-- [Discussions](https://github.com/rahuliitk/openlintel/discussions) — Questions, ideas, show & tell
-- [Issues](https://github.com/rahuliitk/openlintel/issues) — Bug reports and feature requests
+- [Discussions](https://github.com/allgpt-co/openlintel/discussions) — Questions, ideas, show & tell
+- [Issues](https://github.com/allgpt-co/openlintel/issues) — Bug reports and feature requests
 - [Discord](#) — Real-time chat *(coming soon)*
 
 ## License

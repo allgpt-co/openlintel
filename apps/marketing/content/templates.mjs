@@ -1,3 +1,5 @@
+import { enrichTemplate } from './template-guidance.mjs';
+
 // Authored resource definitions. Examples are teaching extensions, not client records.
 const field = (label, help, example) => ({ label, help, example });
 const column = (label, help, type = 'text') => ({ label, help, type });
@@ -845,12 +847,14 @@ export function templateDefinitions(project) {
       related: ['mood-board', 'concept-board', 'project-management'],
       sample: 'design',
     },
-  ].map((item) => ({
-    ...item,
-    kind: 'template',
-    path: `templates/${item.slug}/`,
-    status: 'published',
-    modified: '2026-09-14',
-    sources: item.sources || [],
-  }));
+  ]
+    .map(enrichTemplate)
+    .map((item) => ({
+      ...item,
+      kind: 'template',
+      path: `templates/${item.slug}/`,
+      status: 'published',
+      modified: item.modified,
+      sources: item.sources || [],
+    }));
 }

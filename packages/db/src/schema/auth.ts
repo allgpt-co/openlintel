@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  text,
-  timestamp,
-  primaryKey,
-  integer,
-  boolean,
-} from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, primaryKey, integer, boolean } from 'drizzle-orm/pg-core';
 
 /**
  * NextAuth v5 compatible tables.
@@ -35,7 +28,7 @@ export const accounts = pgTable(
     userId: text('user_id')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    type: text('type').notNull(),
+    type: text('type').$type<'oauth' | 'oidc' | 'email' | 'webauthn'>().notNull(),
     provider: text('provider').notNull(),
     providerAccountId: text('provider_account_id').notNull(),
     refresh_token: text('refresh_token'),

@@ -1,0 +1,56 @@
+name: Authentication quality
+
+on:
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.npmrc'
+      - 'tsconfig.json'
+      - '.github/workflows/authentication-quality.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.npmrc'
+      - 'tsconfig.json'
+      - '.github/workflows/authentication-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: authentication-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  auth-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned dependencies
+        run: npx --yes pnpm@9.15.4 install --frozen-lockfile
+      - name: Typecheck authentication and shared packages
+        run: |
+          npx --yes pnpm@9.15.4 --filter @openlintel/web exec tsc --project tsconfig.auth-security.json --noEmit
+          npx --yes pnpm@9.15.4 --filter @openlintel/core --filter @openlintel/db --filter @openlintel/ui typecheck
+      - name: Run web regression tests without live providers or databases
+        run: npx --yes pnpm@9.15.4 --filter @openlintel/web test
+      - name: Build production application
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: npx --yes pnpm@9.15.4 --filter @openlintel/web build
+      - name: Ensure checks did not mutate tracked state
+        run: git diff --exit-code

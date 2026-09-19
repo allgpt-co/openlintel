@@ -1,13 +1,40 @@
-const base = process.env.MARKETING_BASE_PATH || '/';
-if (!base.startsWith('/') || /[?#\\]|\.\./.test(base))
-  throw new Error(
-    'MARKETING_BASE_PATH must be an absolute URL path without traversal, query, or hash.',
-  );
-export const config = {
-  origin: new URL(process.env.MARKETING_ORIGIN || 'https://openlintel.com').origin,
-  base: `${base.replace(/\/+$/, '')}/`,
-  repo: 'https://github.com/allgpt-co/openlintel',
-};
+import process from 'node:process';
+import { URL } from 'node:url';
+export function loadSiteConfig(env = process.env) {
+  const base = env.MARKETING_BASE_PATH || '/';
+  if (!/^\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-]*$/.test(base))
+    throw new Error('MARKETING_BASE_PATH must contain only absolute, unencoded path segments.');
+  const rawOrigin = env.MARKETING_ORIGIN || 'https://openlintel.com';
+  let origin;
+  try {
+    origin = new URL(rawOrigin);
+  } catch {
+    throw new Error('MARKETING_ORIGIN must be an absolute HTTPS origin.');
+  }
+  const local = ['localhost', '127.0.0.1', '[::1]'].includes(origin.hostname);
+  if (
+    !/^https?:\/\/[^/?#]+\/?$/i.test(rawOrigin) ||
+    /[\s<>"'\\]/.test(rawOrigin) ||
+    (origin.protocol !== 'https:' && !(local && origin.protocol === 'http:')) ||
+    origin.username ||
+    origin.password ||
+    origin.pathname !== '/' ||
+    origin.search ||
+    origin.hash
+  )
+    throw new Error(
+      'MARKETING_ORIGIN must be an HTTPS origin without credentials, path, query, or hash (HTTP localhost is allowed).',
+    );
+  if (env.MARKETING_NOINDEX && !['true', 'false'].includes(env.MARKETING_NOINDEX))
+    throw new Error('MARKETING_NOINDEX must be true or false.');
+  return {
+    origin: origin.origin,
+    base: `${base.replace(/\/+$/, '')}/`,
+    repo: 'https://github.com/allgpt-co/openlintel',
+    indexable: env.MARKETING_NOINDEX !== 'true',
+  };
+}
+export const config = loadSiteConfig();
 export const url = (path = '') => config.base + path.replace(/^\/+/, '');
 export const absolute = (path = '') => config.origin + url(path);
 export const esc = (value) =>
@@ -18,15 +45,15 @@ export const esc = (value) =>
 export const pages = [
   {
     path: '',
-    title: 'Your vision. In every detail.',
+    title: 'AI-assisted interior design workflows',
     description:
       'AI-assisted design exploration, drawings, and material planning for residential design professionals. Follow one room from brief to sample handoff.',
   },
   {
     path: 'how-it-works/',
-    title: 'From a brief to the details',
+    title: 'How OpenLintel works: design, drawings & materials',
     description:
-      'See how OpenLintel connects room information, design exploration, drawings, and materials, with the designer reviewing each step.',
+      'Explore an illustrative OpenLintel workflow connecting room information, concepts, drawings, and materials. Software is in active development; professional review is required.',
   },
   {
     path: 'sample-project/',
@@ -36,20 +63,20 @@ export const pages = [
   },
   {
     path: 'for-design-studios/',
-    title: 'For interior design studios',
+    title: 'Interior design workflows for residential studios',
     description:
-      'Give residential design decisions a shared home. Explore concepts, drawings, material selections, and project information with OpenLintel.',
+      'Explore editable resources and an illustrative connected workflow for residential design studios. OpenLintel is in active development.',
   },
   {
     path: 'for-architects/',
-    title: 'For residential architects',
+    title: 'Interior design coordination for architects',
     description:
       'Develop and communicate interior spatial intent through room information, design options, plans, elevations, and material references.',
   },
   {
     path: 'open-source/',
-    title: 'An open foundation for your practice',
+    title: 'Open-source interior design software',
     description:
-      'Explore the OpenLintel source code, development documentation, and contribution paths. An open-source project for residential design workflows.',
+      'Explore OpenLintel’s open-source interior design software, setup requirements, illustrative workflow, and editable resources for residential design professionals.',
   },
 ];

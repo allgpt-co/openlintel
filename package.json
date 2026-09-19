@@ -2,12 +2,12 @@
   "name": "openlintel",
   "version": "0.1.0",
   "private": true,
-  "description": "End-to-end home design automation platform",
+  "description": "Open-source, AI-assisted interior design workflows in active development",
   "author": "OpenLintel Contributors",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rahuliitk/openlintel.git"
+    "url": "https://github.com/allgpt-co/openlintel.git"
   },
   "engines": {
     "node": ">=20.0.0",
@@ -17,7 +17,7 @@
   "scripts": {
     "marketing:build": "node apps/marketing/build.mjs",
     "marketing:preview": "node apps/marketing/preview.mjs",
-    "marketing:check": "node --test apps/marketing/check.test.mjs",
+    "marketing:check": "node --test apps/marketing/*.test.mjs",
     "marketing:smoke": "node apps/marketing/smoke.mjs",
     "dev": "pnpm --filter @openlintel/web dev",
     "build": "pnpm -r build",
@@ -32,12 +32,19 @@
     "db:reset": "pnpm --filter @openlintel/db reset",
     "clean": "pnpm -r exec rm -rf node_modules dist .next out .turbo",
     "typecheck": "pnpm -r typecheck",
-    "prepare": "husky"
+    "prepare": "husky",
+    "marketing:growth-smoke": "node apps/marketing/growth-smoke.mjs",
+    "marketing:production-check": "node apps/marketing/production-check.mjs",
+    "marketing:search-report": "node apps/marketing/search-report.mjs",
+    "marketing:lint": "eslint --config apps/marketing/eslint.config.mjs apps/marketing"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "docx": "9.5.1",
     "eslint": "^9.0.0",
+    "exceljs": "4.4.0",
     "husky": "^9.0.0",
+    "jszip": "3.10.1",
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
     "turbo": "^2.0.0",

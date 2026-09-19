@@ -23,6 +23,8 @@ const contentTypes = {
   '.svg': ['image/svg+xml'],
   '.png': ['image/png'],
   '.webp': ['image/webp'],
+  '.mp4': ['video/mp4'],
+  '.vtt': ['text/vtt'],
   '.jpg': ['image/jpeg'],
   '.jpeg': ['image/jpeg'],
   '.woff2': ['font/woff2', 'application/font-woff2'],

@@ -51,7 +51,7 @@ Each article links to prerequisites, next artifacts and a relevant sample chapte
 | Weeks11–13 | Growth + product | Review all existing resources; reconcile lead quality; identify evidence-backed Q2 priorities |
 | Months4–6 | Growth + content + product | Two substantial evidence-led pieces/month; two useful updates/week; actual pilot evidence and validated functionality pages |
 
-The implementation can author code and educational drafts now, but human review, videos, workshops, live integrations and months of results remain pending. Never mark the editorial tracker reviewed because automated tests passed. Record actual release dates; the clock for search observations starts at verified publication.
+The implementation can author code and educational drafts now, and two captioned website walkthroughs are now supplied (see `WALKTHROUGHS.md`), but human review, workshops, live integrations and months of results remain pending. Never mark the editorial tracker reviewed because automated tests passed. Record actual release dates; the clock for search observations starts at verified publication.
 
 ## Evidence gates
 

@@ -1,3 +1,4 @@
+import { walkthrough } from './walkthroughs.mjs';
 import { esc, url } from './config.mjs';
 import { picture, caption } from './components.mjs';
 import { clusters } from './registry.mjs';
@@ -47,7 +48,7 @@ export function hub(page, registry) {
     )
     .join(
       '',
-    )}<section class="resource-editorial"><h2>Adapt the structure. Verify the project.</h2><p>These are educational planning resources, not legal agreements, construction documents, or professional certification. Worked examples are clearly labeled teaching extensions of The Window Room. Replace them with your own verified information and obtain appropriate project review.</p><p>Guides are authored by OpenLintel with AI assistance. No independent professional review is claimed. We cite external references where used; original examples are illustrative, not completed client work.</p><p><a href="${url('editorial-policy/')}">Read our editorial and review policy</a></p></section></div>`;
+    )} ${templatesOnly ? walkthrough('template-workflow') : ''}<section class="resource-editorial"><h2>Adapt the structure. Verify the project.</h2><p>These are educational planning resources, not legal agreements, construction documents, or professional certification. Worked examples are clearly labeled teaching extensions of The Window Room. Replace them with your own verified information and obtain appropriate project review.</p><p>Guides are authored by OpenLintel with AI assistance. No independent professional review is claimed. We cite external references where used; original examples are illustrative, not completed client work.</p><p><a href="${url('editorial-policy/')}">Read our editorial and review policy</a></p></section></div>`;
 }
 function visual(page, project) {
   if (page.visual === 'mood-boards')

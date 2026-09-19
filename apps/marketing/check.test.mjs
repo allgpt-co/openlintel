@@ -144,7 +144,7 @@ for (const base of ['/', '/openlintel/']) {
           );
         }
         const pageUrl = new URL(path.replace(/index\.html$/, ''), `https://openlintel.com${base}`);
-        for (const [, raw] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
+        for (const [, raw] of html.matchAll(/(?:href|src|poster)="([^"]+)"/g)) {
           const link = new URL(raw.replaceAll('&amp;', '&'), pageUrl);
           if (link.origin !== pageUrl.origin) continue;
           const linkedRoute = link.pathname.slice(base.length);
@@ -537,6 +537,47 @@ test('Preview serves real 404s, canonical path redirects, and noindex headers', 
       child.kill();
       await exited;
     }
+    await rm(output, { recursive: true, force: true });
+  }
+});
+
+test('Video retirement remains restricted to unchanged hash-owned assets', async () => {
+  const output = await mkdtemp(join(tmpdir(), 'openlintel-video-ownership-'));
+  const files = [
+    'assets/videos/retired.mp4',
+    'assets/videos/retired.vtt',
+    'assets/videos/changed.mp4',
+  ];
+  const manifest = {
+    generator: 'OpenLintel marketing',
+    schemaVersion: 2,
+    origin: 'https://openlintel.com',
+    basePath: '/',
+    indexable: true,
+    pages: [{ path: '', indexable: true }],
+    files,
+    fileHashes: Object.fromEntries(files.map((path) => [path, digest('generated')])),
+  };
+  try {
+    await mkdir(join(output, 'assets/videos'), { recursive: true });
+    for (const file of files) await writeFile(join(output, file), 'generated');
+    await writeFile(join(output, files[2]), 'hand-maintained replacement');
+    assert.ok(validateOwnershipManifest(manifest));
+    for (const file of ['private.mp4', '../private.vtt', 'assets/videos/tool.exe']) {
+      assert.equal(
+        validateOwnershipManifest({
+          ...manifest,
+          files: [file],
+          fileHashes: { [file]: digest('generated') },
+        }),
+        false,
+      );
+    }
+    const result = await pruneObsoleteOutput(output, manifest, []);
+    assert.deepEqual(result.removed, files.slice(0, 2));
+    assert.deepEqual(result.preserved, files.slice(2));
+    assert.equal(await readFile(join(output, files[2]), 'utf8'), 'hand-maintained replacement');
+  } finally {
     await rm(output, { recursive: true, force: true });
   }
 });

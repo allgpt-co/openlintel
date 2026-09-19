@@ -1,10 +1,10 @@
 # Marketing launch and activation runbook
 
-## Verified infrastructure state — 2026-09-15
+## Verified infrastructure state — 2026-09-19
 
 Read-only GitHub API inspection confirmed `allgpt-co/openlintel` Pages uses `main:/docs` (`build_type: legacy`, status `built`), with custom domain `openlintel.com`. The returned site URL was HTTP, `https_enforced` was false, and `https_certificate` was null. Public DNS-over-HTTPS returned no apex A/AAAA answers and NXDOMAIN for the www CNAME query. A built Pages status is **not** evidence that the current local revision is deployed or reachable.
 
-The implementation has not changed DNS, purchased services, created analytics properties, submitted a sitemap, enabled a real form, sent outreach, or certified editorial content. No usable Cloudflare credential, verified Formspree ID, OpenLintel GA4 measurement ID, or operational contact was available. The shared environment's generic analytics properties must not be reused.
+The September 19 recheck confirmed the same unresolved domain state. Cloudflare is authoritative, but no usable DNS-provider connection is available. No accessible OpenLintel Search Console property or verified OpenLintel GA4 stream was identified. The implementation has not changed DNS, purchased services, created analytics properties, submitted a sitemap, enabled a real form, sent outreach, or certified editorial content. No usable Cloudflare credential, verified Formspree ID, OpenLintel GA4 measurement ID, or operational contact was available. The shared environment's generic analytics properties must not be reused.
 
 ## 1. Ownership and DNS
 
@@ -26,7 +26,7 @@ Before enabling:
 - Review service limits, processing terms, abuse protection, allowed domains, notification permissions and deletion procedures.
 - Set the native success redirect to `https://openlintel.com/pilot/thanks/` in Formspree. A GET of this page is not proof of successful submission and must never emit a lead conversion by itself.
 - Test accepted, rejected, timeout, duplicate-click and no-JavaScript requests using a separate test form. Mark/remove test records from operational reporting.
-- Import `lead-register-template.csv` into a restricted-access Google Sheet. Do not publish it or commit actual rows. Record Formspree's durable submission ID as `lead_id` and reconcile daily, even if email notifications appear reliable.
+- Use the owner-only OpenLintel SEO Operations working Sheet already provisioned (see `README.md`); `lead-register-template.csv` remains its schema/reference. Do not publish it or commit actual rows. Record Formspree's durable submission ID as `lead_id` and reconcile daily, even if email notifications appear reliable.
 - Name a daily request owner and backup; aim to respond within one business day. Qualify and schedule manually; do not auto-enroll contacts in email campaigns.
 - Review collection purposes, access, inactivity/retention review and deletion in the privacy notice before collecting data. Add a real contact email; do not invent a business identity or compliance assertion.
 

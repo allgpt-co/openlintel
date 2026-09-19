@@ -248,3 +248,49 @@
     display: none !important;
   }
 }
+
+.walkthrough {
+  margin-top: 64px;
+  margin-bottom: 80px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.walkthrough-heading {
+  max-width: 760px;
+}
+.walkthrough h2 {
+  font-size: clamp(32px, 4vw, 52px);
+  margin: 16px 0;
+}
+.walkthrough-heading p + p {
+  margin-top: 16px;
+}
+.walkthrough-disclosure {
+  font-size: 14px;
+}
+.walkthrough-player {
+  margin: 28px 0 0;
+  max-width: 960px;
+}
+.walkthrough video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--ink);
+}
+.walkthrough figcaption {
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding-top: 16px;
+}
+.walkthrough figcaption a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 8px 0;
+}

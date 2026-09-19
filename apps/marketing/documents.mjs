@@ -142,7 +142,10 @@ async function workbook(definition) {
       cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF252722' } };
       cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
     });
-    for (let i = 0; i < 20; i++) {
+    // Do not format unused example rows: some Office renderers include those
+    // rows in print output even when a smaller print area is declared.
+    const dataRows = example && !definition.budget ? Math.max(1, definition.rows.length) : 20;
+    for (let i = 0; i < dataRows; i++) {
       const rowIndex = i + 6;
       const values = example ? definition.rows[i] || [] : [];
       const row = sheet.getRow(rowIndex);
@@ -194,7 +197,10 @@ async function workbook(definition) {
       sheet.getRow(27).font = { bold: true };
       sheet.getRow(27).height = 40;
     }
-    sheet.autoFilter = { from: { row: 5, column: 1 }, to: { row: 25, column: count } };
+    sheet.autoFilter = {
+      from: { row: 5, column: 1 },
+      to: { row: dataRows + 5, column: count },
+    };
     sheet.pageSetup = {
       paperSize: 9,
       orientation: 'landscape',
@@ -247,12 +253,16 @@ async function document(definition, example) {
       heading: HeadingLevel.HEADING_1,
       pageBreakBefore: true,
     }),
-    ...definition.fields.flatMap((f) => [
+    ...definition.fields.flatMap((f, index) => [
       p(f.label, { heading: HeadingLevel.HEADING_2, keepNext: true }),
       p(f.help, { keepNext: true }),
       ...(example
         ? [p(f.example)]
-        : [p('[Enter your project information here. Leave unknowns explicit.]'), p(' ')]),
+        : [
+            p('[Enter your project information here. Leave unknowns explicit.]'),
+            // A trailing spacer can spill onto a footer-only final printed page.
+            ...(index < definition.fields.length - 1 ? [p(' ')] : []),
+          ]),
     ]),
   ];
   const doc = new Document({

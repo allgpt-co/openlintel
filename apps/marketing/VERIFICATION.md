@@ -81,3 +81,88 @@ The browser suite saves screenshots and its local browser configuration under ig
 ## Release status
 
 The static output is ready for review. Actual GitHub Pages source configuration, domain resolution, and production HTTPS routes still need verification when publishing. No production application routes, APIs, database tables, or deployment workflows were changed.
+
+---
+
+# Release follow-up — September 19, 2026
+
+This dated section supersedes the earlier statement that Lighthouse and Office visual checks had not been rerun. These are **local release-candidate checks**, not production field measurements, professional editorial approval, or proof of live vendor delivery.
+
+## Fixes and fresh verification
+
+- Fixed a trailing spacer in blank Word templates that produced a footer-only third page in the site-survey checklist. The latest checklist renders as two pages with all fields present.
+- Limited non-budget spreadsheet worked examples to their actual populated rows and filter range. This removes the room-data workbook's extra page of empty rows. Blank templates retain twenty input rows; budget formulas and subtotal rows are preserved.
+- Added regression coverage for both document fixes. **39 marketing tests passed**, including the three Office generation tests. Changed document source and tests pass ESLint and Prettier; `git diff --check` passed.
+- Regenerated the canonical `docs/` output. Its manifest exactly matches the independently built root fixture. Root and `/openlintel/` served-output audits each passed **715/715 checks**, including exact download hashes, MIME types, public routing, canonical tags and intentional indexing rules.
+- Full Playwright CLI smoke was repeated **after the Office fixes** at both `/` and `/openlintel/`: all forty-five pages at 360, 390, 768, 1024 and 1440 px, all sample chapters and navigation, history and focus behavior, print, no-JavaScript access, reduced motion, 200% zoom, and all eighteen Office plus three sample downloads passed. Both runs reported zero browser errors and zero failed requests. Representative guide and pilot screenshots were visually reviewed.
+- Repeated the configured growth browser fixture: five viewport sizes, consent and withdrawal, cross-tab shutdown, expiry, blocked storage, sanitized events, accepted-only conversions, vendor error paths, native no-JavaScript submission, downloads, and sample events passed. All third-party requests were mocked; **no real lead submissions or analytics collection were sent**.
+- Reopened and converted **all eighteen current Office files** with LibreOffice 24.2.7.2. All fifty rendered pages were rasterized for review; no footer-only page remains. Representative questionnaire, survey-checklist, budget and room-data pages were visually inspected for legibility, clipping and pagination. These checks validate presentation, not the professional correctness of the planning resources.
+- A disposable copy of the current budget workbook recalculated in LibreOffice to 2,500 total and -1,000 remaining for the supplied test inputs. Explicit zero remained numeric zero; missing quantity left the calculated total and remaining amount unresolved. Cached results were verified directly in the saved Office XML, without changing the published workbook.
+
+## Fresh local mobile Lighthouse measurements
+
+Lighthouse 13.5.0 ran against the root Node preview using Chromium 149, default simulated mobile throttling, and a 4× CPU slowdown. Each row is one local lab run, not an aggregate or a Core Web Vitals field result.
+
+| Page | Performance | Accessibility | Best practices | Preview SEO | LCP | CLS | Transfer |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Homepage | 97 | 100 | 100 | 69 | 2.50 s | <0.001 | 397 KiB |
+| Sample project | 98 | 100 | 100 | 69 | 2.26 s | 0.020 | 326 KiB |
+| Pilot discovery | 100 | 100 | 100 | 66 | 1.36 s | <0.001 | 66 KiB |
+| Specification-change guide | 100 | 100 | 100 | 69 | 1.36 s | <0.001 | 82 KiB |
+| Budget template | 100 | 100 | 100 | 66 | 1.36 s | <0.001 | 81 KiB |
+
+The preview server deliberately sends `X-Robots-Tag: noindex, nofollow`. **That safety header is the only failed binary audit on these pages** and lowers the reported SEO score; it was not disabled to improve the score. Production crawlability must be checked independently against the deployed HTTPS host. A score of 100 on a local accessibility audit is not an exhaustive accessibility certification.
+
+Fresh logs, Lighthouse JSON, rendered Office PDFs/PNGs and conversion evidence are under ignored `output/playwright/2026-09-19/`; served-output JSON reports are under ignored `output/seo/`. Disposable LibreOffice tooling is not a project dependency. The isolated installation emitted missing Java/language-registry warnings but successfully rendered every file; actual Microsoft Office interoperability has not been tested here.
+
+## Boundaries that remain human or production work
+
+All **thirty practitioner-review entries remain pending** in `operations/editorial-review.csv`; no reviewer, endorsement or client result was invented. Production DNS/HTTPS, merge/deployment state, provider activation, verified contact details, privacy/operational approval, outreach, videos, workshops and real longitudinal SEO reporting require their own evidence. Nothing in these local checks marks those tasks complete. Use the current launch runbook and GitHub release status rather than historical status statements above.
+
+## Final recorded-tour release checks — September 19, 2026
+
+This section supersedes the earlier September 19 note that two walkthrough videos
+were still pending. Both recordings are genuine captures of the educational
+marketing website, not live-application demonstrations, client work, professional
+approval, or evidence of automated design output.
+
+- Published two 50-second, 1280 × 920 H.264 recordings, each under 1 MB, with posters,
+  burned-in captions, six-cue English VTT tracks, and descriptive plain-text
+  transcripts. Players are on `/how-it-works/` and `/templates/`.
+- New reproducible Playwright checks passed for both players at `/` and
+  `/openlintel/`: real MP4 decoding/playback, native keyboard play/pause, seeking,
+  playback completion, caption-track loading, transcript access, and caption/video
+  downloads. Each player was checked at 375, 768 and 1440 px, with reduced motion.
+  No MP4 request occurred before explicit user playback; there is no autoplay or
+  external video embed. Browser exceptions and failed HTTP requests were zero.
+- Visual inspection found and fixed overly small inherited caption-link styling.
+  The final alternative links use at least 14 px text and 44 px-high targets,
+  verified by the player smoke test at all three widths. Desktop and mobile player
+  screenshots were reviewed, including visible timed captions and disclosures.
+- Browser validation also found that the preview server needed MP4 byte-range
+  responses for native seeking. Added bounded single-range GET handling (206),
+  invalid/unsatisfiable range rejection (416), and `Accept-Ranges`. HEAD and
+  unmatched If-Range requests retain full-response semantics. Regression coverage
+  checks prefixes, suffixes, open ends, oversized/invalid numbers, and headers.
+- Fixed the generated-output ownership allowlist for MP4/VTT and tested safe
+  retirement: unchanged hash-owned media can be removed, modified media remains,
+  and unsafe paths are still rejected.
+- **42 marketing tests passed; marketing ESLint and `git diff --check` passed.**
+  Root and `/openlintel/` served-output audits each passed **747/747 checks** after
+  the final styling update. Canonical `docs/` was regenerated and its manifest
+  exactly matches the independently built root fixture.
+- The full 45-page/five-viewport smoke suite passed at both root and subpath after
+  adding the videos, with zero browser exceptions and zero failed requests. The
+  final link-sizing-only CSS adjustment was subsequently checked by the focused
+  video suite at both deployment paths.
+
+Reproduce the focused player checks against a running preview with
+`node apps/marketing/video-smoke.mjs`. It accepts the same
+`MARKETING_PREVIEW_URL`, `MARKETING_BROWSER_EXECUTABLE`, and
+`MARKETING_BROWSER_NO_SANDBOX` options as the main smoke runner. Evidence is in
+ignored `output/playwright/video-release-*.log`, player screenshots, and
+`output/seo/video-*-audit.json`.
+
+These are local release checks. Playback, byte ranges, indexing, DNS, TLS, and
+vendor integrations still need production verification after publication; no
+production measurement or professional editorial sign-off is claimed here.

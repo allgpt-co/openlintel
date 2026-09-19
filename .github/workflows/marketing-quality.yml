@@ -7,6 +7,8 @@ on:
       - 'docs/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.npmrc'
       - '.github/workflows/marketing-quality.yml'
   push:
     branches: [main]
@@ -15,6 +17,8 @@ on:
       - 'docs/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.npmrc'
       - '.github/workflows/marketing-quality.yml'
   workflow_dispatch:
 

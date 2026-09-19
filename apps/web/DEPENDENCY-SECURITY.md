@@ -22,6 +22,53 @@ against the release commit. The existing Trivy blocking gate, advisory report,
 severity settings, and exclusions were not weakened. No advisory was ignored and
 no dependency override was added by this remediation.
 
+### Separate Trivy results and unresolved infrastructure configuration
+
+The [Trivy run for commit `1844651`](https://github.com/allgpt-co/openlintel/actions/runs/35452047112)
+passed the existing blocking **dependency** audit. Its advisory dependency report
+listed `pnpm-lock.yaml`: **18 high, 0 critical**. That is a different scanner,
+database and count from the npm audit snapshot above; do not add their totals or
+substitute one for the other.
+
+The same run's **nonblocking configuration** report still identified **four
+critical Terraform findings**, plus additional high configuration findings.
+These pre-existing source findings are **not fixed** by the dependency upgrades:
+
+| Check | Source location at `1844651` | Resource and finding |
+| --- | --- | --- |
+| [AWS-0040](https://avd.aquasec.com/misconfig/aws-0040) | `infra/terraform/compute.tf:53` | `aws_eks_cluster.main`: `endpoint_public_access = true`. |
+| [AWS-0041](https://avd.aquasec.com/misconfig/aws-0041) | `infra/terraform/compute.tf:54` | `aws_eks_cluster.main`: public endpoint CIDR is `0.0.0.0/0`. |
+| [AWS-0104](https://avd.aquasec.com/misconfig/aws-0104) | `infra/terraform/networking.tf:161` | `aws_security_group.rds`: all-protocol egress to `0.0.0.0/0`. |
+| [AWS-0104](https://avd.aquasec.com/misconfig/aws-0104) | `infra/terraform/networking.tf:199` | `aws_security_group.eks_nodes`: all-protocol egress to `0.0.0.0/0`. |
+
+The scan inspected repository configuration, **not live AWS state**. Whether these
+resources are deployed, their actual network reachability, and whether drift or
+additional controls exist are unknown. A public EKS endpoint finding does not by
+itself establish unauthenticated cluster access. A green dependency gate must not
+be described as "zero critical security findings" across the whole repository.
+
+Required operator follow-up before relying on this infrastructure:
+
+1. Identify the authorized AWS account, region, Terraform workspace/state and
+   owner. Compare the source against deployed EKS endpoint and security-group
+   settings using read-only inspection; document exposure and compensating
+   controls. Do not assume this template is the marketing site's hosting.
+2. Establish and test a private administrative access path, including deployment
+   runners and recovery access, before disabling the public EKS endpoint. If a
+   public endpoint must remain temporarily, restrict it to verified operator and
+   runner egress CIDRs with a documented exception and expiry. Review the
+   [AWS EKS endpoint requirements](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html).
+3. Inventory required EKS/RDS outbound destinations, DNS, control-plane, registry
+   and AWS service traffic. Design the smallest necessary security-group rules,
+   private endpoints or controlled egress, with staging connectivity tests.
+   Follow [AWS security-group rule behavior](https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html);
+   do not remove all egress permissions without testing the required traffic.
+4. Review a Terraform plan for unintended replacement, lockout and service
+   disruption; obtain the operator's change approval, schedule rollback/recovery,
+   then apply through the normal deployment process and rerun the configuration
+   scan plus live connectivity checks. No Terraform change or apply was performed
+   by this remediation, and no scanner suppression was added.
+
 ### Changes included
 
 | Dependency | Previous resolved version | New resolved version | Maintainer reference |

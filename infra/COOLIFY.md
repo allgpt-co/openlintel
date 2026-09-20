@@ -18,12 +18,15 @@ Set `BUILD_SHA` to the exact merged revision. `NEXT_PUBLIC_COLLAB_SERVICE_URL` i
 
 Map only web port 3000 and collaboration port 8009 to public HTTPS domains. Leave Redis, Meilisearch, Python services and PostgreSQL private. Keep `AUTH_URL=https://app.openlintel.com` and the collaboration `WEB_URL` at the same origin. Enable proxy WebSocket upgrades and verify TLS certificates. Preserve unrelated DNS records. Marketing root DNS must remain pointed at GitHub Pages; application and collaboration records point at the Coolify ingress.
 
+Preserve the explicit application-network aliases `openlintel-redis` and `openlintel-meilisearch` when Coolify renders Compose. Generic `redis` or `meilisearch` names can resolve to unrelated containers on the shared database network. Cache clients use the application aliases; do not replace them with shared-network names. Web startup waits for migrations and Redis, while collaboration has its own readiness gate and reconnects independently. A collaboration failure must not leave the core web container unstarted.
+
 ## Release sequence
 
 1. Run Authentication quality, Security Audit, and Container release checks on the PR. Merge only after passing required checks.
 2. Record the currently deployed revision, configuration and backup/restore evidence. Check host memory and disk capacity for all services and build layers; avoid disrupting unrelated workloads.
 3. Build the exact merged revision in a preview environment. The one-shot `migrate` service applies committed migrations and must exit successfully before web, collaboration or Python services start. Do not use `drizzle-kit push` in production.
 4. Verify all long-running containers are healthy, then exercise OAuth login, project and room creation, upload and signed file retrieval, a configured design job, collaboration sync and reload persistence, and billing rejection. Provider actions need real configured credentials; HTTP health alone does not establish them.
+   Run `bash infra/scripts/service-discovery-smoke.sh` after building a `collab-test` image to test cache discovery beside conflicting aliases, including cache recreation. In the release preview, also verify a complete controlled recreation starts web without manual intervention and preserves the application data.
 5. Deploy the same revision and configuration to production, then verify HTTPS, `/api/health/live`, `/api/health/ready`, `/api/version`, and collaboration readiness. `/api/version` must report the merged SHA and `billingEnabled: false`.
 6. Observe three consecutive successful checks at five-minute intervals. Verify `openlintel.com` marketing remains reachable. Record any unavailable integration instead of reporting it as tested.
 

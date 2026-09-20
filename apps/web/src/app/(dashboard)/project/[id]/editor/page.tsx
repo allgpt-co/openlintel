@@ -143,9 +143,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
           remoteFurniture.push(value as PlacedFurniture);
         }
       });
-      if (remoteFurniture.length > 0) {
-        setFurniture(remoteFurniture);
-      }
+      setFurniture(remoteFurniture);
     };
     session.furnitureMap.observe(observer);
 
@@ -328,18 +326,26 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
       const newIndex = historyIndex - 1;
       setHistoryIndex(newIndex);
       const entry = history[newIndex];
-      if (entry) setFurniture(JSON.parse(JSON.stringify(entry.furniture)));
+      if (entry) {
+        const restoredFurniture: PlacedFurniture[] = JSON.parse(JSON.stringify(entry.furniture));
+        setFurniture(restoredFurniture);
+        syncToCollab(restoredFurniture);
+      }
     }
-  }, [history, historyIndex]);
+  }, [history, historyIndex, syncToCollab]);
 
   const handleRedo = useCallback(() => {
     if (historyIndex < history.length - 1) {
       const newIndex = historyIndex + 1;
       setHistoryIndex(newIndex);
       const entry = history[newIndex];
-      if (entry) setFurniture(JSON.parse(JSON.stringify(entry.furniture)));
+      if (entry) {
+        const restoredFurniture: PlacedFurniture[] = JSON.parse(JSON.stringify(entry.furniture));
+        setFurniture(restoredFurniture);
+        syncToCollab(restoredFurniture);
+      }
     }
-  }, [history, historyIndex]);
+  }, [history, historyIndex, syncToCollab]);
 
   // Broadcast selection changes to collaborators
   const handleSelectObject = useCallback(

@@ -47,6 +47,7 @@ import {
   type FurniturePrimitive,
 } from '@/lib/gltf-loader';
 import { createCollabSession, type CollabSession } from '@/lib/collaboration';
+import { recordSceneEdit } from '@/lib/editor-history';
 
 const Toolbar = dynamic(() => import('@/components/editor-3d/toolbar').then(m => m.Toolbar));
 const MaterialPanel = dynamic(() => import('@/components/editor-3d/material-panel').then(m => m.MaterialPanel));
@@ -312,13 +313,12 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
   // Record history and sync to collaboration
   const pushHistory = useCallback(
     (newFurniture: PlacedFurniture[]) => {
-      const newHistory = history.slice(0, historyIndex + 1);
-      newHistory.push({ furniture: JSON.parse(JSON.stringify(newFurniture)) });
+      const newHistory = recordSceneEdit(history, historyIndex, furniture, newFurniture);
       setHistory(newHistory);
       setHistoryIndex(newHistory.length - 1);
       syncToCollab(newFurniture);
     },
-    [history, historyIndex, syncToCollab],
+    [history, historyIndex, furniture, syncToCollab],
   );
 
   const handleUndo = useCallback(() => {

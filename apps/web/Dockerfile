@@ -10,6 +10,7 @@ COPY packages/core/ packages/core/
 COPY packages/db/ packages/db/
 COPY packages/ui/ packages/ui/
 COPY apps/web/ apps/web/
+COPY data/building-codes/ data/building-codes/
 RUN pnpm install --frozen-lockfile
 ARG NEXT_PUBLIC_COLLAB_SERVICE_URL
 ARG BUILD_SHA=unknown
@@ -30,6 +31,7 @@ LABEL org.opencontainers.image.revision=$BUILD_SHA
 COPY --from=builder --chown=node:node /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=node:node /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=node:node /app/data/building-codes ./data/building-codes
 COPY --chown=node:node infra/docker/web-entrypoint.mjs ./infra/web-entrypoint.mjs
 USER node
 EXPOSE 3000

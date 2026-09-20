@@ -17,6 +17,16 @@ function event(socket, name) {
 function client(t) { const s=io('http://127.0.0.1:8009',{auth:{token:t},autoConnect:false,reconnection:false});sockets.push(s);return s; }
 async function connect(t) { const s=client(t);const ready=event(s,'connect');s.connect();await ready;return s; }
 (async()=>{
+  if (process.argv.includes('--restore')) {
+    const socket = await connect(token('ci-owner','ci-project'));
+    const synced = event(socket,'doc:sync');
+    socket.emit('doc:join','ci-project');
+    const restored = new Y.Doc();
+    Y.applyUpdate(restored,new Uint8Array((await synced).update));
+    assert.equal(restored.getMap('furniture').get('sofa').name,'Smoke sofa');
+    console.log('Collaboration document restored after service restart');
+    return;
+  }
   await sql`insert into users(id,name,email) values('ci-owner','CI Owner','ci-owner@example.test'),('ci-other','CI Other','ci-other@example.test') on conflict do nothing`;
   await sql`insert into projects(id,user_id,name) values('ci-project','ci-owner','CI Project'),('ci-private','ci-other','CI Private') on conflict do nothing`;
   for(const t of ['',token('ci-owner','ci-project',{exp:1}),token('ci-owner','ci-project',{aud:'wrong'})]){
@@ -32,7 +42,7 @@ async function connect(t) { const s=client(t);const ready=event(s,'connect');s.c
   const remote=new Y.Doc();Y.applyUpdate(remote,new Uint8Array((await received).update));assert.equal(remote.getMap('furniture').get('sofa').name,'Smoke sofa');
   await new Promise(resolve=>setTimeout(resolve,1800));
   const rows=await sql`select state from yjs_documents where doc_id='ci-project'`;
-  assert.equal(rows.length,1);const stored=new Y.Doc();Y.applyUpdate(stored,new Uint8Array(rows[0].state));assert.equal(stored.getMap('furniture').get('sofa').name,'Smoke sofa');
+  assert.equal(rows.length,1);const stored=new Y.Doc();Y.applyUpdate(stored,Buffer.from(rows[0].state,'base64'));assert.equal(stored.getMap('furniture').get('sofa').name,'Smoke sofa');
   // A correctly signed token still cannot grant access to somebody else's project.
   const c=await connect(token('ci-other','ci-project'));const ownerDenied=event(c,'access:error');c.emit('doc:join','ci-project');await ownerDenied;
   console.log('Collaboration identity, scope, sync and persistence passed');

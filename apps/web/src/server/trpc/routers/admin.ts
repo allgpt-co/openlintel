@@ -460,18 +460,6 @@ export const adminRouter = router({
       if (!job) throw new Error('Job not found');
       if (job.status !== 'failed') throw new Error('Only failed jobs can be retried');
 
-      // Reset job to pending
-      await ctx.db
-        .update(jobs)
-        .set({
-          status: 'pending',
-          progress: 0,
-          error: null,
-          startedAt: null,
-          completedAt: null,
-        })
-        .where(eq(jobs.id, input.jobId));
-
       // Re-trigger the corresponding service
       const serviceMap: Record<string, string> = {
         design_generation: 'design-engine',
@@ -495,20 +483,29 @@ export const adminRouter = router({
 
       const serviceName = serviceMap[job.type];
       const endpoint = endpointMap[job.type];
-      if (serviceName && endpoint) {
-        const baseUrl = SERVICE_URLS[serviceName];
-        if (baseUrl) {
-          fetch(`${baseUrl}${endpoint}`, {
+      const baseUrl = serviceName ? SERVICE_URLS[serviceName] : undefined;
+      if (!baseUrl || !endpoint) throw new Error('Retry is unavailable for this job type');
+      await ctx.db.update(jobs).set({
+        status: 'pending', progress: 0, error: null, startedAt: null, completedAt: null,
+      }).where(eq(jobs.id, job.id));
+      try {
+          const response = await fetch(`${baseUrl}${endpoint}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceToken(ctx.userId)}` },
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceToken(job.userId)}` },
+            signal: AbortSignal.timeout(15000),
             body: JSON.stringify({
+              ...(job.inputJson as Record<string, unknown>),
               job_id: job.id,
               design_variant_id: job.designVariantId,
               user_id: job.userId,
-              ...(job.inputJson as Record<string, unknown>),
             }),
-          }).catch(() => {});
-        }
+          });
+          if (!response.ok) {
+            throw new Error('Service rejected retry');
+          }
+      } catch (error) {
+        await ctx.db.update(jobs).set({ status: 'failed', error: 'Service retry failed' }).where(eq(jobs.id, job.id));
+        throw error;
       }
 
       return { success: true };

@@ -30,7 +30,7 @@ async function loadDoc(docId: string): Promise<Y.Doc> {
       [docId],
     );
     if (result.rows.length > 0 && result.rows[0].state) {
-      Y.applyUpdate(doc, new Uint8Array(result.rows[0].state));
+      Y.applyUpdate(doc, Buffer.from(result.rows[0].state, 'base64'));
     }
   } catch (error) {
     doc.destroy();
@@ -43,7 +43,7 @@ async function loadDoc(docId: string): Promise<Y.Doc> {
     if (saveTimeout) clearTimeout(saveTimeout);
     saveTimeout = setTimeout(async () => {
       try {
-        const state = Buffer.from(Y.encodeStateAsUpdate(doc!));
+        const state = Buffer.from(Y.encodeStateAsUpdate(doc!)).toString('base64');
         await pool.query(
           `INSERT INTO yjs_documents (doc_id, state, updated_at)
            VALUES ($1, $2, NOW())

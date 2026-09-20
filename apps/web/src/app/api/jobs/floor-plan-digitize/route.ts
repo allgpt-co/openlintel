@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   }
 
   const upload = await db.query.uploads.findFirst({
-    where: and(eq(uploads.id, uploadId), eq(uploads.userId, session.user.id)),
+    where: and(eq(uploads.id, uploadId), eq(uploads.userId, session.user.id), eq(uploads.projectId, projectId)),
   });
   if (!upload) {
     return NextResponse.json({ error: 'Upload not found' }, { status: 404 });
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       upload_id: uploadId,
     }),
   });
-  if (!result.ok) throw new Error('Vision service rejected the job');
+  if (!result.ok || (await result.json()).status !== 'accepted') throw new Error('Vision service rejected the job');
   } catch {
     await db.update(jobs).set({ status: 'failed', error: 'Vision service unavailable' }).where(eq(jobs.id, job!.id));
     return NextResponse.json({ error: 'Vision service unavailable' }, { status: 503 });

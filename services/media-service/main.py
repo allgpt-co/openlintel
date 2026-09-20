@@ -12,11 +12,10 @@ from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from openlintel_shared.middleware import setup_middleware
 from pydantic import BaseModel
 
 from openlintel_shared.config import get_settings
-from openlintel_shared.storage import ensure_bucket
 
 from src.routers import assets, upload
 
@@ -29,19 +28,12 @@ logger = logging.getLogger("media-service")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    """Application lifespan handler.
+    """Load settings; storage is provisioned by the deployment operator.
 
-    On startup: ensure the configured S3 bucket exists (create it if not).
+    Do not create AWS resources during application startup. Upload/download calls
+    report storage failures; deployment smoke tests must verify real S3 access.
     """
-    settings = get_settings()
-    bucket = settings.AWS_S3_BUCKET
-
-    try:
-        ensure_bucket(bucket, settings=settings)
-        logger.info("S3 bucket '%s' is ready.", bucket)
-    except Exception:
-        logger.exception("Failed to initialize S3 bucket '%s'.", bucket)
-        raise
+    get_settings()
 
     yield  # App is running
 
@@ -63,15 +55,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# ── CORS middleware ────────────────────────────────────────────────────────
-settings = get_settings()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+setup_middleware(app)
 
 
 # ── Health check ──────────────────────────────────────────────────────────

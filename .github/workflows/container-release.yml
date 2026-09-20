@@ -63,7 +63,7 @@ jobs:
         run: docker build --build-arg BUILD_SHA=${{ github.sha }} --build-arg NEXT_PUBLIC_COLLAB_SERVICE_URL=https://collab.example.test -t web-test -f apps/web/Dockerfile .
       - name: Build and apply migrations twice
         run: |
-          docker build --target migrate -t migrate-test -f apps/web/Dockerfile .
+          docker build --target migrate --build-arg BUILD_SHA=${{ github.sha }} --build-arg NEXT_PUBLIC_COLLAB_SERVICE_URL=https://collab.example.test -t migrate-test -f apps/web/Dockerfile .
           docker run --rm --network host -e DATABASE_URL migrate-test
           docker run --rm --network host -e DATABASE_URL migrate-test
       - name: Build and start collaboration
@@ -79,7 +79,11 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/api/payments/webhook)" = 503
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/api/collaboration/token -H 'Content-Type: application/json' -d '{}')" = 401
       - name: Verify authenticated document sync, persistence and cross-project denial
-        run: node apps/web/scripts/collaboration-smoke.cjs
+        run: |
+          node apps/web/scripts/collaboration-smoke.cjs
+          docker restart collab-test
+          curl --retry 20 --retry-all-errors --retry-delay 2 --fail http://127.0.0.1:8009/health/ready
+          node apps/web/scripts/collaboration-smoke.cjs --restore
       - name: Show container diagnostics on failure
         if: failure()
         run: |

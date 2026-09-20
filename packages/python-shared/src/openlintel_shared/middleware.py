@@ -10,6 +10,8 @@ Provides:
 
 from __future__ import annotations
 
+import logging
+import sys
 import time
 import uuid
 from typing import Callable
@@ -172,6 +174,9 @@ def configure_logging(settings: Settings | None = None) -> None:
         settings = get_settings()
 
     log_level = settings.LOG_LEVEL.upper()
+    numeric_level = logging.getLevelNamesMapping().get(log_level, logging.INFO)
+    logging.basicConfig(format="%(message)s", stream=sys.stdout, level=numeric_level)
+    logging.getLogger().setLevel(numeric_level)
 
     shared_processors: list = [
         structlog.contextvars.merge_contextvars,
@@ -191,9 +196,9 @@ def configure_logging(settings: Settings | None = None) -> None:
             else structlog.processors.JSONRenderer(),
         ],
         wrapper_class=structlog.make_filtering_bound_logger(
-            structlog.get_level_from_name(log_level)
+            numeric_level
         ),
         context_class=dict,
-        logger_factory=structlog.PrintLoggerFactory(),
+        logger_factory=structlog.stdlib.LoggerFactory(),
         cache_logger_on_first_use=True,
     )

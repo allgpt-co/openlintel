@@ -31,7 +31,7 @@ COPY services/design-engine/src /app/src
 # Copy ml/design-gen for any ML-specific configs or prompt templates
 COPY ml/design-gen /app/ml/design-gen
 
-RUN useradd --system --uid 10001 --create-home appuser
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
 USER appuser
 
 EXPOSE 8000

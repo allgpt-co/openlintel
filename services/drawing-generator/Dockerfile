@@ -36,7 +36,7 @@ RUN pip install --no-cache-dir /tmp/drawing-generator && \
 COPY services/drawing-generator/main.py /app/main.py
 COPY services/drawing-generator/src /app/src
 
-RUN useradd --system --uid 10001 --create-home appuser
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
 USER appuser
 
 EXPOSE 8003

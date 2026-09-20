@@ -18,6 +18,8 @@ jobs:
         service: [design-engine, media-service, bom-engine, drawing-generator, cutlist-engine, mep-calculator, catalogue-service, project-service, procurement-service, vision-engine]
     steps:
       - uses: actions/checkout@v4
+      - name: Exercise restrictive source permissions used by the lab checkout
+        run: chmod -R go-rwx services/${{ matrix.service }}
       - name: Build production service
         run: docker build -t service-test -f services/${{ matrix.service }}/Dockerfile .
       - name: Import application and verify unauthorized API requests are rejected

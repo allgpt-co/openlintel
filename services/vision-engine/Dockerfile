@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir /tmp/vision-engine && \
 COPY services/vision-engine/main.py /app/main.py
 COPY services/vision-engine/src /app/src
 
-RUN useradd --system --uid 10001 --create-home appuser
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
 USER appuser
 
 EXPOSE 8010

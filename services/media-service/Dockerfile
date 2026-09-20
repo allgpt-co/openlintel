@@ -37,7 +37,7 @@ RUN pip install --no-cache-dir /tmp/media-service && \
 COPY services/media-service/main.py /app/main.py
 COPY services/media-service/src /app/src
 
-RUN useradd --system --uid 10001 --create-home appuser
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
 USER appuser
 
 EXPOSE 8001

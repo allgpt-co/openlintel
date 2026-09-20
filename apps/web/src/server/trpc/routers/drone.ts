@@ -53,6 +53,7 @@ export const droneRouter = router({
         imageKeys: input.imageKeys ?? null,
         notes: input.notes ?? null,
       }).returning();
+      if (!capture) throw new Error('Database operation returned no row');
       return capture;
     }),
 
@@ -176,6 +177,7 @@ export const droneRouter = router({
         gpsData,
         notes: input.notes ?? null,
       }).returning();
+      if (!capture) throw new Error('Database operation returned no row');
       const meta = (capture.gpsData as any) ?? {};
       return {
         id: capture.id,

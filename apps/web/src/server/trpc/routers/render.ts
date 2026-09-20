@@ -67,6 +67,7 @@ export const renderRouter = router({
         timeOfDay: input.timeOfDay ?? null,
         status: 'rendering',
       }).returning();
+      if (!render) throw new Error('Database operation returned no row');
 
       // Generate image in background (non-blocking)
       generateRenderImage(

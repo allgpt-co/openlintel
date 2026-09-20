@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState } from 'react';
+import { z } from 'zod';
 import { trpc } from '@/lib/trpc/client';
 import {
   Button,
@@ -126,10 +127,10 @@ export default function RFIsPage({ params }: { params: Promise<{ id: string }> }
     },
   });
 
-  const deleteRfi = trpc.rfi.delete.useMutation({
+  const deleteRfi = trpc.rfi.close.useMutation({
     onSuccess: () => {
       utils.rfi.list.invalidate();
-      toast({ title: 'RFI deleted' });
+      toast({ title: 'RFI closed' });
     },
   });
 
@@ -149,10 +150,9 @@ export default function RFIsPage({ params }: { params: Promise<{ id: string }> }
       projectId,
       subject,
       question,
-      priority,
-      drawingReference: drawingRef || undefined,
-      specSection: specSection || undefined,
-      responseDueDate: responseDueDate ? new Date(responseDueDate) : undefined,
+      priority: z.enum(['normal', 'high', 'low', 'urgent']).parse(priority),
+      relatedSpecSection: [drawingRef, specSection].filter(Boolean).join(' / ') || undefined,
+      dueDate: responseDueDate ? new Date(responseDueDate) : undefined,
     });
   }
 

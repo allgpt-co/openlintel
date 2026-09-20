@@ -1,0 +1,798 @@
+{
+  "services": {
+    "redis": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "512m",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "redis:7-alpine",
+      "command": [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--maxmemory",
+        "384mb",
+        "--maxmemory-policy",
+        "noeviction"
+      ],
+      "volumes": [
+        "redis_data:/data"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "redis-cli",
+          "ping"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "meilisearch": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "image": "getmeili/meilisearch:v1.12",
+      "environment": {
+        "MEILI_ENV": "production",
+        "MEILI_MASTER_KEY": "${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in Coolify}"
+      },
+      "volumes": [
+        "meilisearch_data:/meili_data"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "curl",
+          "-fsS",
+          "http://127.0.0.1:7700/health"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "migrate": {
+      "build": {
+        "context": ".",
+        "dockerfile": "apps/web/Dockerfile",
+        "args": {
+          "BUILD_SHA": "${BUILD_SHA:?Set BUILD_SHA in Coolify}",
+          "NEXT_PUBLIC_COLLAB_SERVICE_URL": "${NEXT_PUBLIC_COLLAB_SERVICE_URL:?Set NEXT_PUBLIC_COLLAB_SERVICE_URL in Coolify}"
+        },
+        "target": "migrate"
+      },
+      "restart": "no",
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}"
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "mem_limit": "1g"
+    },
+    "design-engine": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "2g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/design-engine/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "design-engine"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8000/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "media-service": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/media-service/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "media-service"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8001/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "bom-engine": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/bom-engine/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "bom-engine"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8002/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "drawing-generator": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/drawing-generator/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "drawing-generator"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8003/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "cutlist-engine": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/cutlist-engine/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "cutlist-engine"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8004/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "mep-calculator": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/mep-calculator/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "mep-calculator"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8005/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "catalogue-service": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/catalogue-service/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "catalogue-service",
+        "MEILI_URL": "http://meilisearch:7700",
+        "MEILI_MASTER_KEY": "${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in Coolify}"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "meilisearch": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8006/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "project-service": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/project-service/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "project-service"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8007/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "procurement-service": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "1g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/procurement-service/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "procurement-service"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8008/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "vision-engine": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "2g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/vision-engine/Dockerfile"
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "SERVICE_NAME": "vision-engine"
+      },
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen(\"http://127.0.0.1:8010/health/ready\", timeout=5).read()"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "collaboration": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "512m",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "services/collaboration/Dockerfile"
+      },
+      "environment": {
+        "NODE_ENV": "production",
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "WEB_URL": "${AUTH_URL:?Set AUTH_URL in Coolify}"
+      },
+      "expose": [
+        "8009"
+      ],
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      },
+      "networks": [
+        "default",
+        "database"
+      ],
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8009/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    },
+    "web": {
+      "restart": "unless-stopped",
+      "init": true,
+      "mem_limit": "2g",
+      "cpus": "1.0",
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      },
+      "build": {
+        "context": ".",
+        "dockerfile": "apps/web/Dockerfile",
+        "args": {
+          "BUILD_SHA": "${BUILD_SHA:?Set BUILD_SHA in Coolify}",
+          "NEXT_PUBLIC_COLLAB_SERVICE_URL": "${NEXT_PUBLIC_COLLAB_SERVICE_URL:?Set NEXT_PUBLIC_COLLAB_SERVICE_URL in Coolify}"
+        }
+      },
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL:?Set DATABASE_URL in Coolify}",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET:?Set JWT_SECRET in Coolify}",
+        "API_KEY_ENCRYPTION_SECRET": "${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}",
+        "AWS_REGION": "${AWS_REGION:?Set AWS_REGION in Coolify}",
+        "AWS_S3_BUCKET": "${AWS_S3_BUCKET:?Set AWS_S3_BUCKET in Coolify}",
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID:-}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY:-}",
+        "AWS_SESSION_TOKEN": "${AWS_SESSION_TOKEN:-}",
+        "ENVIRONMENT": "production",
+        "CORS_ORIGINS": "[\"${AUTH_URL:?Set AUTH_URL}\"]",
+        "NODE_ENV": "production",
+        "AUTH_SECRET": "${AUTH_SECRET:?Set AUTH_SECRET in Coolify}",
+        "AUTH_URL": "${AUTH_URL:?Set AUTH_URL in Coolify}",
+        "AUTH_TRUST_HOST": "true",
+        "BUILD_SHA": "${BUILD_SHA:?Set BUILD_SHA in Coolify}",
+        "MEILI_URL": "http://meilisearch:7700",
+        "MEILI_MASTER_KEY": "${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in Coolify}",
+        "BILLING_ENABLED": "false",
+        "GOOGLE_CLIENT_ID": "${GOOGLE_CLIENT_ID:-}",
+        "GOOGLE_CLIENT_SECRET": "${GOOGLE_CLIENT_SECRET:-}",
+        "GITHUB_CLIENT_ID": "${GITHUB_CLIENT_ID:-}",
+        "GITHUB_CLIENT_SECRET": "${GITHUB_CLIENT_SECRET:-}",
+        "DESIGN_SERVICE_URL": "http://design-engine:8000",
+        "MEDIA_SERVICE_URL": "http://media-service:8001",
+        "BOM_SERVICE_URL": "http://bom-engine:8002",
+        "DRAWING_SERVICE_URL": "http://drawing-generator:8003",
+        "CUTLIST_SERVICE_URL": "http://cutlist-engine:8004",
+        "MEP_SERVICE_URL": "http://mep-calculator:8005",
+        "CATALOGUE_SERVICE_URL": "http://catalogue-service:8006",
+        "PROJECT_SERVICE_URL": "http://project-service:8007",
+        "PROCUREMENT_SERVICE_URL": "http://procurement-service:8008",
+        "VISION_SERVICE_URL": "http://vision-engine:8010",
+        "COLLABORATION_SERVICE_URL": "http://collaboration:8009"
+      },
+      "expose": [
+        "3000"
+      ],
+      "networks": [
+        "default",
+        "database"
+      ],
+      "depends_on": {
+        "migrate": {
+          "condition": "service_completed_successfully"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        },
+        "collaboration": {
+          "condition": "service_healthy"
+        }
+      },
+      "healthcheck": {
+        "test": [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ],
+        "interval": "30s",
+        "timeout": "8s",
+        "retries": 3,
+        "start_period": "60s"
+      }
+    }
+  },
+  "volumes": {
+    "redis_data": {},
+    "meilisearch_data": {}
+  },
+  "networks": {
+    "default": {},
+    "database": {
+      "external": true,
+      "name": "${DATABASE_NETWORK:-coolify}"
+    }
+  }
+}

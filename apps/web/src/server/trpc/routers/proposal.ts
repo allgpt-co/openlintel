@@ -175,11 +175,6 @@ export const proposalRouter = router({
       });
       if (!proposal) throw new Error('Proposal not found');
       if ((proposal.project as any).userId !== ctx.userId) throw new Error('Access denied');
-      const [updated] = await ctx.db.update(proposals).set({
-        status: 'sent',
-        signatureRequestId: `sig_${Date.now()}`,
-        updatedAt: new Date(),
-      }).where(eq(proposals.id, input.id)).returning();
-      return { success: true, proposal: updated, sentTo: input.recipientEmail };
+      throw new Error('Proposal delivery is unavailable in this release');
     }),
 });

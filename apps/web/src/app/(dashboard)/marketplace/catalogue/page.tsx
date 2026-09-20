@@ -16,7 +16,7 @@ import {
 interface Product {
   id: string;
   name: string;
-  description?: string;
+  description?: string | null;
   brand?: string;
   category: string;
   categoryId?: string;
@@ -40,10 +40,10 @@ interface Category {
   id: string;
   name: string;
   slug: string;
-  description?: string;
-  parentId?: string;
-  icon?: string;
-  productCount?: number;
+  description?: string | null;
+  parentId?: string | null;
+  icon?: string | null;
+  productCount?: number | null;
   children?: Category[];
 }
 

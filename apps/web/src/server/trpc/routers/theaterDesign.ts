@@ -116,12 +116,14 @@ export const theaterDesignRouter = router({
         seatCount: input.seatCount ?? null,
       };
 
+      if (!room) throw new Error('Could not create required room');
       const [design] = await ctx.db.insert(theaterDesigns).values({
         roomId: room.id,
         screenSpec,
         speakerLayout,
         seatingLayout,
       }).returning();
+      if (!design) throw new Error('Database operation returned no row');
 
       return {
         id: design.id,
@@ -193,6 +195,7 @@ export const theaterDesignRouter = router({
         acousticTreatment: input.acousticTreatment ?? null,
         lightingZones: input.lightingZones ?? null,
       }).returning();
+      if (!design) throw new Error('Database operation returned no row');
       return design;
     }),
 

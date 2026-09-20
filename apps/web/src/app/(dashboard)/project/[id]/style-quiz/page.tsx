@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useMemo, useCallback } from 'react';
+import { use, useEffect, useState, useMemo, useCallback } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import {
   Button,
@@ -197,8 +197,10 @@ export default function StyleQuizPage({
 
   const { data: existing, isLoading } = trpc.styleQuiz.get.useQuery(
     { projectId },
-    {
-      onSuccess: (data: any) => {
+
+  );
+  useEffect(() => {
+    const data = existing;
         if (data) {
           if (data.quizResponses && Array.isArray(data.quizResponses)) {
             const answers: Record<string, string> = {};
@@ -217,9 +219,7 @@ export default function StyleQuizPage({
             setInspirationUrls(data.inspirationUrls as string[]);
           }
         }
-      },
-    },
-  );
+  }, [existing]);
 
   const saveQuizMutation = trpc.styleQuiz.saveQuizResponses.useMutation({
     onSuccess: () => {
@@ -742,12 +742,12 @@ export default function StyleQuizPage({
   // ── Step 5: Results Summary ──────────────────────────────
   const renderResultsStep = () => {
     const isSaving =
-      saveQuizMutation.isLoading ||
-      saveColorsMutation.isLoading ||
-      saveInspirationMutation.isLoading ||
-      saveMoodBoardMutation.isLoading;
+      saveQuizMutation.isPending ||
+      saveColorsMutation.isPending ||
+      saveInspirationMutation.isPending ||
+      saveMoodBoardMutation.isPending;
 
-    const maxScore = detectedStyles.length > 0 ? detectedStyles[0].score : 1;
+    const maxScore = detectedStyles.length > 0 ? (detectedStyles[0]?.score ?? 1) : 1;
 
     return (
       <div className="space-y-8">

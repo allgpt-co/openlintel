@@ -172,7 +172,7 @@ For each type: appropriate scale (1:50 plans, 1:25 elevations), paper size, shor
                 drawingNumber: drawing.drawingNumber as string,
                 scale: drawing.scale as string,
                 roomType: drawVariant.room.type.replace(/_/g, ' '),
-                date: new Date().toISOString().split('T')[0],
+                date: new Date().toISOString().slice(0, 10),
                 revision: (drawing.revision as string) || 'R0',
                 drawnBy: 'OpenLintel AI',
                 checkedBy: 'Pending review',

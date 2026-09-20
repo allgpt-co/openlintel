@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { io, type Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client';
+import { collaborationSocket } from '@/lib/collaboration-socket';
 import { toast } from '@openlintel/ui';
 
 const COLLAB_SERVICE_URL =
@@ -26,13 +27,7 @@ export function useRealtimeNotifications(userId: string | undefined) {
   useEffect(() => {
     if (!userId) return;
 
-    const socket = io(COLLAB_SERVICE_URL, {
-      query: { userId },
-      transports: ['websocket', 'polling'],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 2000,
-    });
+    const socket = collaborationSocket();
 
     socket.on('notification:new', (notification: RealtimeNotification) => {
       toast({
@@ -58,9 +53,11 @@ export function useRealtimeNotifications(userId: string | undefined) {
       });
     });
 
+    socket.connect();
     socketRef.current = socket;
 
     return () => {
+      socket.removeAllListeners();
       socket.disconnect();
       socketRef.current = null;
     };

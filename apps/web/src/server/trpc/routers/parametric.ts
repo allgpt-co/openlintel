@@ -140,6 +140,7 @@ export const parametricRouter = router({
         priority: input.priority ?? 0,
         isActive: true,
       }).returning();
+      if (!rule) throw new Error('Database operation returned no row');
 
       // Record history
       await ctx.db.insert(parametricHistory).values({
@@ -355,6 +356,7 @@ export const parametricRouter = router({
           priority: (ruleDef.priority as number) || 0,
           isActive: true,
         }).returning();
+        if (!rule) throw new Error('Database operation returned no row');
         createdRules.push(rule);
       }
 

@@ -37,6 +37,7 @@ notificationsRouter.get('/unread-count', async (req, res) => {
 notificationsRouter.post('/', async (req, res) => {
   const { user_id, type, title, message, link } = req.body;
 
+  if (user_id !== (req as any).userId) { res.status(403).json({ error: 'Forbidden' }); return; }
   if (!user_id || !type || !title) {
     res.status(400).json({ error: 'Missing required fields' });
     return;

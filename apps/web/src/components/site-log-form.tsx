@@ -49,8 +49,8 @@ const SUGGESTED_TAGS = [
 export function SiteLogForm({ onSubmit, isPending, onCancel, initialData }: SiteLogFormProps) {
   const [date, setDate] = useState(
     initialData?.date
-      ? new Date(initialData.date).toISOString().split('T')[0]
-      : new Date().toISOString().split('T')[0],
+      ? new Date(initialData.date).toISOString().slice(0, 10)
+      : new Date().toISOString().slice(0, 10),
   );
   const [title, setTitle] = useState(initialData?.title ?? '');
   const [notes, setNotes] = useState(initialData?.notes ?? '');

@@ -139,7 +139,7 @@ export const crmRouter = router({
       allLeads.forEach((lead) => {
         const status = lead.status as string;
         if (pipeline[status]) pipeline[status].push(lead);
-        else pipeline.new.push(lead);
+        else (pipeline.new ??= []).push(lead);
       });
       return pipeline;
     }),

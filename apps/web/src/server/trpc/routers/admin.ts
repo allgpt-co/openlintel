@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { serviceToken } from '@/server/service-token';
 import { HeadBucketCommand, S3Client } from '@aws-sdk/client-s3';
 import { users, projects, jobs, eq, and, sql, like, or, desc, count } from '@openlintel/db';
 import { router, adminProcedure } from '../init';
 
 const SERVICE_URLS: Record<string, string> = {
-  'design-engine': process.env.DESIGN_SERVICE_URL || 'http://localhost:8001',
+  'design-engine': process.env.DESIGN_SERVICE_URL || 'http://localhost:8000',
   'bom-engine': process.env.BOM_SERVICE_URL || 'http://localhost:8002',
   'drawing-generator': process.env.DRAWING_SERVICE_URL || 'http://localhost:8003',
   'cutlist-engine': process.env.CUTLIST_SERVICE_URL || 'http://localhost:8004',
@@ -12,8 +13,8 @@ const SERVICE_URLS: Record<string, string> = {
   'catalogue-service': process.env.CATALOGUE_SERVICE_URL || 'http://localhost:8006',
   'project-service': process.env.PROJECT_SERVICE_URL || 'http://localhost:8007',
   'procurement-service': process.env.PROCUREMENT_SERVICE_URL || 'http://localhost:8008',
-  'media-service': process.env.MEDIA_SERVICE_URL || 'http://localhost:8009',
-  'collaboration': process.env.COLLABORATION_SERVICE_URL || 'http://localhost:8010',
+  'media-service': process.env.MEDIA_SERVICE_URL || 'http://localhost:8001',
+  'collaboration': process.env.COLLABORATION_SERVICE_URL || 'http://localhost:8009',
 };
 
 const INFRA_CHECKS: Record<string, { url: string; label: string }> = {
@@ -72,13 +73,13 @@ export const adminRouter = router({
     const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
 
     const [
-      [{ value: totalUsers }],
-      [{ value: newUsersThisWeek }],
-      [{ value: newUsersPrevWeek }],
-      [{ value: totalProjects }],
-      [{ value: activeProjects }],
-      [{ value: runningJobs }],
-      [{ value: queuedJobs }],
+      [{ value: totalUsers } = { value: 0 }],
+      [{ value: newUsersThisWeek } = { value: 0 }],
+      [{ value: newUsersPrevWeek } = { value: 0 }],
+      [{ value: totalProjects } = { value: 0 }],
+      [{ value: activeProjects } = { value: 0 }],
+      [{ value: runningJobs } = { value: 0 }],
+      [{ value: queuedJobs } = { value: 0 }],
     ] = await Promise.all([
       ctx.db.select({ value: count() }).from(users),
       ctx.db
@@ -237,7 +238,7 @@ export const adminRouter = router({
         sql`SELECT pg_database_size(current_database()) as size`,
       );
       const rows = result as unknown as { size: string }[];
-      if (rows.length > 0) {
+      if (rows[0]) {
         dbSizeGb = parseFloat(rows[0].size) / (1024 * 1024 * 1024);
       }
     } catch {
@@ -285,7 +286,7 @@ export const adminRouter = router({
 
       const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-      const [userRows, [{ value: totalCount }]] = await Promise.all([
+      const [userRows, [{ value: totalCount } = { value: 0 }]] = await Promise.all([
         ctx.db
           .select({
             id: users.id,
@@ -377,7 +378,7 @@ export const adminRouter = router({
 
       const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-      const [jobRows, [{ value: totalCount }], [{ value: queuedCount }], [{ value: runningCount }], [{ value: failedCount }]] =
+      const [jobRows, [{ value: totalCount } = { value: 0 }], [{ value: queuedCount } = { value: 0 }], [{ value: runningCount } = { value: 0 }], [{ value: failedCount } = { value: 0 }]] =
         await Promise.all([
           ctx.db
             .select({
@@ -499,7 +500,7 @@ export const adminRouter = router({
         if (baseUrl) {
           fetch(`${baseUrl}${endpoint}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceToken(ctx.userId)}` },
             body: JSON.stringify({
               job_id: job.id,
               design_variant_id: job.designVariantId,

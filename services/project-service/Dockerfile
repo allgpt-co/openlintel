@@ -34,6 +34,9 @@ RUN pip install --no-cache-dir /tmp/project-service && \
 COPY services/project-service/main.py /app/main.py
 COPY services/project-service/src /app/src
 
+RUN useradd --system --uid 10001 --create-home appuser
+USER appuser
+
 EXPOSE 8007
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8007"]

@@ -79,15 +79,17 @@ export default function TimeTrackingPage({ params }: { params: Promise<{ id: str
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
   const [hourlyRate, setHourlyRate] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [notes, setNotes] = useState('');
   const [activeTimer, setActiveTimer] = useState<string | null>(null);
   const [timerStart, setTimerStart] = useState<Date | null>(null);
   const [viewMode, setViewMode] = useState<'entries' | 'weekly'>('entries');
 
-  const { data: entries = [], isLoading } = trpc.timeTracking.list.useQuery({ projectId });
+  const { data: storedEntries = [], isLoading } = trpc.timeTracking.list.useQuery({ projectId });
 
-  const createEntry = trpc.timeTracking.create.useMutation({
+  const entries = storedEntries.map((entry) => ({ ...entry, durationMinutes: Math.round(entry.hours * 60), hourlyRate: entry.rate }));
+
+  const createEntry = trpc.timeTracking.log.useMutation({
     onSuccess: () => {
       utils.timeTracking.list.invalidate({ projectId });
       setDialogOpen(false);
@@ -112,7 +114,7 @@ export default function TimeTrackingPage({ params }: { params: Promise<{ id: str
     setHours('');
     setMinutes('');
     setHourlyRate('');
-    setDate(new Date().toISOString().split('T')[0]);
+    setDate(new Date().toISOString().slice(0, 10));
     setNotes('');
   }
 
@@ -122,12 +124,10 @@ export default function TimeTrackingPage({ params }: { params: Promise<{ id: str
     if (totalMinutes <= 0) return;
     createEntry.mutate({
       projectId,
-      description,
-      category,
-      durationMinutes: totalMinutes,
-      hourlyRate: hourlyRate ? parseFloat(hourlyRate) : undefined,
-      date,
-      notes: notes || undefined,
+      description: [category, description, notes].filter(Boolean).join(' - '),
+      hours: totalMinutes / 60,
+      rate: hourlyRate ? parseFloat(hourlyRate) : undefined,
+      date: new Date(date).toISOString(),
     });
   }
 
@@ -156,9 +156,9 @@ export default function TimeTrackingPage({ params }: { params: Promise<{ id: str
 
   // Group entries by date for weekly view
   const entriesByDate = entries.reduce((acc: Record<string, any[]>, entry: any) => {
-    const d = new Date(entry.date).toISOString().split('T')[0];
+    const d = new Date(entry.date).toISOString().slice(0, 10);
     if (!acc[d]) acc[d] = [];
-    acc[d].push(entry);
+    (acc[d] ??= []).push(entry);
     return acc;
   }, {});
 

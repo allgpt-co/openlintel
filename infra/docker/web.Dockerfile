@@ -1,31 +1,37 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 WORKDIR /app
 
-# Install dependencies
-FROM base AS deps
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY apps/web/package.json ./apps/web/
-COPY packages/core/package.json ./packages/core/
-COPY packages/ui/package.json ./packages/ui/
-COPY packages/config/package.json ./packages/config/
-RUN pnpm install --frozen-lockfile
-
-# Build
 FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
-COPY . .
+ENV HUSKY=0 NEXT_TELEMETRY_DISABLED=1
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json tsconfig.json ./
+COPY packages/config/ packages/config/
+COPY packages/core/ packages/core/
+COPY packages/db/ packages/db/
+COPY packages/ui/ packages/ui/
+COPY apps/web/ apps/web/
+RUN pnpm install --frozen-lockfile
+ARG NEXT_PUBLIC_COLLAB_SERVICE_URL
+ARG BUILD_SHA=unknown
+ENV NEXT_PUBLIC_COLLAB_SERVICE_URL=$NEXT_PUBLIC_COLLAB_SERVICE_URL BUILD_SHA=$BUILD_SHA
 RUN pnpm --filter @openlintel/web build
 
-# Production
-FROM base AS runner
-ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
-COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=builder /app/apps/web/public ./apps/web/public
-USER nextjs
+FROM builder AS migrate
+WORKDIR /app/packages/db
+USER node
+CMD ["node", "node_modules/drizzle-kit/bin.cjs", "migrate"]
+
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
+ARG BUILD_SHA=unknown
+ENV BUILD_SHA=$BUILD_SHA
+LABEL org.opencontainers.image.revision=$BUILD_SHA
+COPY --from=builder --chown=node:node /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=node:node /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=node:node /app/apps/web/public ./apps/web/public
+COPY --chown=node:node infra/docker/web-entrypoint.mjs ./infra/web-entrypoint.mjs
+USER node
 EXPOSE 3000
-ENV PORT=3000
-CMD ["node", "apps/web/server.js"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s CMD node -e "fetch('http://127.0.0.1:3000/api/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["node", "infra/web-entrypoint.mjs"]

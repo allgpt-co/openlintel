@@ -36,6 +36,9 @@ RUN pip install --no-cache-dir /tmp/bom-engine && \
 COPY services/bom-engine/main.py /app/main.py
 COPY services/bom-engine/src /app/src
 
+RUN useradd --system --uid 10001 --create-home appuser
+USER appuser
+
 EXPOSE 8002
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8002"]

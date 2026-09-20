@@ -1,0 +1,87 @@
+name: Container release checks
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: containers-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  python-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        service: [design-engine, media-service, bom-engine, drawing-generator, cutlist-engine, mep-calculator, catalogue-service, project-service, procurement-service, vision-engine]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build production service
+        run: docker build -t service-test -f services/${{ matrix.service }}/Dockerfile .
+      - name: Import application and verify unauthorized API requests are rejected
+        run: |
+          docker run --rm -e JWT_SECRET=test-service-secret-that-is-at-least-32-bytes service-test python -c "from main import app; from fastapi.testclient import TestClient; c=TestClient(app); assert c.get('/health').status_code == 200; assert c.post('/api/v1/test/job', json={}).status_code == 401"
+      - name: Test shared authentication and resource guard
+        if: matrix.service == 'design-engine'
+        run: |
+          docker run --rm --user root -v "$PWD/packages/python-shared/tests:/tests:ro" service-test sh -c 'pip install -q pytest && python -m pytest -q /tests/test_service_auth.py'
+  web-and-collaboration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: disposable-ci-database-password
+          POSTGRES_DB: openlintel
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+    env:
+      DATABASE_URL: postgresql://postgres:disposable-ci-database-password@127.0.0.1:5432/openlintel
+      JWT_SECRET: disposable-ci-service-secret-at-least-32-bytes
+      AUTH_SECRET: disposable-ci-auth-secret-distinct-at-least-32-bytes
+      API_KEY_ENCRYPTION_SECRET: disposable-ci-api-key-encryption-secret-32-bytes
+      AUTH_URL: https://app.example.test
+      AWS_REGION: us-east-1
+      AWS_S3_BUCKET: disposable-ci-bucket
+      GITHUB_CLIENT_ID: disposable-ci-oauth
+      GITHUB_CLIENT_SECRET: disposable-ci-oauth-secret
+      REDIS_URL: redis://127.0.0.1:6379
+      WEB_URL: https://app.example.test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npx --yes pnpm@9.15.4 install --frozen-lockfile
+      - name: Build web image with exact revision
+        run: docker build --build-arg BUILD_SHA=${{ github.sha }} --build-arg NEXT_PUBLIC_COLLAB_SERVICE_URL=https://collab.example.test -t web-test -f apps/web/Dockerfile .
+      - name: Build and apply migrations twice
+        run: |
+          docker build --target migrate -t migrate-test -f apps/web/Dockerfile .
+          docker run --rm --network host -e DATABASE_URL migrate-test
+          docker run --rm --network host -e DATABASE_URL migrate-test
+      - name: Build and start collaboration
+        run: |
+          docker build -t collab-test -f services/collaboration/Dockerfile .
+          docker run -d --name collab-test --network host -e DATABASE_URL -e JWT_SECRET -e REDIS_URL -e WEB_URL collab-test
+      - name: Start web and verify readiness, version and disabled billing
+        run: |
+          docker run -d --name web-test --network host -e DATABASE_URL -e JWT_SECRET -e AUTH_SECRET -e API_KEY_ENCRYPTION_SECRET -e AUTH_URL -e AWS_REGION -e AWS_S3_BUCKET -e GITHUB_CLIENT_ID -e GITHUB_CLIENT_SECRET web-test
+          curl --retry 20 --retry-all-errors --retry-delay 2 --fail http://127.0.0.1:3000/api/health/ready
+          curl --retry 20 --retry-all-errors --retry-delay 2 --fail http://127.0.0.1:8009/health/ready
+          curl --fail http://127.0.0.1:3000/api/version | jq -e '.revision == "${{ github.sha }}" and .billingEnabled == false'
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/api/payments/webhook)" = 503
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:3000/api/collaboration/token -H 'Content-Type: application/json' -d '{}')" = 401
+      - name: Verify authenticated document sync, persistence and cross-project denial
+        run: node apps/web/scripts/collaboration-smoke.cjs
+      - name: Show container diagnostics on failure
+        if: failure()
+        run: |
+          docker logs web-test || true
+          docker logs collab-test || true

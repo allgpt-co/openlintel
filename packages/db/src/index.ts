@@ -5,7 +5,7 @@ import * as schema from './schema';
 const connectionString = process.env.DATABASE_URL!;
 
 // For query purposes — uses connection pooling
-const queryClient = postgres(connectionString);
+const queryClient = postgres(connectionString, { connect_timeout: 5 });
 export const db = drizzle(queryClient, { schema });
 
 // Re-export schema and types

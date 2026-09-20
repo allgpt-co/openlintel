@@ -36,10 +36,10 @@ export const floorPlanEditorRouter = router({
       projectId: z.string(),
       floorNumber: z.number().int().default(0),
       name: z.string().min(1),
-      canvasState: z.record(z.unknown()),
+      canvasState: z.record(z.string(), z.unknown()),
       gridSize: z.number().int().optional(),
       scale: z.number().optional(),
-      layers: z.array(z.record(z.unknown())).optional(),
+      layers: z.array(z.record(z.string(), z.unknown())).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.db.query.projects.findFirst({
@@ -91,7 +91,7 @@ export const floorPlanEditorRouter = router({
       wallType: z.string().default('interior'),
       materialType: z.string().optional(),
       layer: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const canvas = await ctx.db.query.floorPlanCanvases.findFirst({
@@ -146,7 +146,7 @@ export const floorPlanEditorRouter = router({
       wallType: z.string().optional(),
       materialType: z.string().optional(),
       layer: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const wall = await ctx.db.query.wallSegments.findFirst({
@@ -192,7 +192,7 @@ export const floorPlanEditorRouter = router({
       swingDirection: z.string().optional(),
       swingAngle: z.number().optional(),
       layer: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const wall = await ctx.db.query.wallSegments.findFirst({
@@ -233,7 +233,7 @@ export const floorPlanEditorRouter = router({
       direction: z.number().optional(),
       landingDepth: z.number().optional(),
       handrailSides: z.string().optional(),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const canvas = await ctx.db.query.floorPlanCanvases.findFirst({
@@ -281,7 +281,7 @@ export const floorPlanEditorRouter = router({
         thickness: z.number().default(150),
         wallType: z.string().default('exterior'),
         layer: z.string().optional(),
-        metadata: z.record(z.unknown()).optional(),
+        metadata: z.record(z.string(), z.unknown()).optional(),
       })),
       widthMm: z.number().optional(),
       lengthMm: z.number().optional(),
@@ -302,6 +302,7 @@ export const floorPlanEditorRouter = router({
         widthMm: input.widthMm ?? null,
         lengthMm: input.lengthMm ?? null,
       }).returning();
+      if (!room) throw new Error('Database operation returned no row');
 
       const groupId = crypto.randomUUID();
 

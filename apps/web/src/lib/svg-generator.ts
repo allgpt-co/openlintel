@@ -122,7 +122,7 @@ const FURNITURE_COLORS: Record<string, string> = {
 
 function parseScale(s: string): number {
   const m = s.match(/1\s*:\s*(\d+)/);
-  return m ? parseInt(m[1], 10) : 50;
+  return m?.[1] ? parseInt(m[1], 10) : 50;
 }
 
 function toD(realMm: number, sf: number): number {
@@ -137,7 +137,7 @@ function parseDimensions(dimStr: string | undefined): { w: number; d: number; h:
   if (!dimStr) return null;
   // Try "WxDxH" or "W x D x H" patterns (values in mm or just numbers)
   const m = dimStr.match(/(\d+)\s*[x×X]\s*(\d+)(?:\s*[x×X]\s*(\d+))?/);
-  if (!m) return null;
+  if (!m?.[1] || !m[2]) return null;
   return {
     w: parseInt(m[1], 10),
     d: parseInt(m[2], 10),
@@ -161,7 +161,7 @@ function getFurnitureColor(name: string): string {
   for (const [key, color] of Object.entries(FURNITURE_COLORS)) {
     if (n.includes(key)) return color;
   }
-  return FURNITURE_COLORS.default;
+  return FURNITURE_COLORS.default ?? '#e2e8f0';
 }
 
 // ── Position Resolver with Collision Avoidance ─────────────────────
@@ -286,7 +286,7 @@ function resolvePosition(
     const best = corners.find(c => {
       const r: Rect = { x: c.x, y: c.y, w: itemW, h: itemD };
       return !placedItems.some(pr => rectsOverlap(r, pr, 1.5));
-    }) ?? corners[index % corners.length];
+    }) ?? corners[index % corners.length] ?? { x: ox, y: oy };
     x = best.x;
     y = best.y;
   } else if (p.includes('window')) {
@@ -300,6 +300,7 @@ function resolvePosition(
     // Place next to the last placed item
     if (placedItems.length > 0) {
       const last = placedItems[placedItems.length - 1];
+      if (!last) throw new Error('Missing previous placement');
       x = last.x + last.w + 1.5;
       y = last.y;
       // If goes out of room, try below
@@ -323,7 +324,7 @@ function resolvePosition(
       { x: ox + wallT + gap, y: oy + roomH - wallT - gap - itemD },             // bottom-left
       { x: ox + roomW - wallT - gap - itemW, y: oy + roomH - wallT - gap - itemD }, // bottom-right
     ];
-    const pos = positions[index % positions.length];
+    const pos = positions[index % positions.length] ?? { x: ox, y: oy };
     x = pos.x;
     y = pos.y;
   }
@@ -810,7 +811,7 @@ export function generateSvg(
   spec: SpecData | null,
   metadata: DrawingMetadata,
 ): string {
-  const paper = PAPER_SIZES[metadata.paperSize ?? 'A2'] ?? PAPER_SIZES.A2;
+  const paper = PAPER_SIZES[metadata.paperSize ?? 'A2'] ?? { w: 594, h: 420 };
   const pw = paper.w;
   const ph = paper.h;
 

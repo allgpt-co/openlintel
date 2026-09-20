@@ -52,7 +52,7 @@ export function PanelSchedule({
     [circuits],
   );
 
-  const maxPhaseLoad = Math.max(phaseLoads.A, phaseLoads.B, phaseLoads.C || 0);
+  const maxPhaseLoad = Math.max(phaseLoads.A ?? 0, phaseLoads.B ?? 0, phaseLoads.C ?? 0);
   const minPhaseLoad = Math.min(
     phaseLoads.A || Infinity,
     phaseLoads.B || Infinity,

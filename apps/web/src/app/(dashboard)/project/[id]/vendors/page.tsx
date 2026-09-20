@@ -57,7 +57,7 @@ const ORDER_STATUS_STYLES: Record<string, { bg: string; icon: React.ReactNode }>
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const style = ORDER_STATUS_STYLES[status] ?? ORDER_STATUS_STYLES.pending;
+  const style = ORDER_STATUS_STYLES[status] ?? ORDER_STATUS_STYLES.pending ?? { bg: 'bg-gray-100', icon: null };
   return (
     <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${style.bg}`}>
       {style.icon}
@@ -136,21 +136,21 @@ export default function VendorManagementPage({
   /* ── Mutations ─────────────────────────────────────────── */
   const createMutation = trpc.vendorManagement.createVendor.useMutation({
     onSuccess: () => {
-      toast.success('Vendor created successfully');
+      toast({ title: 'Vendor created successfully' });
       utils.vendorManagement.invalidate();
       setCreateOpen(false);
       setFormData({ name: '', contactEmail: '', contactPhone: '', address: '', website: '' });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast({ title: err.message, variant: 'destructive' }),
   });
 
   const updateMutation = trpc.vendorManagement.updateVendor.useMutation({
     onSuccess: () => {
-      toast.success('Vendor updated successfully');
+      toast({ title: 'Vendor updated successfully' });
       utils.vendorManagement.invalidate();
       setEditOpen(false);
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast({ title: err.message, variant: 'destructive' }),
   });
 
   /* ── Derived data ──────────────────────────────────────── */
@@ -176,7 +176,7 @@ export default function VendorManagementPage({
   /* ── Handlers ──────────────────────────────────────────── */
   function handleCreate() {
     if (!formData.name.trim()) {
-      toast.error('Vendor name is required');
+      toast({ title: 'Vendor name is required', variant: 'destructive' });
       return;
     }
     createMutation.mutate({

@@ -2,6 +2,12 @@ import { z } from 'zod';
 import { payments, invoices, purchaseOrders, projects, eq, and } from '@openlintel/db';
 import { router, protectedProcedure } from '../init';
 import Stripe from 'stripe';
+import { TRPCError } from '@trpc/server';
+
+// Billing is intentionally unavailable in the core-app release.
+const billingProcedure = protectedProcedure.use(() => {
+  throw new TRPCError({ code: 'FORBIDDEN', message: 'Billing is disabled for this release' });
+});
 
 let _stripe: Stripe | null = null;
 function getStripe(): Stripe {
@@ -30,7 +36,7 @@ export const paymentRouter = router({
       });
     }),
 
-  create: protectedProcedure
+  create: billingProcedure
     .input(
       z.object({
         projectId: z.string(),
@@ -50,7 +56,7 @@ export const paymentRouter = router({
       return payment;
     }),
 
-  updateStatus: protectedProcedure
+  updateStatus: billingProcedure
     .input(
       z.object({
         id: z.string(),
@@ -72,7 +78,7 @@ export const paymentRouter = router({
     }),
 
   // ── Stripe Checkout ──────────────────────────────────────────
-  createCheckoutSession: protectedProcedure
+  createCheckoutSession: billingProcedure
     .input(
       z.object({
         paymentId: z.string(),
@@ -95,16 +101,10 @@ export const paymentRouter = router({
       const isStripeConfigured = stripeKey && stripeKey !== 'sk_not_configured' && stripeKey.startsWith('sk_');
 
       if (!isStripeConfigured) {
-        // Mock checkout: mark payment as completed without Stripe
-        await ctx.db
-          .update(payments)
-          .set({ status: 'completed', paidAt: new Date() })
-          .where(eq(payments.id, input.paymentId));
-
-        return { checkoutUrl: null, mockCompleted: true };
+        throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Payments are not configured' });
       }
 
-      const origin = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+      const origin = process.env.AUTH_URL || 'http://localhost:3000';
       const session = await getStripe().checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [
@@ -148,21 +148,6 @@ export const paymentRouter = router({
       if (!payment) throw new Error('Payment not found');
       if ((payment.project as any).userId !== ctx.userId) throw new Error('Access denied');
 
-      // If payment has a Stripe session ID, check its status
-      if (payment.externalId && payment.paymentProvider === 'stripe') {
-        try {
-          const session = await getStripe().checkout.sessions.retrieve(payment.externalId);
-          return {
-            id: payment.id,
-            status: payment.status,
-            stripeStatus: session.payment_status,
-            amount: payment.amount,
-            currency: payment.currency,
-          };
-        } catch {
-          // Stripe lookup failed — return DB status
-        }
-      }
 
       return {
         id: payment.id,

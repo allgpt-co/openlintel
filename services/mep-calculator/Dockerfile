@@ -28,6 +28,9 @@ RUN pip install --no-cache-dir /tmp/mep-calculator && \
 COPY services/mep-calculator/main.py /app/main.py
 COPY services/mep-calculator/src /app/src
 
+RUN useradd --system --uid 10001 --create-home appuser
+USER appuser
+
 EXPOSE 8005
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8005"]

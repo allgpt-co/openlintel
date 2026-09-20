@@ -280,6 +280,7 @@ export const structuralRouter = router({
         for (let j = 0; j < batch.length; j++) {
           const el = batch[j];
           const result = results[j];
+          if (!el || !result) throw new Error('Incomplete analysis batch');
 
           await ctx.db.update(structuralElements).set({
             status: result.status,

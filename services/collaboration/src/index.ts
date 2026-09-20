@@ -49,6 +49,18 @@ app.use('/api', async (req, res, next) => {
   try {
     const user = verifyToken(authHeader.slice(7));
     (req as any).userId = user.id;
+    if (!req.path.startsWith('/v1/notifications')) {
+      const resource = req.path.startsWith('/v1/comments') ? 'comments' : req.path.startsWith('/v1/approvals') ? 'approvals' : null;
+      const resourceId = req.path.split('/')[3];
+      let projectId = req.body?.project_id || req.query.project_id;
+      if (resourceId && resource) {
+        const row = await pool.query(`SELECT project_id FROM ${resource} WHERE id=$1`, [resourceId]);
+        projectId = row.rows[0]?.project_id;
+      }
+      if (!projectId || user.projectId !== projectId) { res.status(403).json({ error: 'Forbidden' }); return; }
+      const owner = await pool.query('SELECT id FROM projects WHERE id=$1 AND user_id=$2', [projectId, user.id]);
+      if (!owner.rowCount) { res.status(403).json({ error: 'Forbidden' }); return; }
+    }
     next();
   } catch {
     res.status(401).json({ error: 'Invalid token' });
@@ -58,6 +70,11 @@ app.use('/api', async (req, res, next) => {
 // Health check
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'collaboration' });
+});
+
+app.get('/health/ready', async (_req, res) => {
+  try { await Promise.all([pool.query('SELECT 1'), redis.ping()]); res.json({ status: 'ok' }); }
+  catch { res.status(503).json({ status: 'unavailable' }); }
 });
 
 // REST routes
@@ -91,6 +108,10 @@ async function setupNotificationRelay(subscriber: ReturnType<typeof createClient
 }
 
 async function start() {
+  for (const key of ['DATABASE_URL', 'REDIS_URL', 'JWT_SECRET', 'WEB_URL']) {
+    if (!process.env[key]) throw new Error(`${key} is required`);
+  }
+  if (Buffer.byteLength(process.env.JWT_SECRET!) < 32) throw new Error('JWT_SECRET is too short');
   await redis.connect();
   console.log('Redis connected');
 

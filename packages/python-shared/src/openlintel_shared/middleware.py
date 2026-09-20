@@ -42,6 +42,26 @@ def setup_middleware(app: FastAPI, settings: Settings | None = None) -> None:
     if settings is None:
         settings = get_settings()
 
+    from openlintel_shared.service_guard import ServiceAuthMiddleware
+    app.add_middleware(ServiceAuthMiddleware)
+
+    @app.get("/health/ready", include_in_schema=False)
+    async def readiness():
+        import asyncio
+        from sqlalchemy import text
+        from starlette.responses import JSONResponse
+        from openlintel_shared.db import get_session_factory
+        from openlintel_shared.redis_client import get_redis
+        async def check():
+            async with get_session_factory()() as db:
+                await db.execute(text("SELECT 1"))
+            await get_redis().ping()
+        try:
+            await asyncio.wait_for(check(), timeout=4)
+            return {"status": "ok"}
+        except Exception:
+            return JSONResponse({"status": "unavailable"}, status_code=503)
+
     # Order matters: outermost middleware runs first.
 
     # 1. CORS — must be outermost so preflight responses are handled correctly

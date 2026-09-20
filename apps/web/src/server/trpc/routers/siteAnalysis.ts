@@ -332,6 +332,7 @@ export const siteAnalysisRouter = router({
         notes: input.notes ?? null,
         status: 'processing',
       }).returning();
+      if (!item) throw new Error('Database operation returned no row');
 
       // Run AI analysis
       try {

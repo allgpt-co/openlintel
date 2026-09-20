@@ -58,7 +58,7 @@ function formatDate(d: string): string {
 export function GanttChart({ tasks, projectStart, projectEnd }: GanttChartProps) {
   const totalDays = useMemo(() => daysBetween(projectStart, projectEnd), [projectStart, projectEnd]);
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().slice(0, 10);
   const todayOffset = useMemo(() => {
     const days = daysBetween(projectStart, today);
     return Math.max(0, Math.min(100, (days / totalDays) * 100));

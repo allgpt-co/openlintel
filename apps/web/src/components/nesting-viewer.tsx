@@ -55,7 +55,7 @@ export function NestingViewer({ sheets: rawSheets }: NestingViewerProps) {
       if (!sheet?.panels) continue;
       for (const panel of sheet.panels) {
         if (!(panel.furnitureUnit in map)) {
-          map[panel.furnitureUnit] = UNIT_COLORS[idx % UNIT_COLORS.length];
+          map[panel.furnitureUnit] = UNIT_COLORS[idx % UNIT_COLORS.length] ?? '#64748b';
           idx++;
         }
       }

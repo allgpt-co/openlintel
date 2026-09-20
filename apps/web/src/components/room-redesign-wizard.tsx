@@ -166,7 +166,7 @@ export function DesignStudio({
   const generateRedesigns = trpc.roomRedesign.generateRedesigns.useMutation({
     onSuccess: (data) => {
       setIsGenerating(false);
-      toast({ title: `Generated ${data.variationCount} design variations` });
+      toast({ title: 'Design generation is unavailable' });
       onDesignsGenerated();
     },
     onError: (err) => {
@@ -193,7 +193,7 @@ export function DesignStudio({
   };
 
   // Auto-select first image if none selected
-  if (!selectedUploadId && imageUploads.length > 0) {
+  if (!selectedUploadId && imageUploads[0] !== undefined) {
     setSelectedUploadId(imageUploads[0].id);
   }
 
@@ -216,7 +216,7 @@ export function DesignStudio({
             }}
           />
 
-          {imageUploads.length > 0 && (
+          {imageUploads[0] !== undefined && (
             <>
               <p className="text-xs text-muted-foreground">
                 Select the photo to redesign:
@@ -488,11 +488,11 @@ export function RedesignResultsCard({
                   src={renderUrls[selectedIndex]}
                   alt={`Variation ${selectedIndex + 1}`}
                   className="w-full aspect-square object-cover rounded-lg border cursor-pointer"
-                  onClick={() => setFullscreen(renderUrls[selectedIndex])}
+                  onClick={() => setFullscreen(renderUrls[selectedIndex] ?? null)}
                 />
                 <button
                   className="absolute top-2 right-2 p-1.5 rounded-md bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={() => setFullscreen(renderUrls[selectedIndex])}
+                  onClick={() => setFullscreen(renderUrls[selectedIndex] ?? null)}
                 >
                   <Maximize2 className="h-3.5 w-3.5" />
                 </button>

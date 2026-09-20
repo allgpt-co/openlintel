@@ -136,6 +136,7 @@ function PieTooltip({
 }) {
   if (!active || !payload || payload.length === 0) return null;
   const data = payload[0];
+  if (!data) return null;
   return (
     <div className="rounded-lg border bg-background px-3 py-2 shadow-md">
       <p className="text-sm font-medium">{data.payload.category}</p>

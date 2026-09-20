@@ -75,8 +75,8 @@ export default function TimelinePage({ params }: { params: Promise<{ id: string 
         id: `preview-${idx}`,
         name: trade.name,
         trade: trade.key,
-        startDate: startDate.toISOString().split('T')[0]!,
-        endDate: endDate.toISOString().split('T')[0]!,
+        startDate: startDate.toISOString().slice(0, 10)!,
+        endDate: endDate.toISOString().slice(0, 10)!,
         progress: 0,
         isCritical: trade.isCritical,
         isMilestone: false,
@@ -94,8 +94,8 @@ export default function TimelinePage({ params }: { params: Promise<{ id: string 
       id: task.id as string,
       name: (task.name as string) || 'Unknown Task',
       trade: (task.trade as string) || 'general',
-      startDate: task.startDate ? new Date(task.startDate as string).toISOString().split('T')[0]! : new Date().toISOString().split('T')[0]!,
-      endDate: task.endDate ? new Date(task.endDate as string).toISOString().split('T')[0]! : new Date().toISOString().split('T')[0]!,
+      startDate: task.startDate ? new Date(task.startDate as string).toISOString().slice(0, 10)! : new Date().toISOString().slice(0, 10)!,
+      endDate: task.endDate ? new Date(task.endDate as string).toISOString().slice(0, 10)! : new Date().toISOString().slice(0, 10)!,
       progress: (task.progress as number) ?? ((task.status as string) === 'completed' ? 100 : (task.status as string) === 'in_progress' ? 50 : 0),
       isCritical: (task.isCritical as boolean) ?? criticalPath.includes(task.id as string),
       isMilestone: false,
@@ -105,8 +105,8 @@ export default function TimelinePage({ params }: { params: Promise<{ id: string 
 
   const ganttTasks = scheduleTasks.length > 0 ? scheduleTasks : previewTasks;
 
-  const projectStart = ganttTasks.length > 0 ? ganttTasks[0]!.startDate : new Date().toISOString().split('T')[0]!;
-  const projectEnd = ganttTasks.length > 0 ? ganttTasks[ganttTasks.length - 1]!.endDate : new Date().toISOString().split('T')[0]!;
+  const projectStart = ganttTasks.length > 0 ? ganttTasks[0]!.startDate : new Date().toISOString().slice(0, 10)!;
+  const projectEnd = ganttTasks.length > 0 ? ganttTasks[ganttTasks.length - 1]!.endDate : new Date().toISOString().slice(0, 10)!;
 
   // Build milestones for the tracker view from the milestones relation
   const trackerMilestones = useMemo(() => {

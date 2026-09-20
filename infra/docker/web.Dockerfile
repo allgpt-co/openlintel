@@ -19,6 +19,7 @@ RUN pnpm --filter @openlintel/web build
 
 FROM builder AS migrate
 WORKDIR /app/packages/db
+RUN chown -R node:node /app/packages/db
 USER node
 CMD ["node", "node_modules/drizzle-kit/bin.cjs", "migrate"]
 

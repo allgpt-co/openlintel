@@ -12,6 +12,8 @@ Copy the variable names from `infra/docker/production.env.example` into Coolify.
 
 Configure at least one complete Google or GitHub OAuth provider. The callback is `https://app.openlintel.com/api/auth/callback/google` or `/github`. Production startup rejects missing OAuth configuration. A preview deployment requires its own callback and origin configuration.
 
+If S3 and Bedrock use different AWS principals, keep the S3 credentials in `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and optional `AWS_SESSION_TOKEN`. Set the separate Bedrock pair in `BEDROCK_AWS_ACCESS_KEY_ID` and `BEDROCK_AWS_SECRET_ACCESS_KEY`, plus `BEDROCK_AWS_SESSION_TOKEN` for temporary credentials. `BEDROCK_REGION` optionally overrides `AWS_REGION`. These Bedrock values are passed only to the web service. If no dedicated pair is set, Bedrock retains the AWS default credential chain; a partial pair is rejected. Verify bucket access and a model call separately using their intended principals.
+
 Set `BUILD_SHA` to the exact merged revision. `NEXT_PUBLIC_COLLAB_SERVICE_URL` is a **build argument** and must be `https://collab.openlintel.com` before building. The manifest passes it to the web build. Changing this URL requires a rebuild.
 
 Map only web port 3000 and collaboration port 8009 to public HTTPS domains. Leave Redis, Meilisearch, Python services and PostgreSQL private. Keep `AUTH_URL=https://app.openlintel.com` and the collaboration `WEB_URL` at the same origin. Enable proxy WebSocket upgrades and verify TLS certificates. Preserve unrelated DNS records. Marketing root DNS must remain pointed at GitHub Pages; application and collaboration records point at the Coolify ingress.

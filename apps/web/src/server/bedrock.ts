@@ -1,5 +1,6 @@
 import {
   BedrockRuntimeClient,
+  type BedrockRuntimeClientConfig,
   ConverseCommand,
   type ContentBlock,
   type ConverseCommandInput,
@@ -41,11 +42,28 @@ export type BedrockConverseOptions = {
 
 let bedrockClient: BedrockRuntimeClient | null = null;
 
+/** Allow Bedrock and S3 to use separately scoped AWS principals. */
+export function bedrockClientConfig(
+  env: Record<string, string | undefined> = process.env,
+): BedrockRuntimeClientConfig {
+  const accessKeyId = env.BEDROCK_AWS_ACCESS_KEY_ID?.trim();
+  const secretAccessKey = env.BEDROCK_AWS_SECRET_ACCESS_KEY?.trim();
+  const sessionToken = env.BEDROCK_AWS_SESSION_TOKEN?.trim();
+  const dedicated = Boolean(accessKeyId || secretAccessKey || sessionToken);
+  if (dedicated && (!accessKeyId || !secretAccessKey)) {
+    throw new Error('Configure both Bedrock access key and secret key');
+  }
+  return {
+    region: env.BEDROCK_REGION?.trim() || env.AWS_REGION,
+    ...(accessKeyId && secretAccessKey ? {
+      credentials: { accessKeyId, secretAccessKey, ...(sessionToken ? { sessionToken } : {}) },
+    } : {}),
+  };
+}
+
 function getBedrockClient(): BedrockRuntimeClient {
   if (!bedrockClient) {
-    bedrockClient = new BedrockRuntimeClient({
-      region: process.env.AWS_REGION,
-    });
+    bedrockClient = new BedrockRuntimeClient(bedrockClientConfig());
   }
   return bedrockClient;
 }

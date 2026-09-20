@@ -18,7 +18,6 @@ from openlintel_shared.config import get_settings
 from openlintel_shared.db import dispose_engine
 from openlintel_shared.middleware import configure_logging, setup_middleware
 from openlintel_shared.redis_client import close_redis
-from openlintel_shared.storage import ensure_bucket
 
 from src.routers import designs
 
@@ -36,7 +35,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     Startup:
         - Configure structured logging.
-        - Ensure the S3 storage bucket exists.
+        - Use the S3 bucket provisioned and verified by the deployment operator.
 
     Shutdown:
         - Dispose of the async DB engine.
@@ -50,13 +49,6 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         service="design-engine",
         log_level=settings.LOG_LEVEL,
     )
-
-    # Ensure storage bucket exists for design outputs
-    try:
-        ensure_bucket(settings.AWS_S3_BUCKET, settings=settings)
-        logger.info("s3_bucket_ready", bucket=settings.AWS_S3_BUCKET)
-    except Exception:
-        logger.exception("s3_bucket_init_failed", bucket=settings.AWS_S3_BUCKET)
 
     yield  # ── App is running ──
 

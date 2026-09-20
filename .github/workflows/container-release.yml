@@ -22,9 +22,16 @@ jobs:
         run: chmod -R go-rwx services/${{ matrix.service }}
       - name: Build production service
         run: docker build -t service-test -f services/${{ matrix.service }}/Dockerfile .
-      - name: Import application and verify unauthorized API requests are rejected
+      - name: Exercise application startup, requests and shutdown
         run: |
-          docker run --rm -e JWT_SECRET=test-service-secret-that-is-at-least-32-bytes service-test python -c "from main import app; from fastapi.testclient import TestClient; c=TestClient(app); assert c.get('/health').status_code == 200; assert c.post('/api/v1/test/job', json={}).status_code == 401"
+          docker run --rm -i -e JWT_SECRET=test-service-secret-that-is-at-least-32-bytes service-test python - <<'PY'
+          from main import app
+          from fastapi.testclient import TestClient
+          with TestClient(app) as client:
+              assert client.get('/health').status_code == 200
+              assert client.post('/api/v1/test/job', json={}).status_code == 401
+          print('Application startup, health, authentication and shutdown passed')
+          PY
       - name: Test shared authentication and resource guard
         if: matrix.service == 'design-engine'
         run: |

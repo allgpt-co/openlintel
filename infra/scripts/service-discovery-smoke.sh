@@ -50,7 +50,7 @@ for phase in initial recreated; do
     docker network connect --alias "$service" "${project}_shared" "$("${compose[@]}" ps -q "$service")"
   done
   decoy_ip="$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$("${compose[@]}" ps -q decoy)")"
-  "${compose[@]}" run --rm -T --no-deps -e "DECOY_IP=$decoy_ip" probe node - <<'JS'
+  "${compose[@]}" run --rm -T --no-deps -e "DECOY_IP=$decoy_ip" -e "PHASE=$phase" probe node - <<'JS'
 const assert = require('node:assert/strict');
 const dns = require('node:dns/promises');
 const { createClient } = require('redis');
@@ -67,9 +67,11 @@ const { createClient } = require('redis');
   redis.on('error', () => {});
   await redis.connect();
   try {
-    await redis.set('deployment-discovery-test', 'isolated');
+    if (process.env.PHASE === 'initial') {
+      await redis.set('deployment-discovery-test', 'isolated');
+    }
     assert.equal(await redis.get('deployment-discovery-test'), 'isolated');
-    await redis.del('deployment-discovery-test');
+    if (process.env.PHASE === 'recreated') await redis.del('deployment-discovery-test');
   } finally {
     await redis.quit();
   }

@@ -7,7 +7,7 @@ import { router, protectedProcedure } from '../init';
 
 // ── Helper: verify project ownership ────────────────────────────────────────
 async function verifyProjectOwnership(
-  db: Parameters<Parameters<typeof protectedProcedure.query>[0]>['ctx']['db'],
+  db: typeof import('@openlintel/db').db,
   projectId: string,
   userId: string,
 ) {
@@ -84,7 +84,7 @@ export const digitalTwinRouter = router({
         name: z.string().min(1),
         deviceType: z.enum(['temperature', 'humidity', 'motion', 'energy', 'water']),
         roomId: z.string().optional(),
-        positionJson: z.record(z.unknown()).optional(),
+        positionJson: z.record(z.string(), z.unknown()).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -224,7 +224,7 @@ export const digitalTwinRouter = router({
         label: z.string().min(1),
         description: z.string().optional(),
         locationDescription: z.string().optional(),
-        positionJson: z.record(z.unknown()).optional(),
+        positionJson: z.record(z.string(), z.unknown()).optional(),
         roomId: z.string().optional(),
       }),
     )

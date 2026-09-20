@@ -191,8 +191,9 @@ export const analyticsRouter = router({
               if (!categoryMap[item.category]) {
                 categoryMap[item.category] = { totalCost: 0, itemCount: 0 };
               }
-              categoryMap[item.category].totalCost += item.total || 0;
-              categoryMap[item.category].itemCount += item.quantity || 1;
+              const category = categoryMap[item.category] ??= { totalCost: 0, itemCount: 0 };
+              category.totalCost += item.total || 0;
+              category.itemCount += item.quantity || 1;
             });
           });
         });

@@ -83,6 +83,7 @@ export const serviceBookingRouter = router({
         notes: input.notes ?? null,
         status: 'pending',
       }).returning();
+      if (!booking) throw new Error('Database operation returned no row');
       return booking;
     }),
 
@@ -187,6 +188,7 @@ export const serviceBookingRouter = router({
         userNotes: input.notes ?? null,
       });
 
+      if (!professional) throw new Error('Could not create required resource');
       const [booking] = await ctx.db.insert(serviceBookings).values({
         professionalId: professional.id,
         projectId: input.projectId,
@@ -198,6 +200,7 @@ export const serviceBookingRouter = router({
         notes: metaNotes,
         status: 'requested',
       }).returning();
+      if (!booking) throw new Error('Database operation returned no row');
 
       // Parse notes to return frontend-expected shape
       const meta = JSON.parse(booking.notes ?? '{}');

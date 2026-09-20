@@ -311,7 +311,9 @@ async function analyzeFloorPlanWithAI(
   const allFloors: FloorData[] = [];
 
   for (let i = 0; i < pages.length; i++) {
-    const { imageBuffer, imageMimeType } = pages[i];
+    const page = pages[i];
+    if (!page) continue;
+    const { imageBuffer, imageMimeType } = page;
     const pageHint = pages.length > 1
       ? `\n\nThis is page ${i + 1} of ${pages.length} in a multi-page PDF. This page may show one or more floors.`
       : '';

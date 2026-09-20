@@ -1,15 +1,16 @@
-FROM node:22-slim AS builder
+FROM node:22-alpine AS builder
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 WORKDIR /app
-COPY package.json ./
-RUN npm install
-COPY tsconfig.json ./
-COPY src/ ./src/
-RUN npx tsc
-
-FROM node:22-slim
+ENV HUSKY=0
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY services/collaboration/ services/collaboration/
+RUN pnpm install --frozen-lockfile --filter @openlintel/collaboration
+RUN pnpm --filter @openlintel/collaboration build
+RUN pnpm --filter @openlintel/collaboration deploy --prod /release
+FROM node:22-alpine
 WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY package.json ./
+ENV NODE_ENV=production
+COPY --from=builder --chown=node:node /release ./
+USER node
 EXPOSE 8009
 CMD ["node", "dist/index.js"]

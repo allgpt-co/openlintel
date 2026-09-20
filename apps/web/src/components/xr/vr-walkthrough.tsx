@@ -62,14 +62,16 @@ export function VRWalkthrough({
     if (roomWaypoints.length === 0) return;
     const prevIndex =
       currentWaypointIndex <= 0 ? roomWaypoints.length - 1 : currentWaypointIndex - 1;
-    onTeleport(roomWaypoints[prevIndex].id);
+    const waypoint = roomWaypoints[prevIndex];
+    if (waypoint) onTeleport(waypoint.id);
   }, [roomWaypoints, currentWaypointIndex, onTeleport]);
 
   const handleNextWaypoint = useCallback(() => {
     if (roomWaypoints.length === 0) return;
     const nextIndex =
       currentWaypointIndex >= roomWaypoints.length - 1 ? 0 : currentWaypointIndex + 1;
-    onTeleport(roomWaypoints[nextIndex].id);
+    const waypoint = roomWaypoints[nextIndex];
+    if (waypoint) onTeleport(waypoint.id);
   }, [roomWaypoints, currentWaypointIndex, onTeleport]);
 
   if (!sessionActive) {

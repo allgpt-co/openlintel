@@ -42,7 +42,7 @@ export function TimelineProgress({
   completionPercent,
   title = 'Project Timeline',
 }: TimelineProgressProps) {
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().slice(0, 10);
   const totalDays = daysBetween(startDate, endDate);
   const elapsedDays = daysBetween(startDate, today);
   const remainingDays = daysBetween(today, endDate);

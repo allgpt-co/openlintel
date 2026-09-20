@@ -1,3 +1,4 @@
+import { serviceToken } from '@/server/service-token';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
@@ -26,7 +27,7 @@ export async function GET(
 
   try {
     const serviceUrl = `${BOM_SERVICE_URL}/api/v1/bom/${bomId}/export?format=${format}`;
-    const res = await fetch(serviceUrl);
+    const res = await fetch(serviceUrl, { headers: { Authorization: `Bearer ${serviceToken(session.user.id)}` }, signal: AbortSignal.timeout(30000) });
 
     if (!res.ok) {
       const errorText = await res.text().catch(() => 'Export service error');

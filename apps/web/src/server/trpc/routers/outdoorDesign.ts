@@ -68,6 +68,7 @@ export const outdoorDesignRouter = router({
         elements,
         materials,
       }).returning();
+      if (!design) throw new Error('Database operation returned no row');
       return {
         id: design.id,
         name: input.name,
@@ -143,6 +144,7 @@ export const outdoorDesignRouter = router({
         materials: input.materials ?? null,
         gradeIntegration: input.gradeIntegration ?? null,
       }).returning();
+      if (!design) throw new Error('Database operation returned no row');
       return design;
     }),
 

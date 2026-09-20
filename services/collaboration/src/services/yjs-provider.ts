@@ -4,12 +4,12 @@ import { pool } from '../index';
 /**
  * Y.js PostgreSQL persistence provider.
  *
- * Stores Y.js document state as binary in a `yjs_documents` table.
+ * Stores Y.js document state as base64 text, matching the database schema.
  * This table should be created via migration:
  *
  * CREATE TABLE IF NOT EXISTS yjs_documents (
  *   doc_id TEXT PRIMARY KEY,
- *   state BYTEA NOT NULL,
+ *   state TEXT,
  *   updated_at TIMESTAMP DEFAULT NOW()
  * );
  */
@@ -21,7 +21,7 @@ export async function loadDocument(docId: string): Promise<Uint8Array | null> {
       [docId],
     );
     if (result.rows.length > 0 && result.rows[0].state) {
-      return new Uint8Array(result.rows[0].state);
+      return Buffer.from(result.rows[0].state, 'base64');
     }
     return null;
   } catch {
@@ -30,7 +30,7 @@ export async function loadDocument(docId: string): Promise<Uint8Array | null> {
 }
 
 export async function saveDocument(docId: string, doc: Y.Doc): Promise<void> {
-  const state = Buffer.from(Y.encodeStateAsUpdate(doc));
+  const state = Buffer.from(Y.encodeStateAsUpdate(doc)).toString('base64');
   await pool.query(
     `INSERT INTO yjs_documents (doc_id, state, updated_at)
      VALUES ($1, $2, NOW())

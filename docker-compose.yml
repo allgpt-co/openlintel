@@ -257,8 +257,8 @@ services:
 
   collaboration:
     build:
-      context: services/collaboration
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/collaboration/Dockerfile
     container_name: openlintel-collaboration
     restart: unless-stopped
     ports:

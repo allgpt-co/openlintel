@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState } from 'react';
+import { z } from 'zod';
 import { trpc } from '@/lib/trpc/client';
 import {
   Button,
@@ -86,8 +87,11 @@ export default function ProposalsPage({ params }: { params: Promise<{ id: string
   const [scope, setScope] = useState('');
   const [terms, setTerms] = useState('');
 
-  const { data: proposals = [], isLoading } = trpc.proposal.list.useQuery({ projectId });
+  const { data: storedProposals = [], isLoading } = trpc.proposal.list.useQuery({ projectId });
 
+  const proposals = storedProposals.map((proposal) => ({ ...proposal,
+    ...z.object({ title: z.string().catch('Untitled proposal'), clientName: z.string().catch(''), clientEmail: z.string().catch(''), proposalType: z.string().catch(''), amount: z.number().catch(0), validDays: z.number().catch(30) }).parse(proposal.feeStructure ?? {}), scope: proposal.scopeOfWork, terms: proposal.termsAndConditions,
+  }));
   const createProposal = trpc.proposal.create.useMutation({
     onSuccess: () => {
       utils.proposal.list.invalidate({ projectId });
@@ -132,14 +136,9 @@ export default function ProposalsPage({ params }: { params: Promise<{ id: string
     if (!title || !clientName || !proposalType) return;
     createProposal.mutate({
       projectId,
-      title,
-      clientName,
-      clientEmail: clientEmail || undefined,
-      proposalType,
-      amount: amount ? parseFloat(amount) : 0,
-      validDays: parseInt(validDays) || 30,
-      scope: scope || undefined,
-      terms: terms || undefined,
+      scopeOfWork: scope || undefined,
+      feeStructure: { title, clientName, clientEmail, proposalType, amount: amount ? parseFloat(amount) : 0, validDays: parseInt(validDays) || 30 },
+      termsAndConditions: terms || undefined,
     });
   }
 
@@ -340,8 +339,8 @@ export default function ProposalsPage({ params }: { params: Promise<{ id: string
                       variant="outline"
                       size="sm"
                       className="flex-1"
-                      disabled={sendProposal.isPending}
-                      onClick={() => sendProposal.mutate({ id: proposal.id })}
+                      disabled title="Proposal delivery is unavailable in this release"
+
                     >
                       <Send className="mr-1 h-3.5 w-3.5" />
                       Send

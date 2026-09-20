@@ -1,6 +1,7 @@
 import { Server as SocketIOServer, Socket } from 'socket.io';
 import { verifyToken, TokenPayload } from '../auth';
 import { setupDocumentRooms } from './rooms';
+import { pool } from '../index';
 import { setupAwareness } from './awareness';
 
 interface AuthenticatedSocket extends Socket {
@@ -17,6 +18,7 @@ export function setupWebSocket(io: SocketIOServer) {
     }
     try {
       const user = verifyToken(token);
+      socket.data.claims = user;
       socket.userId = user.id;
       socket.userName = user.name || 'Anonymous';
       next();
@@ -26,7 +28,19 @@ export function setupWebSocket(io: SocketIOServer) {
   });
 
   io.on('connection', (socket: AuthenticatedSocket) => {
-    console.log(`User ${socket.userId} connected`);
+    const expires = setTimeout(() => socket.disconnect(true), Math.max(0, socket.data.claims.exp * 1000 - Date.now()));
+    socket.once('disconnect', () => clearTimeout(expires));
+    // Reject every project/document event outside this short-lived token's scope.
+    socket.use(async ([event, payload], next) => {
+      const projectId = typeof payload === 'string' ? payload : payload?.projectId ?? payload?.docId;
+      if (!projectId || projectId !== socket.data.claims.projectId) return next(new Error('Forbidden'));
+      try {
+        const result = await pool.query('SELECT id FROM projects WHERE id=$1 AND user_id=$2', [projectId, socket.userId]);
+        if (!result.rowCount) return next(new Error('Forbidden'));
+        next();
+      } catch { next(new Error('Project access unavailable')); }
+    });
+    socket.on('error', () => { socket.emit('access:error', { error: 'Project access denied' }); });
 
     // Join project rooms
     socket.on('join:project', (projectId: string) => {

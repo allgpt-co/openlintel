@@ -19,22 +19,12 @@ export const contractorRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      let query = ctx.db
-        .select()
-        .from(contractors)
-        .limit(input.limit)
-        .offset(input.offset)
-        .orderBy(sql`${contractors.rating} DESC NULLS LAST`);
-
-      if (input.search) {
-        query = query.where(ilike(contractors.name, `%${input.search}%`));
-      }
-      if (input.city) {
-        query = query.where(eq(contractors.city, input.city));
-      }
-      if (input.verifiedOnly) {
-        query = query.where(eq(contractors.verified, true));
-      }
+      const conditions = [];
+      if (input.search) conditions.push(ilike(contractors.name, `%${input.search}%`));
+      if (input.city) conditions.push(eq(contractors.city, input.city));
+      if (input.verifiedOnly) conditions.push(eq(contractors.verified, true));
+      const query = ctx.db.select().from(contractors).where(and(...conditions))
+        .limit(input.limit).offset(input.offset).orderBy(sql`${contractors.rating} DESC NULLS LAST`);
 
       return query;
     }),

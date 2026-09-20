@@ -215,7 +215,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
       let sizeW = 0.6, sizeH = 0.6, sizeD = 0.6;
       if (item.dimensions) {
         const m = item.dimensions.match(/(\d+)\s*[x×X]\s*(\d+)(?:\s*[x×X]\s*(\d+))?/);
-        if (m) {
+        if (m?.[1] && m[2]) {
           const raw1 = parseInt(m[1], 10);
           const raw2 = parseInt(m[2], 10);
           const raw3 = m[3] ? parseInt(m[3], 10) : raw2;
@@ -228,7 +228,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
         // Try to match from catalogue defaults
         const nameLower = item.name.toLowerCase();
         const catalogueMatch = FURNITURE_CATALOGUE.find(c =>
-          nameLower.includes(c.name.toLowerCase().split(' ')[0].toLowerCase()),
+          nameLower.includes((c.name.toLowerCase().split(' ')[0] ?? c.name).toLowerCase()),
         );
         if (catalogueMatch) {
           [sizeW, sizeH, sizeD] = catalogueMatch.size;
@@ -275,7 +275,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
       // Find matching catalogue item for color
       const nameLower = item.name.toLowerCase();
       const catalogueMatch = FURNITURE_CATALOGUE.find(c =>
-        nameLower.includes(c.name.toLowerCase().split(' ')[0].toLowerCase()),
+        nameLower.includes((c.name.toLowerCase().split(' ')[0] ?? c.name).toLowerCase()),
       );
 
       return {

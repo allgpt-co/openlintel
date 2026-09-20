@@ -150,8 +150,11 @@ export const localizationRouter = router({
         return { convertedValue: input.value, fromUnit: input.fromUnit, toUnit: input.toUnit };
       }
 
-      const valueInMm = input.value * MM_FACTORS[input.fromUnit];
-      const convertedValue = Math.round((valueInMm / MM_FACTORS[input.toUnit]) * 1e6) / 1e6;
+      const fromFactor = MM_FACTORS[input.fromUnit];
+      const toFactor = MM_FACTORS[input.toUnit];
+      if (!fromFactor || !toFactor) throw new Error('Unsupported unit');
+      const valueInMm = input.value * fromFactor;
+      const convertedValue = Math.round((valueInMm / toFactor) * 1e6) / 1e6;
 
       return {
         convertedValue,

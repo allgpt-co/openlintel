@@ -34,6 +34,9 @@ RUN pip install --no-cache-dir /tmp/procurement-service && \
 COPY services/procurement-service/main.py /app/main.py
 COPY services/procurement-service/src /app/src
 
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
+USER appuser
+
 EXPOSE 8008
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8008"]

@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState } from 'react';
+import { z } from 'zod';
 import { trpc } from '@/lib/trpc/client';
 import {
   Button,
@@ -169,7 +170,7 @@ export default function AnnotationsPage({ params }: { params: Promise<{ id: stri
     if (!comment) return;
     createAnnotation.mutate({
       projectId,
-      annotationType,
+      annotationType: z.enum(['photo', 'general', 'question', 'comment', 'issue', 'change_request', 'measurement', 'voice', 'dislike', 'like']).parse(annotationType),
       elementType,
       roomId: roomId || undefined,
       comment,

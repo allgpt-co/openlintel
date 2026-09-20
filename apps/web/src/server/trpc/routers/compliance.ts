@@ -310,6 +310,7 @@ export const complianceRouter = router({
         jurisdiction: input.jurisdiction,
         status: 'running',
       }).returning();
+      if (!report) throw new Error('Database operation returned no row');
 
       // Run checks asynchronously but still within the mutation
       try {

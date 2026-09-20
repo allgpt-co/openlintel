@@ -28,6 +28,9 @@ RUN pip install --no-cache-dir /tmp/catalogue-service && \
 COPY services/catalogue-service/main.py /app/main.py
 COPY services/catalogue-service/src /app/src
 
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
+USER appuser
+
 EXPOSE 8006
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8006"]

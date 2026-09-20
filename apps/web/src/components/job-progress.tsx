@@ -22,7 +22,7 @@ interface JobProgressProps {
 
 const STATUS_CONFIG: Record<
   JobStatus,
-  { label: string; icon: React.ElementType; variant: 'default' | 'secondary' | 'outline' | 'destructive'; color: string }
+  { label: string; icon: import('lucide-react').LucideIcon; variant: 'default' | 'secondary' | 'outline' | 'destructive'; color: string }
 > = {
   pending: {
     label: 'Pending',
@@ -104,7 +104,6 @@ export function JobProgress({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {/* @ts-expect-error lucide icon className */}
           <StatusIcon
             className={`h-4 w-4 ${config.color} ${
               status === 'running' ? 'animate-spin' : ''

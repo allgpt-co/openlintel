@@ -104,6 +104,7 @@ export const sampleRequestRouter = router({
         shippingAddress: input.shippingAddress ?? null,
         status: 'requested',
       }).returning();
+      if (!request) throw new Error('Database operation returned no row');
 
       // Return with unpacked metadata for new frontend format
       const meta = (request.products as any) ?? {};
@@ -138,6 +139,7 @@ export const sampleRequestRouter = router({
       const updates: any = { status: input.status };
       if (input.trackingNumber) updates.trackingNumber = input.trackingNumber;
       const [updated] = await ctx.db.update(sampleRequests).set(updates).where(eq(sampleRequests.id, input.id)).returning();
+      if (!updated) throw new Error('Database operation returned no row');
       return updated;
     }),
 
@@ -153,6 +155,7 @@ export const sampleRequestRouter = router({
       const [updated] = await ctx.db.update(sampleRequests).set({
         status: 'cancelled',
       }).where(eq(sampleRequests.id, input.id)).returning();
+      if (!updated) throw new Error('Database operation returned no row');
       return updated;
     }),
 
@@ -189,6 +192,7 @@ export const sampleRequestRouter = router({
         .set({ products: meta })
         .where(eq(sampleRequests.id, input.id))
         .returning();
+      if (!updated) throw new Error('Database operation returned no row');
 
       const updatedMeta = (updated.products as any) ?? {};
       if (!Array.isArray(updatedMeta) && updatedMeta.name) {

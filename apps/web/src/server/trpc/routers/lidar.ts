@@ -48,6 +48,7 @@ export const lidarRouter = router({
         rawPointCloudKey: input.rawPointCloudKey,
         status: 'uploaded',
       }).returning();
+      if (!scan) throw new Error('Database operation returned no row');
       return scan;
     }),
 
@@ -194,6 +195,7 @@ export const lidarRouter = router({
         status: 'uploaded',
         clashReport,
       }).returning();
+      if (!scan) throw new Error('Database operation returned no row');
       const meta = (scan.clashReport as any) ?? {};
       return {
         id: scan.id,

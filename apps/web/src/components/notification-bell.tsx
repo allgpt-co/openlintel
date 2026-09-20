@@ -92,9 +92,9 @@ export function NotificationBell() {
                       <p className={`text-sm ${!notification.read ? 'font-medium' : ''}`}>
                         {notification.title || 'Notification'}
                       </p>
-                      {notification.body && (
+                      {notification.message && (
                         <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
-                          {notification.body}
+                          {notification.message}
                         </p>
                       )}
                       <p className="mt-1 text-[10px] text-muted-foreground">

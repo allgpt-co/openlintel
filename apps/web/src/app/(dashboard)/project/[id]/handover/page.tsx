@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useCallback } from 'react';
+import { use, useEffect, useState, useCallback } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import {
   Button,
@@ -124,17 +124,17 @@ export default function HandoverPage({ params }: { params: Promise<{ id: string 
   // ── Queries ────────────────────────────────────────────────
   const { data: pkg, isLoading: pkgLoading } = trpc.handover.get.useQuery(
     { projectId },
-    {
-      onSuccess: (data: any) => {
+
+  );
+  useEffect(() => {
+    const data = pkg;
         if (data) {
           setDrawingKeys((data.asBuiltDrawingKeys as string[]) ?? []);
           setMaterials((data.materialRegister as MaterialRow[]) ?? []);
           setContractorList((data.contractorDirectory as ContractorRow[]) ?? []);
           setGuides((data.operationalGuides as GuideRow[]) ?? []);
         }
-      },
-    },
-  );
+  }, [pkg]);
 
   const { data: summaryData, isLoading: summaryLoading } =
     trpc.handover.gatherData.useQuery({ projectId });

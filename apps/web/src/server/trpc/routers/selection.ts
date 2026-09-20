@@ -47,6 +47,7 @@ export const selectionRouter = router({
         dueDate: input.dueDate ?? null,
         sortOrder: input.sortOrder ?? 0,
       }).returning();
+      if (!category) throw new Error('Database operation returned no row');
       return category;
     }),
 
@@ -208,6 +209,7 @@ export const selectionRouter = router({
         ? input.actualCost - input.allowanceBudget
         : null;
 
+      if (!category) throw new Error('Could not create required resource');
       const [selection] = await ctx.db.insert(selections).values({
         projectId: input.projectId,
         categoryId: category.id,

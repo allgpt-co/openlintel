@@ -27,7 +27,7 @@ interface StatCard {
   title: string;
   value: string | number;
   description: string;
-  icon: React.ElementType;
+  icon: import('lucide-react').LucideIcon;
   trend?: string;
 }
 

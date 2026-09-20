@@ -66,7 +66,7 @@ export function getCatalogueByCategory(): Record<string, FurniturePrimitive[]> {
     if (!grouped[item.category]) {
       grouped[item.category] = [];
     }
-    grouped[item.category].push(item);
+    (grouped[item.category] ??= []).push(item);
   }
   return grouped;
 }

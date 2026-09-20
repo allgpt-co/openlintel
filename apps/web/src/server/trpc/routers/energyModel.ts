@@ -263,6 +263,7 @@ export const energyModelRouter = router({
         for (let j = 0; j < batch.length; j++) {
           const m = batch[j];
           const res = results[j];
+          if (!m || !res) throw new Error('Incomplete analysis batch');
           await ctx.db.update(energyModelItems).set({
             status: res.status,
             result: res.result,

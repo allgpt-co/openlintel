@@ -153,7 +153,7 @@ export function ChangeOrderDialog({ projectId, trigger }: ChangeOrderDialogProps
       {changeOrders.length > 0 && (
         <div className="mt-4 space-y-2">
           {changeOrders.map((order) => {
-            const config = STATUS_CONFIG[order.status as string] || STATUS_CONFIG.pending;
+            const config = STATUS_CONFIG[order.status as string] ?? { icon: Clock, color: 'text-yellow-500', label: 'Pending' };
             const StatusIcon = config.icon;
             return (
               <div

@@ -80,7 +80,7 @@ export function MilestoneTracker({ milestones, onMilestoneClick }: MilestoneTrac
 
       <div className="space-y-6">
         {milestones.map((milestone, _idx) => {
-          const config = STATUS_CONFIG[milestone.status] || STATUS_CONFIG.pending;
+          const config = STATUS_CONFIG[milestone.status] ?? { icon: Clock, color: 'text-yellow-500', label: 'Pending', badgeVariant: 'secondary' as const };
           const StatusIcon = config.icon;
 
           return (

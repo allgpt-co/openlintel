@@ -27,7 +27,8 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
           url: `${getBaseUrl()}/api/trpc`,
           transformer: superjson,
           fetch(url, options) {
-            return fetch(url, { ...options, credentials: 'include' });
+            const body = options?.body instanceof Uint8Array ? new Blob([new Uint8Array(options.body)]) : options?.body;
+            return fetch(url, { ...options, body, signal: options?.signal ?? undefined, credentials: 'include' });
           },
         }),
       ],

@@ -1,18 +1,4 @@
-"""
-JWT verification compatible with NextAuth v5.
-
-NextAuth v5 (Auth.js) signs session JWTs with HS256 using the ``AUTH_SECRET``
-(mapped here as ``JWT_SECRET``).  The token payload contains at minimum::
-
-    { "sub": "<user-id>", "exp": <unix-ts>, "iat": <unix-ts> }
-
-This module exposes:
-
-* ``decode_jwt`` – low-level decode returning the full claims dict.
-* ``get_current_user`` – a FastAPI ``Depends()`` callable that extracts the
-  Bearer token from the ``Authorization`` header, validates it, and returns
-  the authenticated user ID (the ``sub`` claim).
-"""
+"""Verify short-lived HS256 service tokens minted by the authenticated web server."""
 
 from __future__ import annotations
 
@@ -37,16 +23,16 @@ def decode_jwt(
     secret: str,
     algorithm: str = "HS256",
 ) -> dict:
-    """Decode and verify a NextAuth v5 JWT.
+    """Decode and verify a service JWT.
 
     Parameters
     ----------
     token:
         The raw JWT string (without ``Bearer `` prefix).
     secret:
-        The ``AUTH_SECRET`` / ``JWT_SECRET`` value.
+        The distinct ``JWT_SECRET`` value.
     algorithm:
-        Signing algorithm – HS256 by default to match NextAuth v5.
+        Signing algorithm – HS256 by default to match the web service token.
 
     Returns
     -------
@@ -63,8 +49,10 @@ def decode_jwt(
             token,
             secret,
             algorithms=[algorithm],
+            issuer="openlintel-web",
+            audience="openlintel-services",
             options={
-                "require": ["exp", "sub"],
+                "require": ["exp", "sub", "iat", "iss", "aud"],
                 "verify_exp": True,
                 "verify_signature": True,
             },

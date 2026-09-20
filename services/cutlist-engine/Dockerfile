@@ -28,6 +28,9 @@ RUN pip install --no-cache-dir /tmp/cutlist-engine && \
 COPY services/cutlist-engine/main.py /app/main.py
 COPY services/cutlist-engine/src /app/src
 
+RUN useradd --system --uid 10001 --create-home appuser && chown -R appuser /app
+USER appuser
+
 EXPOSE 8004
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8004"]

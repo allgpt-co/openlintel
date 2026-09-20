@@ -23,12 +23,11 @@ if (existsSync(rootEnvPath)) {
 }
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+  outputFileTracingRoot: resolve(process.cwd(), '../..'),
   transpilePackages: ['@openlintel/core', '@openlintel/ui', '@openlintel/db', '@openlintel/config'],
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
   },
 };
 

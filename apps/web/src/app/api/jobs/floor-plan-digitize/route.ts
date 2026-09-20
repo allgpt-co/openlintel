@@ -3,7 +3,10 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { db, projects, jobs, uploads, eq, and } from '@openlintel/db';
 
-const VISION_SERVICE_URL = process.env.VISION_SERVICE_URL || 'http://localhost:8011';
+import { serviceToken } from '@/server/service-token';
+import { getPresignedUrl } from '@/lib/storage';
+
+const VISION_SERVICE_URL = process.env.VISION_SERVICE_URL || 'http://localhost:8010';
 
 export async function POST(request: NextRequest) {
   const session = await auth();
@@ -27,7 +30,7 @@ export async function POST(request: NextRequest) {
   }
 
   const upload = await db.query.uploads.findFirst({
-    where: and(eq(uploads.id, uploadId), eq(uploads.userId, session.user.id)),
+    where: and(eq(uploads.id, uploadId), eq(uploads.userId, session.user.id), eq(uploads.projectId, projectId)),
   });
   if (!upload) {
     return NextResponse.json({ error: 'Upload not found' }, { status: 404 });
@@ -40,20 +43,21 @@ export async function POST(request: NextRequest) {
       userId: session.user.id,
       type: 'floor_plan_digitization',
       status: 'pending',
-      inputJson: { projectId, uploadId, storageKey: storageKey || upload.storageKey },
+      inputJson: { projectId, uploadId, storageKey: upload.storageKey },
       projectId,
     })
     .returning();
 
   // Build image URL
-  const resolvedKey = storageKey || upload.storageKey;
-  const origin = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  const fullImageUrl = `${origin}/api/uploads/${encodeURIComponent(resolvedKey)}`;
+  const resolvedKey = upload.storageKey;
+  const fullImageUrl = await getPresignedUrl(resolvedKey, 600);
 
   // Fire-and-forget to vision-engine
-  fetch(`${VISION_SERVICE_URL}/api/v1/vision/job`, {
+  try {
+  const result = await fetch(`${VISION_SERVICE_URL}/api/v1/vision/job`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceToken(session.user.id)}` },
+    signal: AbortSignal.timeout(15000),
     body: JSON.stringify({
       job_id: job!.id,
       user_id: session.user.id,
@@ -61,9 +65,12 @@ export async function POST(request: NextRequest) {
       image_url: fullImageUrl,
       upload_id: uploadId,
     }),
-  }).catch(() => {
-    // Service may be down; job stays pending
   });
+  if (!result.ok || (await result.json()).status !== 'accepted') throw new Error('Vision service rejected the job');
+  } catch {
+    await db.update(jobs).set({ status: 'failed', error: 'Vision service unavailable' }).where(eq(jobs.id, job!.id));
+    return NextResponse.json({ error: 'Vision service unavailable' }, { status: 503 });
+  }
 
   return NextResponse.json(job, { status: 201 });
 }

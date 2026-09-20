@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState, useRef, useEffect } from 'react';
+import { z } from 'zod';
 import { trpc } from '@/lib/trpc/client';
 import {
   Button,
@@ -56,7 +57,9 @@ export default function ComplianceChatPage({ params }: { params: Promise<{ id: s
 
   const [input, setInput] = useState('');
 
-  const { data: messages = [], isLoading } = trpc.complianceChat.listMessages.useQuery({ projectId });
+  const { data: storedMessages = [], isLoading } = trpc.complianceChat.listMessages.useQuery({ projectId });
+
+  const messages = storedMessages.map((message) => ({ ...message, citations: z.array(z.object({ code: z.string(), section: z.string(), text: z.string() })).catch([]).parse(message.citations) }));
 
   const sendMessage = trpc.complianceChat.sendMessage.useMutation({
     onSuccess: () => {
@@ -159,7 +162,7 @@ export default function ComplianceChatPage({ params }: { params: Promise<{ id: s
             </div>
           ) : (
             <>
-              {messages.map((msg: ChatMessage) => (
+              {messages.map((msg) => (
                 <div key={msg.id} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                   {msg.role === 'assistant' && (
                     <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">

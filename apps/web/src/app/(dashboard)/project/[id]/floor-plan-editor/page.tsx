@@ -396,7 +396,8 @@ export default function FloorPlanEditorPage({ params }: { params: Promise<{ id: 
     let ox = PX_PER_FT * 2;
     let oy = PX_PER_FT * 2;
     if (roomGroups.length > 0) {
-      const last = roomGroups[roomGroups.length - 1];
+      const last = roomGroups.at(-1);
+      if (!last) return;
       ox = last.x + last.w + PX_PER_FT;
       oy = last.y;
       if (ox + w > 1800) {

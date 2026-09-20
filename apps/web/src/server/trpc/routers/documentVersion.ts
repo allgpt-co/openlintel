@@ -174,7 +174,7 @@ function incrementRevision(rev: string): string {
   }
   // Handle multi-letter or mixed: append .1 or increment last char
   const last = rev[rev.length - 1];
-  if (/[A-Z]/.test(last) && last !== 'Z') {
+  if (last && /[A-Z]/.test(last) && last !== 'Z') {
     return rev.slice(0, -1) + String.fromCharCode(last.charCodeAt(0) + 1);
   }
   return rev + '.1';

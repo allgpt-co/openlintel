@@ -90,7 +90,7 @@ export function BOMTable({ items, currency = 'USD' }: BOMTableProps) {
 
     // Sort items within each group
     for (const cat of Object.keys(groups)) {
-      groups[cat].sort((a, b) => {
+      groups[cat]?.sort((a, b) => {
         let cmp = 0;
         if (sortField === 'name') cmp = a.name.localeCompare(b.name);
         else if (sortField === 'quantity') cmp = a.quantity - b.quantity;
@@ -188,7 +188,7 @@ export function BOMTable({ items, currency = 'USD' }: BOMTableProps) {
         <tbody>
           {categories.map((category) => {
             const isCollapsed = collapsedCategories.has(category);
-            const catItems = grouped[category];
+            const catItems = grouped[category] ?? [];
             const catTotal = categoryTotals[category];
 
             return (
@@ -219,7 +219,7 @@ export function BOMTable({ items, currency = 'USD' }: BOMTableProps) {
                     </div>
                   </td>
                   <td className="px-3 py-2 text-right font-semibold">
-                    {formatCurrency(catTotal, currency)}
+                    {formatCurrency(catTotal ?? 0, currency)}
                   </td>
                   <td className="px-3 py-2" />
                 </tr>

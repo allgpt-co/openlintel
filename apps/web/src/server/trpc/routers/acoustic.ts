@@ -220,6 +220,7 @@ export const acousticRouter = router({
         for (let j = 0; j < batch.length; j++) {
           const a = batch[j];
           const result = results[j];
+          if (!a || !result) throw new Error('Incomplete analysis batch');
 
           await ctx.db.update(acousticAssessments).set({
             status: result.status,

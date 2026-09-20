@@ -49,22 +49,7 @@ export const spacePlanningRouter = router({
       if (!room) throw new Error('Room not found');
       if ((room.project as any).userId !== ctx.userId) throw new Error('Access denied');
 
-      const [job] = await ctx.db.insert(jobs).values({
-        userId: ctx.userId,
-        type: 'space_planning',
-        status: 'pending',
-        inputJson: {
-          roomId: input.roomId,
-          furnitureList: input.furnitureList ?? [],
-          priorities: input.priorities ?? ['circulation'],
-        },
-        projectId: (room.project as any).id,
-        roomId: input.roomId,
-      }).returning();
-
-      // In background, the AI service would process this job and insert into spacePlans
-      // For now, return the job so the client can poll for completion
-      return job;
+      throw new Error('Automatic space-plan generation is not available in this release');
     }),
 
   // ── Save / update a space plan ──────────────────────────

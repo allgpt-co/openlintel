@@ -61,7 +61,7 @@ export function PaymentMilestone({
   const [selectedProvider, setSelectedProvider] = useState('stripe');
   const [expanded, setExpanded] = useState(false);
 
-  const badge = STATUS_BADGES[status] || STATUS_BADGES.pending;
+  const badge = STATUS_BADGES[status] ?? { variant: 'secondary' as const, label: 'Pending' };
   const totalPaid = payments
     .filter((p) => p.status === 'completed')
     .reduce((sum, p) => sum + p.amount, 0);

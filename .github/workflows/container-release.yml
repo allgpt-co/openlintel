@@ -79,6 +79,8 @@ jobs:
         run: |
           docker build -t collab-test -f services/collaboration/Dockerfile .
           docker run -d --name collab-test --network host -e DATABASE_URL -e JWT_SECRET -e REDIS_URL -e WEB_URL collab-test
+      - name: Verify cache isolation beside conflicting shared-network aliases
+        run: bash infra/scripts/service-discovery-smoke.sh
       - name: Start web and verify readiness, version and disabled billing
         run: |
           docker run -d --name web-test --network host -e DATABASE_URL -e JWT_SECRET -e AUTH_SECRET -e API_KEY_ENCRYPTION_SECRET -e AUTH_URL -e AWS_REGION -e AWS_S3_BUCKET -e GITHUB_CLIENT_ID -e GITHUB_CLIENT_SECRET web-test

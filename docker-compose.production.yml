@@ -21,6 +21,10 @@ services:
     - noeviction
     volumes:
     - redis_data:/data
+    networks:
+      default:
+        aliases:
+        - openlintel-redis
     healthcheck:
       test:
       - CMD
@@ -46,6 +50,10 @@ services:
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in Coolify}
     volumes:
     - meilisearch_data:/meili_data
+    networks:
+      default:
+        aliases:
+        - openlintel-meilisearch
     healthcheck:
       test:
       - CMD
@@ -87,7 +95,7 @@ services:
       dockerfile: services/design-engine/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -131,7 +139,7 @@ services:
       dockerfile: services/media-service/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -175,7 +183,7 @@ services:
       dockerfile: services/bom-engine/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -219,7 +227,7 @@ services:
       dockerfile: services/drawing-generator/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -263,7 +271,7 @@ services:
       dockerfile: services/cutlist-engine/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -307,7 +315,7 @@ services:
       dockerfile: services/mep-calculator/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -351,7 +359,7 @@ services:
       dockerfile: services/catalogue-service/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -362,7 +370,7 @@ services:
       ENVIRONMENT: production
       CORS_ORIGINS: '["${AUTH_URL:?Set AUTH_URL}"]'
       SERVICE_NAME: catalogue-service
-      MEILI_URL: http://meilisearch:7700
+      MEILI_URL: http://openlintel-meilisearch:7700
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in Coolify}
     depends_on:
       migrate:
@@ -399,7 +407,7 @@ services:
       dockerfile: services/project-service/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -443,7 +451,7 @@ services:
       dockerfile: services/procurement-service/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -487,7 +495,7 @@ services:
       dockerfile: services/vision-engine/Dockerfile
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -532,7 +540,7 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       WEB_URL: ${AUTH_URL:?Set AUTH_URL in Coolify}
     expose:
@@ -574,7 +582,7 @@ services:
           Coolify}
     environment:
       DATABASE_URL: ${DATABASE_URL:?Set DATABASE_URL in Coolify}
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://openlintel-redis:6379
       JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in Coolify}
       API_KEY_ENCRYPTION_SECRET: ${API_KEY_ENCRYPTION_SECRET:?Set API_KEY_ENCRYPTION_SECRET in Coolify}
       AWS_REGION: ${AWS_REGION:?Set AWS_REGION in Coolify}
@@ -593,7 +601,7 @@ services:
       AUTH_URL: ${AUTH_URL:?Set AUTH_URL in Coolify}
       AUTH_TRUST_HOST: 'true'
       BUILD_SHA: ${BUILD_SHA:?Set BUILD_SHA in Coolify}
-      MEILI_URL: http://meilisearch:7700
+      MEILI_URL: http://openlintel-meilisearch:7700
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in Coolify}
       BILLING_ENABLED: 'false'
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
@@ -620,8 +628,6 @@ services:
       migrate:
         condition: service_completed_successfully
       redis:
-        condition: service_healthy
-      collaboration:
         condition: service_healthy
     healthcheck:
       test:

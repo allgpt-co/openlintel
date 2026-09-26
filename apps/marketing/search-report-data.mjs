@@ -1,4 +1,5 @@
 // Pure reporting helpers keep provider limits and derived data explicit.
+import { config } from './config.mjs';
 export const REPORT_LIMITS = { pageSize: 1000, maxPages: 5, inspections: 15 };
 
 export function classifyQuery(query) {
@@ -9,21 +10,101 @@ export function classifyQuery(query) {
   return 'nonbrand';
 }
 
-export function classifyPage(value, registry) {
+export function classifyPage(
+  value,
+  registry,
+  { origin = config.origin, basePath = config.base } = {},
+) {
   try {
     const page = new URL(value);
     if (page.hostname === 'app.openlintel.com') return { surface: 'app', cluster: 'app' };
-    if (!['openlintel.com', 'www.openlintel.com'].includes(page.hostname))
-      return { surface: 'other', cluster: 'unmapped' };
-    const record = registry.find((item) => `/${item.path}` === page.pathname);
+    if (page.origin !== new URL(origin).origin) return { surface: 'other', cluster: 'unmapped' };
+    const base = `/${basePath.replace(/^\/+|\/+$/g, '')}/`.replace('//', '/');
+    if (!page.pathname.startsWith(base)) return { surface: 'other', cluster: 'unmapped' };
+    const record = registry.find((item) => `${base}${item.path}` === page.pathname);
     return {
       surface: 'marketing',
       pageId: record?.id || null,
       cluster: record?.cluster || record?.kind || 'unmapped',
+      familyId: record?.familyId || null,
+      cohortId: record?.cohortId || null,
     };
   } catch {
     return { surface: 'unknown', cluster: 'unmapped' };
   }
+}
+
+export function publicationGroups(
+  entries,
+  { origin = config.origin, basePath = config.base, now = new Date() } = {},
+) {
+  const result = { families: {}, cohorts: {} };
+  for (const [kind, field] of [
+    ['families', 'familyId'],
+    ['cohorts', 'cohortId'],
+  ]) {
+    for (const entry of entries) {
+      if (!entry[field]) continue;
+      (result[kind][entry[field]] ||= { id: entry[field], pages: [] }).pages.push(entry);
+    }
+    for (const group of Object.values(result[kind])) {
+      const released = group.pages.filter(
+        (page) =>
+          page.state !== 'candidate' &&
+          (page.cohortId === 'legacy' ||
+            (['published', 'retired'].includes(page.state) &&
+              page.firstVerifiedLiveAt &&
+              Date.parse(page.firstVerifiedLiveAt) <= now.getTime())),
+      );
+      const times =
+        group.id === 'legacy'
+          ? []
+          : released.map((page) => Date.parse(page.firstVerifiedLiveAt)).filter(Number.isFinite);
+      group.status =
+        group.id === 'legacy'
+          ? 'legacy_date_unknown'
+          : !released.length
+            ? 'not_released'
+            : released.length === group.pages.length
+              ? 'released'
+              : 'partially_released';
+      group.pageIds = group.pages.map((page) => page.id);
+      group.pendingPageIds = group.pages
+        .filter((page) => !released.includes(page))
+        .map((page) => page.id);
+      group.urls = released.map(
+        (page) => new URL(`${basePath.replace(/\/?$/, '/')}${page.path}`, origin).href,
+      );
+      group.landingPaths = group.urls.map((url) => new URL(url).pathname);
+      group.firstVerifiedLiveAt = times.length ? new Date(Math.min(...times)).toISOString() : null;
+      group.ageDays = times.length
+        ? Math.floor((now.getTime() - Math.min(...times)) / 86_400_000)
+        : null;
+      group.minimumPageAgeDays = times.length
+        ? Math.floor((now.getTime() - Math.max(...times)) / 86_400_000)
+        : null;
+      delete group.pages;
+    }
+  }
+  return result;
+}
+
+export function cohortGscFilters(group, site, us = false) {
+  if (
+    !site.startsWith('sc-domain:') &&
+    group.urls.some((url) => !url.startsWith(site.endsWith('/') ? site : `${site}/`))
+  )
+    return null;
+  const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const expression = `^(?:${group.urls.map(escape).join('|')})$`;
+  if (expression.length > 4096)
+    throw new Error(
+      'Cohort URL filter exceeds the Google expression limit; split the reporting cohort.',
+    );
+  return [
+    { dimension: 'page', operator: 'includingRegex', expression },
+    ...(us ? [{ dimension: 'country', operator: 'equals', expression: 'usa' }] : []),
+  ];
 }
 
 export function rollupSearchRows(table, keyForRow) {
@@ -146,7 +227,8 @@ export async function capture(operation) {
 
 export function sourceStatus(tables) {
   const required = tables.filter(
-    (table) => !['not_configured', 'not_requested', 'out_of_scope'].includes(table.status),
+    (table) =>
+      !['not_configured', 'not_requested', 'out_of_scope', 'not_released'].includes(table.status),
   );
   if (
     !required.length ||

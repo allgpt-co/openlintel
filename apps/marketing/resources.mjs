@@ -3,6 +3,7 @@ import { esc, url } from './config.mjs';
 import { picture, caption } from './components.mjs';
 import { clusters } from './registry.mjs';
 import { displayRows } from './documents.mjs';
+import { scheduleRecords } from './schedule-assets.mjs';
 import { growthConfig, pilotCtaLabel } from './growth-config.mjs';
 import { verifiedReview } from './editorial-review.mjs';
 
@@ -141,6 +142,15 @@ export function diagramSvg(type) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title desc"><title id="title">${esc(label)}</title><desc id="desc">Illustrative teaching diagram, not a site record or construction instruction.</desc><rect width="1000" height="620" fill="#f5f1e9"/><style>text{font-family:Arial,sans-serif;font-size:20px;fill:#252722}.heading{font-size:25px}.tag{font-size:14px;letter-spacing:1px;fill:#914f38}.note{font-size:18px}</style><text x="60" y="65" class="tag">OPENLINTEL / ${esc(type.replaceAll('-', ' ').toUpperCase())}</text>${body}<path d="M60 565H940" stroke="#d8d1c5"/><text x="60" y="595" class="tag">ILLUSTRATIVE TEACHING DIAGRAM · PENDING REVIEW · NOT FOR CONSTRUCTION</text></svg>`;
 }
 function templatePreview(page) {
+  if (page.recordLayout)
+    return `<div class="document-preview"><p class="resource-kind">Worked example preview · XLSX and PDF</p>${scheduleRecords(
+      page,
+    )
+      .map(
+        (record) =>
+          `<section><h3>Record ${record.number}</h3>${record.sections.map((section) => `<h4>${esc(section.title)}</h4><dl>${section.fields.map((field) => `<div><dt>${esc(field.label)}</dt><dd class="example-answer">${field.value === '' ? 'Unresolved / not entered' : esc(field.value)}</dd></div>`).join('')}</dl>`).join('')}</section>`,
+      )
+      .join('')}</div>`;
   if (page.format === 'docx')
     return `<div class="document-preview"><p class="resource-kind">Worked example preview · DOCX</p><dl>${page.fields.map((f) => `<div><dt>${esc(f.label)}</dt><dd><p>${esc(f.help)}</p><p class="example-answer">${esc(f.example)}</p></dd></div>`).join('')}</dl></div>`;
   return `<div class="table-scroll resource-table" tabindex="0" role="region" aria-label="Worked example spreadsheet; scroll horizontally"><table><caption>${esc(page.title)} · Worked Example sheet${page.budget ? ' · USD teaching figures only' : ''}</caption><thead><tr>${page.columns.map((c) => `<th scope="col">${esc(c.label)}</th>`).join('')}</tr></thead><tbody>${displayRows(
@@ -157,7 +167,10 @@ function downloads(page) {
     page.id === 'presentation'
       ? 'Editable PowerPoint decks include separate image and text elements, two mood-board directions, and decision slides. Choose the blank deck or illustrative example; use the PDF to preview the example and the DOCX companion to plan its story.'
       : page.format === 'xlsx'
-        ? 'One workbook with Instructions, Blank Template, and Worked Example sheets. Twenty editable rows; duplicate or extend the template for your project.'
+        ? esc(
+            page.workbookDescription ||
+              'One workbook with Instructions, Blank Template, and Worked Example sheets. Twenty editable rows; duplicate or extend the template for your project.',
+          )
         : 'Separate blank and worked-example documents. Edit the blank copy in Word or a compatible document editor. Any PDF is a printable companion, not an interactive form.';
   return `<section id="download" class="download-panel"><h2>Make it your own</h2><p>${instructions}</p><div class="download-actions">${page.downloads.map((d, i) => `<a class="${i === 0 ? 'button' : 'text-link'}" data-resource-download data-resource-id="${esc(page.id)}" data-resource-format="${d.format.toLowerCase()}" data-resource-variant="${esc(d.variant || (d.format.toLowerCase() === 'xlsx' ? 'workbook' : i === 0 ? 'blank' : 'example'))}" href="${url(d.path)}" download>${esc(d.label)} <span class="download-size">${d.format} · ${(d.size / 1024).toFixed(1)} KB</span></a>`).join('')}</div><p class="micro">Free download · No account · No information uploaded to OpenLintel</p></section>`;
 }
@@ -173,7 +186,7 @@ export function resourcePage(page, registry, project, settings = growthConfig) {
       ]
     : page.sections;
   const article = template
-    ? `<section id="preview"><h2>Worked example & fields</h2><p class="sample-notice">Illustrative teaching extension of The Window Room. Pending review; not a client record, supplier quote, site survey, or construction-ready document.</p>${templatePreview(page)}${page.columns ? `<h3>What each field records</h3><dl class="field-guide">${page.columns.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${esc(c.help)}</dd></div>`).join('')}</dl>` : ''}</section>
+    ? `<section id="preview"><h2>Worked example & fields</h2><p class="sample-notice">${esc(page.exampleNotice || 'Illustrative teaching extension of The Window Room. Pending review; not a client record, supplier quote, site survey, or construction-ready document.')}</p>${templatePreview(page)}${page.columns ? `<h3>What each field records</h3><dl class="field-guide">${page.columns.map((c) => `<div><dt>${esc(c.label)}</dt><dd>${esc(c.help)}</dd></div>`).join('')}</dl>` : ''}</section>
        <section id="use"><h2>How to use this template</h2><p>${esc(page.use)}</p><ol>${page.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol></section>
        ${(page.sections || []).map(authoredSection).join('')}
        <section id="review"><h2>Review before use</h2>${list(page.mistakes)}${page.unitsNote ? `<h3>Units, source information, and US use</h3><p>${esc(page.unitsNote)}</p>` : ''}</section>${downloads(page)}`
@@ -183,10 +196,12 @@ export function resourcePage(page, registry, project, settings = growthConfig) {
     <div class="article-layout"><aside class="article-toc"><nav aria-label="On this page"><p class="eyebrow">On this page</p><ol>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.title)}</a></li>`).join('')}${template ? '' : '<li><a href="#checklist">Review checklist</a></li>'}</ol></nav></aside>
     <article class="resource-body">${article}
       <section class="article-sources"><h2>About this resource</h2>${reviewCredit(page)}<p><a href="${url('editorial-policy/')}">Authorship, review boundaries, sources, and corrections</a></p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section>
-      <section class="sample-bridge"><h2>See the information connect</h2><p>Follow the corresponding chapter of The Window Room: one illustrative brief, one selected direction, and coordinated sample references.</p><a class="text-link" data-sample-link data-source-page-id="${esc(page.id)}" href="${url(`sample-project/#${page.sample}`)}">Explore the sample ${page.sample === 'handoff' ? 'handoff' : page.sample}</a></section>
+      ${page.exampleBridge ? `<section class="sample-bridge"><h2>${esc(page.exampleBridge.title)}</h2><p>${esc(page.exampleBridge.description)}</p><a class="text-link" href="${url(page.exampleBridge.path)}">${esc(page.exampleBridge.label)}</a></section>` : `<section class="sample-bridge"><h2>See the information connect</h2><p>Follow the corresponding chapter of The Window Room: one illustrative brief, one selected direction, and coordinated sample references.</p><a class="text-link" data-sample-link data-source-page-id="${esc(page.id)}" href="${url(`sample-project/#${page.sample}`)}">Explore the sample ${page.sample === 'handoff' ? 'handoff' : page.sample}</a></section>`}
       <section class="sample-bridge"><h2>Discuss your studio’s workflow</h2><p>${esc(settings.pilotEnabled ? page.pilot || 'Discuss documentation and coordination challenges in a discovery conversation. OpenLintel is in active development.' : 'Discovery requests are not open yet. Check current availability and what a future conversation could cover. Every resource remains available without signing up.')}</p><a class="text-link" data-pilot-cta data-source-page-id="${esc(page.id)}" href="${url('pilot/')}">${pilotCtaLabel(settings)}</a></section>
     </article></div>
-    <section class="related-resources"><h2>The next useful step</h2><div class="resource-grid">${page.related
+    <section class="related-resources"><h2>The next useful step</h2><div class="resource-grid">${[
+      ...new Set([...page.related, ...(page.programmaticRelated || [])]),
+    ]
       .map((id) => registry.find((p) => p.id === id))
       .map(card)
       .join(

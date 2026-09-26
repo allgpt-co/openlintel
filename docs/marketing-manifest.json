@@ -1,6 +1,6 @@
 {
   "generator": "OpenLintel marketing",
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "origin": "https://openlintel.com",
   "basePath": "/",
   "indexable": true,
@@ -9,43 +9,64 @@
       "id": "home",
       "path": "",
       "kind": "marketing",
-      "indexable": true
+      "indexable": true,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "home"
     },
     {
       "id": "how-it-works/",
       "path": "how-it-works/",
       "kind": "marketing",
-      "indexable": true
+      "indexable": true,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "how-it-works"
     },
     {
       "id": "sample-project/",
       "path": "sample-project/",
       "kind": "marketing",
-      "indexable": true
+      "indexable": true,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "sample-project"
     },
     {
       "id": "for-design-studios/",
       "path": "for-design-studios/",
       "kind": "marketing",
-      "indexable": true
+      "indexable": true,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "for-design-studios"
     },
     {
       "id": "for-architects/",
       "path": "for-architects/",
       "kind": "marketing",
-      "indexable": true
+      "indexable": true,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "for-architects"
     },
     {
       "id": "open-source/",
       "path": "open-source/",
       "kind": "marketing",
-      "indexable": true
+      "indexable": true,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "open-source"
     },
     {
       "id": "summary",
       "path": "sample-project/summary/",
       "kind": "summary",
-      "indexable": false
+      "indexable": false,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "summary"
     },
     {
       "id": "resources",
@@ -53,7 +74,10 @@
       "kind": "hub",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "resources"
     },
     {
       "id": "templates",
@@ -61,48 +85,69 @@
       "kind": "hub",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "templates"
     },
     {
       "id": "pilot",
       "path": "pilot/",
       "kind": "growth",
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "pilot"
     },
     {
       "id": "product-status",
       "path": "product-status/",
       "kind": "growth",
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "product-status"
     },
     {
       "id": "about",
       "path": "about/",
       "kind": "growth",
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "about"
     },
     {
       "id": "editorial-policy",
       "path": "editorial-policy/",
       "kind": "growth",
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "editorial-policy"
     },
     {
       "id": "privacy",
       "path": "privacy/",
       "kind": "growth",
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "privacy"
     },
     {
       "id": "pilot-thanks",
       "path": "pilot/thanks/",
       "kind": "growth",
-      "indexable": false
+      "indexable": false,
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "pilot-thanks"
     },
     {
       "id": "client-questionnaire",
@@ -133,7 +178,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "client-questionnaire"
     },
     {
       "id": "design-brief",
@@ -157,7 +205,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "design-brief"
     },
     {
       "id": "proposal",
@@ -181,7 +232,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "proposal"
     },
     {
       "id": "scope-of-work",
@@ -205,7 +259,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "scope-of-work"
     },
     {
       "id": "budget",
@@ -222,7 +279,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "budget"
     },
     {
       "id": "spec-sheet",
@@ -239,7 +299,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "spec-sheet"
     },
     {
       "id": "ffe-schedule",
@@ -256,7 +319,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "ffe-schedule"
     },
     {
       "id": "finish-schedule",
@@ -273,7 +339,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "finish-schedule"
     },
     {
       "id": "room-data",
@@ -290,7 +359,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "room-data"
     },
     {
       "id": "timeline",
@@ -307,7 +379,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "timeline"
     },
     {
       "id": "site-survey",
@@ -331,7 +406,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "site-survey"
     },
     {
       "id": "presentation",
@@ -376,7 +454,10 @@
         }
       ],
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "presentation"
     },
     {
       "id": "mood-board",
@@ -384,7 +465,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-26"
+      "modified": "2026-09-26",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "mood-board"
     },
     {
       "id": "material-board",
@@ -392,7 +476,10 @@
       "kind": "guide",
       "wave": 2,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "material-board"
     },
     {
       "id": "concept-board",
@@ -400,7 +487,10 @@
       "kind": "guide",
       "wave": 2,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "concept-board"
     },
     {
       "id": "space-planning",
@@ -408,7 +498,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "space-planning"
     },
     {
       "id": "measure-room",
@@ -416,7 +509,10 @@
       "kind": "guide",
       "wave": 2,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "measure-room"
     },
     {
       "id": "design-process",
@@ -424,7 +520,10 @@
       "kind": "guide",
       "wave": 2,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "design-process"
     },
     {
       "id": "procurement",
@@ -432,7 +531,10 @@
       "kind": "guide",
       "wave": 3,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "procurement"
     },
     {
       "id": "elevation-guide",
@@ -440,7 +542,10 @@
       "kind": "guide",
       "wave": 3,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "elevation-guide"
     },
     {
       "id": "rcp-guide",
@@ -448,7 +553,10 @@
       "kind": "guide",
       "wave": 3,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "rcp-guide"
     },
     {
       "id": "ffe-guide",
@@ -456,7 +564,10 @@
       "kind": "guide",
       "wave": 3,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "ffe-guide"
     },
     {
       "id": "project-management",
@@ -464,7 +575,10 @@
       "kind": "guide",
       "wave": 3,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "project-management"
     },
     {
       "id": "drawing-checklist",
@@ -472,7 +586,10 @@
       "kind": "guide",
       "wave": 3,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "drawing-checklist"
     },
     {
       "id": "concept-vs-documents",
@@ -480,7 +597,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "concept-vs-documents"
     },
     {
       "id": "brief-to-schedules",
@@ -488,7 +608,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "brief-to-schedules"
     },
     {
       "id": "specification-change",
@@ -496,7 +619,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "specification-change"
     },
     {
       "id": "handoff-package",
@@ -504,7 +630,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "handoff-package"
     },
     {
       "id": "approval-states",
@@ -512,7 +641,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "approval-states"
     },
     {
       "id": "software-evaluation",
@@ -520,7 +652,10 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-15",
+      "familyId": "legacy",
+      "cohortId": "legacy",
+      "intentKey": "software-evaluation"
     }
   ],
   "files": [

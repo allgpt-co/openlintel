@@ -317,3 +317,187 @@ test('Assisted evidence requires coherent original acquisition, dates and known 
     assert.equal(result.status, 'available');
   }
 });
+
+const outcomeHistory = [
+  {
+    id: 'client-questionnaire',
+    landingId: 'client-questionnaire',
+    path: 'templates/interior-design-client-questionnaire/',
+    state: 'legacy',
+    familyId: 'legacy',
+    cohortId: 'legacy',
+    firstVerifiedLiveAt: null,
+  },
+  ...['a', 'b'].map((id) => ({
+    id: `cohort-page-${id}`,
+    landingId: `cohort-page-${id}`,
+    path: `templates/cohort-page-${id}/`,
+    state: 'published',
+    familyId: 'selection-procurement',
+    cohortId: `cohort-${id}`,
+    firstVerifiedLiveAt: '2026-08-01T00:00:00Z',
+  })),
+  {
+    id: 'retired-page',
+    landingId: 'retired-page',
+    path: 'templates/retired-page/',
+    state: 'retired',
+    familyId: 'selection-procurement',
+    cohortId: 'cohort-a',
+    firstVerifiedLiveAt: '2026-07-01T00:00:00Z',
+  },
+  {
+    id: 'candidate-page',
+    landingId: 'candidate-page',
+    path: 'templates/candidate-page/',
+    state: 'candidate',
+    familyId: 'selection-procurement',
+    cohortId: 'future-cohort',
+    firstVerifiedLiveAt: null,
+  },
+];
+const cohortLead = (landing, overrides = {}) =>
+  lead({
+    source_evidence: JSON.stringify({
+      ...JSON.parse(lead().source_evidence),
+      landing_page: landing,
+    }),
+    ...overrides,
+  });
+
+test('Schema2 cohort totals credit earliest organic acquisition once and reconcile with the global studio KPI', () => {
+  const result = aggregateStudioOutcomes(
+    [
+      cohortLead('cohort-page-a'),
+      cohortLead('cohort-page-b', {
+        lead_id: 'later-contact',
+        first_known_at: '2026-09-02',
+        source_evidence: JSON.stringify({
+          ...JSON.parse(lead().source_evidence),
+          first_known_date: '2026-09-02',
+          landing_page: 'cohort-page-b',
+        }),
+      }),
+      cohortLead('cohort-page-b', { lead_id: 'second-studio', studio_id: 'studio-2' }),
+      lead({ lead_id: 'legacy-studio', studio_id: 'studio-3' }),
+    ],
+    { ...period, history: outcomeHistory },
+  );
+  assert.equal(result.schemaVersion, 2);
+  assert.equal(result.observedOrganicQualifiedCompletedStudios, 3);
+  assert.equal(result.cohorts['cohort-a'].observedOrganicQualifiedCompletedStudios, 1);
+  assert.equal(result.cohorts['cohort-b'].observedOrganicQualifiedCompletedStudios, 1);
+  assert.deepEqual(result.cohortReconciliation, {
+    assignedCompletedStudios: 2,
+    legacyCompletedStudios: 1,
+    unassignedCompletedStudios: 0,
+    overallObservedOrganicCompletedStudios: 3,
+    reconciled: true,
+  });
+});
+
+test('Earliest-date cohort ties remain unassigned and globally mixed sources receive no cohort credit', () => {
+  const tied = aggregateStudioOutcomes(
+    [
+      cohortLead('cohort-page-a'),
+      cohortLead('cohort-page-b', {
+        lead_id: 'other-contact',
+        received_at: '2026-09-02T13:00:00Z',
+      }),
+    ],
+    { ...period, history: outcomeHistory },
+  );
+  assert.equal(tied.observedOrganicQualifiedCompletedStudios, 1);
+  assert.equal(tied.cohortReconciliation.unassignedCompletedStudios, 1);
+  assert.equal(tied.cohortReconciliation.assignedCompletedStudios, 0);
+  assert.equal(tied.cohortReconciliation.reconciled, true);
+  const mixed = aggregateStudioOutcomes(
+    [
+      cohortLead('cohort-page-a'),
+      lead({
+        lead_id: 'earlier',
+        received_at: '2026-08-20T00:00:00Z',
+        qualified_at: '',
+        completed_at: '',
+        attribution_classification: 'unknown',
+        source_evidence: 'unknown',
+      }),
+    ],
+    { ...period, history: outcomeHistory },
+  );
+  assert.equal(mixed.observedOrganicQualifiedCompletedStudios, 0);
+  assert.equal(mixed.cohortReconciliation.assignedCompletedStudios, 0);
+});
+
+test('Retired page history remains attributable; unreleased candidates and assisted-only evidence receive no sourced cohort credit', () => {
+  const retired = aggregateStudioOutcomes([cohortLead('retired-page')], {
+    ...period,
+    history: outcomeHistory,
+  });
+  assert.equal(retired.cohorts['cohort-a'].observedOrganicQualifiedCompletedStudios, 1);
+  const pending = aggregateStudioOutcomes([cohortLead('candidate-page')], {
+    ...period,
+    history: outcomeHistory,
+  });
+  assert.equal(pending.observedOrganicQualifiedCompletedStudios, 0);
+  assert.equal(pending.cohorts['future-cohort'].status, 'not_released');
+  assert.ok(!('observedOrganicQualifiedCompletedStudios' in pending.cohorts['future-cohort']));
+  const assisted = aggregateStudioOutcomes(
+    [
+      cohortLead('cohort-page-a', {
+        attribution_classification: 'organic_assisted',
+        observed_medium: 'direct',
+        observed_source: 'none',
+        organic_assisted: true,
+        source_evidence: JSON.stringify({
+          channel: 'direct',
+          provider: 'none',
+          first_known_date: '2026-09-01',
+          landing_page: 'cohort-page-a',
+          organic_assisted: true,
+        }),
+      }),
+    ],
+    { ...period, history: outcomeHistory },
+  );
+  assert.equal(assisted.organicAssistedCompletedStudios, 1);
+  assert.equal(assisted.cohortReconciliation.assignedCompletedStudios, 0);
+});
+
+test('Cohort attribution checks each earliest page publication date and preserves unsupported credit as unassigned', () => {
+  const history = outcomeHistory.map((entry) =>
+    entry.id === 'cohort-page-a'
+      ? { ...entry, firstVerifiedLiveAt: '2026-09-20T12:00:00Z' }
+      : entry,
+  );
+  const makeLead = (firstKnownDate, received_at) =>
+    cohortLead('cohort-page-a', {
+      received_at,
+      first_known_at: firstKnownDate,
+      qualified_at: '2026-09-21T00:00:00Z',
+      completed_at: '2026-09-22T00:00:00Z',
+      source_evidence: JSON.stringify({
+        ...JSON.parse(lead().source_evidence),
+        landing_page: 'cohort-page-a',
+        first_known_date: firstKnownDate,
+      }),
+    });
+  for (const record of [
+    makeLead('2026-09-14', '2026-09-15T00:00:00Z'),
+    makeLead('2026-09-20', '2026-09-20T10:00:00Z'),
+  ]) {
+    const result = aggregateStudioOutcomes([record], { ...period, history });
+    assert.equal(result.observedOrganicQualifiedCompletedStudios, 1);
+    assert.equal(result.cohorts['cohort-a'].observedOrganicQualifiedCompletedStudios, 0);
+    assert.equal(result.cohortReconciliation.unassignedCompletedStudios, 1);
+    assert.equal(result.cohortReconciliation.reconciled, true);
+    assert.equal(result.diagnostics.preLiveCohortEvidence, 1);
+    assert.equal(result.status, 'needs_review');
+  }
+  const sameDay = aggregateStudioOutcomes([makeLead('2026-09-20', '2026-09-20T13:00:00Z')], {
+    ...period,
+    history,
+  });
+  assert.equal(sameDay.cohorts['cohort-a'].observedOrganicQualifiedCompletedStudios, 1);
+  assert.equal(sameDay.diagnostics.preLiveCohortEvidence, 0);
+});

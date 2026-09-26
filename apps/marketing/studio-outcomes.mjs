@@ -1,19 +1,12 @@
 import { readFile } from 'node:fs/promises';
-import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { writePrivateReport } from './report-output.mjs';
-import { createRegistry, publishedPages } from './registry.mjs';
+import { publicationHistory } from './publication-history.mjs';
+import { publicationGroups } from './search-report-data.mjs';
 
 const SOURCES = new Set(['google', 'bing', 'duckduckgo', 'yahoo', 'brave']);
 const LABELS = ['observed_organic_sourced', 'self_reported_organic', 'unknown', 'mixed'];
-const LANDING_PAGES = new Set(
-  publishedPages(
-    createRegistry(
-      JSON.parse(readFileSync(new URL('./data/project.json', import.meta.url), 'utf8')),
-    ),
-  ).map((page) => page.id.replace(/\/+$/, '').replaceAll('/', '-')),
-);
 const DAY = 86_400_000;
 function coherentAcquisition(channel, provider) {
   if (channel === 'organic-search') return SOURCES.has(provider);
@@ -37,7 +30,7 @@ function timestamp(value) {
   if (new Date(day).toISOString().slice(0, 10) !== day) return null;
   return number;
 }
-function evidenceFor(record) {
+function evidenceFor(record, landingPages) {
   let evidence;
   try {
     evidence = JSON.parse(record.source_evidence);
@@ -57,7 +50,7 @@ function evidenceFor(record) {
     evidenceAge >= 0 &&
     evidenceAge < 90 * DAY &&
     evidence?.first_known_date === firstKnown &&
-    LANDING_PAGES.has(evidence?.landing_page) &&
+    landingPages.has(evidence?.landing_page) &&
     typeof evidence?.organic_assisted === 'boolean' &&
     coherentAcquisition(evidence?.channel, evidence?.provider) &&
     evidence?.channel === record.observed_medium &&
@@ -83,6 +76,7 @@ function evidenceFor(record) {
       validEvidence &&
       [true, 'true'].includes(record.organic_assisted) &&
       evidence?.organic_assisted === true,
+    acquisition: observed ? { firstKnownDate: firstKnown, landingId: evidence.landing_page } : null,
   };
 }
 
@@ -139,7 +133,10 @@ export function parseRegisterCsv(text) {
   });
 }
 
-export function aggregateStudioOutcomes(records, { startDate, endDate, now = new Date() }) {
+export function aggregateStudioOutcomes(
+  records,
+  { startDate, endDate, now = new Date(), history = publicationHistory() },
+) {
   for (const value of [startDate, endDate]) {
     if (
       !/^\d{4}-\d{2}-\d{2}$/.test(value || '') ||
@@ -150,6 +147,15 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
   }
   if (startDate > endDate) throw new Error('Outcome start date must not follow its end date.');
   if (!Array.isArray(records)) throw new Error('Register JSON must be an array of records.');
+  const landingPages = new Map(
+    history
+      .filter((entry) => ['legacy', 'published', 'retired'].includes(entry.state))
+      .map((entry) => [
+        entry.landingId || entry.id.replace(/\/+$/, '').replaceAll('/', '-'),
+        entry,
+      ]),
+  );
+  const cohortCatalog = publicationGroups(history, { now }).cohorts;
   const start = Date.parse(startDate),
     end = Date.parse(endDate) + 86_400_000;
   const inPeriod = (value) =>
@@ -164,6 +170,8 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
     missingPilotDecisionTimestamp: 0,
     unsupportedAttribution: 0,
     conflictingStudioAttribution: 0,
+    unassignedCohortAttribution: 0,
+    preLiveCohortEvidence: 0,
   };
   const byLead = new Map();
   const conflicts = new Set();
@@ -209,7 +217,7 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
     // earlier contacts without qualifications or completions. A later organic visit
     // cannot silently replace an unknown initial source for the same studio.
     if (received < end) {
-      const evidence = evidenceFor(record);
+      const evidence = evidenceFor(record, landingPages);
       if (
         (record.attribution_classification &&
           record.attribution_classification !== 'unknown' &&
@@ -218,9 +226,15 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
         ([true, 'true'].includes(record.organic_assisted) && !evidence.assisted)
       )
         diagnostics.unsupportedAttribution++;
-      const value = studioEvidence.get(studio) || { labels: new Set(), assisted: false };
+      const value = studioEvidence.get(studio) || {
+        labels: new Set(),
+        assisted: false,
+        acquisitions: [],
+      };
       value.labels.add(evidence.label);
       value.assisted ||= evidence.assisted;
+      if (evidence.acquisition)
+        value.acquisitions.push({ ...evidence.acquisition, receivedAt: received });
       studioEvidence.set(studio, value);
     }
     const qualified = timestamp(record.qualified_at);
@@ -261,15 +275,60 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
   }
   const classifications = Object.fromEntries(LABELS.map((label) => [label, 0]));
   let organicAssisted = 0;
+  const cohorts = Object.fromEntries(
+    Object.values(cohortCatalog)
+      .filter((group) => group.id !== 'legacy')
+      .map((group) => [
+        group.id,
+        {
+          releaseStatus: group.status,
+          status: group.status === 'not_released' ? 'not_released' : 'available',
+          ...(group.status === 'not_released'
+            ? {}
+            : { observedOrganicQualifiedCompletedStudios: 0 }),
+        },
+      ]),
+  );
+  let legacyCompletedStudios = 0,
+    unassignedCompletedStudios = 0;
   for (const studioId of stages.completed) {
     const studio = studioEvidence.get(studioId);
     const label = studio.labels.size === 1 ? [...studio.labels][0] : 'mixed';
     classifications[label]++;
     if (studio.assisted) organicAssisted++;
+    if (label === 'observed_organic_sourced') {
+      const firstDate = studio.acquisitions.map((item) => item.firstKnownDate).sort()[0];
+      const earliest = studio.acquisitions.filter((item) => item.firstKnownDate === firstDate);
+      const ids = new Set(
+        earliest.map((item) => landingPages.get(item.landingId)?.cohortId || 'legacy'),
+      );
+      const beforeLive = earliest.some((item) => {
+        const page = landingPages.get(item.landingId);
+        return (
+          page?.cohortId !== 'legacy' &&
+          page?.firstVerifiedLiveAt &&
+          (item.firstKnownDate < page.firstVerifiedLiveAt.slice(0, 10) ||
+            item.receivedAt < Date.parse(page.firstVerifiedLiveAt))
+        );
+      });
+      const cohortId = ids.size === 1 ? [...ids][0] : null;
+      if (beforeLive) {
+        unassignedCompletedStudios++;
+        diagnostics.preLiveCohortEvidence++;
+      } else if (cohortId === 'legacy') legacyCompletedStudios++;
+      else if (cohortId && cohorts[cohortId]?.status === 'available')
+        cohorts[cohortId].observedOrganicQualifiedCompletedStudios++;
+      else unassignedCompletedStudios++;
+    }
   }
   diagnostics.conflictingStudioAttribution = classifications.mixed;
+  diagnostics.unassignedCohortAttribution = unassignedCompletedStudios;
+  const assignedCompletedStudios = Object.values(cohorts).reduce(
+    (sum, cohort) => sum + (cohort.observedOrganicQualifiedCompletedStudios || 0),
+    0,
+  );
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     generatedAt: now.toISOString(),
     period: { startDate, endDate, timeZone: 'UTC' },
     status: Object.values(diagnostics).some(Boolean) ? 'needs_review' : 'available',
@@ -280,6 +339,16 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
     ),
     completedConversationAttribution: classifications,
     observedOrganicQualifiedCompletedStudios: classifications.observed_organic_sourced,
+    cohorts,
+    cohortReconciliation: {
+      assignedCompletedStudios,
+      legacyCompletedStudios,
+      unassignedCompletedStudios,
+      overallObservedOrganicCompletedStudios: classifications.observed_organic_sourced,
+      reconciled:
+        assignedCompletedStudios + legacyCompletedStudios + unassignedCompletedStudios ===
+        classifications.observed_organic_sourced,
+    },
     organicAssistedCompletedStudios: organicAssisted,
     organicEvidenceCoverageRate: stages.completed.size
       ? (classifications.observed_organic_sourced + classifications.self_reported_organic) /
@@ -296,6 +365,9 @@ export function aggregateStudioOutcomes(records, { startDate, endDate, now = new
       'Observed and assisted evidence needs a known landing page and coherent provider/channel within 90 days of the original receipt; completion may happen later. Evidence dates have day precision, so boundary-day evidence is excluded conservatively.',
       'Observed, self-reported and unknown labels are separate. Organic-assisted counts can overlap sourced counts and must not be added to them.',
       'A zero is a count from the supplied register, not proof that all receipts or outcomes were recorded. Missing source coverage is null when there are no completed studios.',
+      'Cohort credit is assigned only after global studio qualification and source checks, using the earliest valid observed organic acquisition date. Conflicting cohorts on the same evidence date are unassigned; receipt timing cannot resolve day-precision attribution.',
+      'Each earliest acquisition is checked against its own page publication evidence. A date before the verified live day or a receipt before the live timestamp leaves cohort credit unassigned while preserving the overall KPI. Same-day evidence received after publication is accepted at day precision; it does not prove the exact acquisition time.',
+      'Legacy and unassigned cohort buckets reconcile with assigned cohorts to the overall observed-organic KPI. Assisted or self-reported evidence alone never receives sourced-cohort credit. Never-live candidates have no historical landing evidence and unreleased cohorts have no inferred zero outcomes.',
     ],
   };
 }

@@ -3,6 +3,7 @@ import { templateDefinitions } from './content/templates.mjs';
 import { guides } from './content/guides.mjs';
 import { growthPages } from './growth-pages.mjs';
 import { verifiedReview } from './editorial-review.mjs';
+import { approvedProgrammaticPages, assertProgrammaticRelease } from './programmatic-catalog.mjs';
 
 export const clusters = [
   {
@@ -99,17 +100,22 @@ export function validateRegistry(records) {
   }
   const publicIds = new Set(records.filter((p) => p.status === 'published').map((p) => p.id));
   for (const page of records.filter((p) => p.status === 'published')) {
-    for (const id of page.related || [])
+    for (const id of [...(page.related || []), ...(page.programmaticRelated || [])])
       if (!publicIds.has(id)) throw new Error(`Broken published related link: ${page.id} -> ${id}`);
     if (['guide', 'template'].includes(page.kind) && !clusters.some((c) => c.id === page.cluster))
       throw new Error(`Unknown cluster: ${page.id}`);
+    if (page.programmatic)
+      assertProgrammaticRelease(
+        page,
+        records.filter((entry) => !entry.programmatic),
+      );
   }
   return records;
 }
 export const publishedPages = (records) =>
   validateRegistry(records).filter((page) => page.status === 'published');
 export function createRegistry(project) {
-  return validateRegistry([
+  const legacy = [
     ...marketingPages.map((page) => ({
       ...page,
       id: page.path || 'home',
@@ -131,5 +137,23 @@ export function createRegistry(project) {
     ...growthPages,
     ...templateDefinitions(project).map((page) => ({ indexable: true, ...page })),
     ...guides.map((page) => ({ indexable: true, ...page })),
-  ]);
+  ].map((page) => ({
+    ...page,
+    familyId: page.familyId || 'legacy',
+    cohortId: page.cohortId || 'legacy',
+    intentKey: page.intentKey || page.id.replace(/\/+$/, '').replaceAll('/', '-'),
+  }));
+  const approved = approvedProgrammaticPages(project, { legacyPages: legacy });
+  for (const page of approved) {
+    const contexts =
+      page.id === 'purchase-order'
+        ? ['procurement', 'spec-sheet']
+        : ['spec-sheet', 'finish-schedule'];
+    for (const id of contexts) {
+      const owner = legacy.find((entry) => entry.id === id);
+      if (!owner) throw new Error(`Missing programmatic contextual owner: ${id}`);
+      owner.programmaticRelated = [...(owner.programmaticRelated || []), page.id];
+    }
+  }
+  return validateRegistry([...legacy, ...approved]);
 }

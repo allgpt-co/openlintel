@@ -1,4 +1,5 @@
 import ExcelJS from 'exceljs';
+import { createScheduleWorkbook, createSchedulePdf } from './schedule-assets.mjs';
 import JSZip from 'jszip';
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Footer, PageNumber } from 'docx';
 import {
@@ -368,8 +369,10 @@ async function document(definition, example) {
 export async function generateDownloads(definition) {
   const prefix = `assets/downloads/templates/${definition.slug}`;
   if (definition.format === 'xlsx') {
-    const buffer = await workbook(definition);
-    return [
+    const buffer = definition.recordLayout
+      ? await createScheduleWorkbook(definition)
+      : await workbook(definition);
+    const downloads = [
       {
         path: `${prefix}.xlsx`,
         label: 'Download editable workbook',
@@ -379,6 +382,18 @@ export async function generateDownloads(definition) {
         size: buffer.length,
       },
     ];
+    if (definition.recordLayout) {
+      const preview = createSchedulePdf(definition);
+      downloads.push({
+        path: `${prefix}-preview.pdf`,
+        label: 'Download worked-example PDF preview',
+        format: 'PDF',
+        variant: 'preview',
+        buffer: preview,
+        size: preview.length,
+      });
+    }
+    return downloads;
   }
   const downloads = await Promise.all(
     [false, true].map(async (example) => {

@@ -1,3 +1,34 @@
+# Programmatic SEO implementation verification — September 26, 2026
+
+The prior SEO release is deployed: PR #24 merged as `dd52074b89e1c0be86f7768c7cce93f32ef4d18d`, GitHub Pages built that revision, and its production audit passed **824/824**. The dated pre-deployment entries below remain historical. The validation below was recorded for the programmatic implementation on `programmatic-seo-pilot-20260926` before its commit and deployment. Subsequent merge/Pages status must be established from the PR, deployed commit and production audit; local checks alone do not establish publication.
+
+## Implemented scope
+
+- Two private selection/procurement candidates: purchase-order planning and a residential plumbing-fixture schedule. Each has a shared authored definition, HTML preview, editable three-sheet XLSX and PDF preview. Research provenance is retained in `data/pseo-research-2026-09-26.json`; there is no runtime provider dependency.
+- Exact-bundle approval covers authored content, substantive HTML, artifact bytes and conservative source/generator/dependency fingerprints. New publications require current first-six reviews, candidate permissioned review, intent/overlap/intake/measurement/compatibility evidence, and enabled verified integration configuration. The real release allowlist remains empty.
+- Final release review also enforces registry/history retirement agreement, exact production evidence URLs, compatibility evidence bound to the approved bundle and revision date, and completeness of the initial two-page cohort. These controls are covered by regression tests; no actual review evidence was supplied.
+- Builds generate and validate all output in a temporary directory before promoting owned files. The manifest is v3; v2 ownership/audit compatibility remains. History preserves 47 stable identities: 45 legacy entries with unknown first-live dates and two never-released candidates. CI compares history to the event's prior commit to reject identity/evidence rewrites.
+- Search reporting v3 adds family/cohort GSC and GA cuts; outcome reporting v2 globally deduplicates qualified studios before assigning earliest observed organic cohort credit. Independent review fixed pre-live attribution, incompatible GSC property scope and mixed legacy-date clocks. Unknown, out-of-scope and not-released states remain distinct from measured zero.
+- [The pilot runbook](operations/PROGRAMMATIC-SEO.md) records operating capacity, commands, release evidence and 30/60/90-day decisions. The private checklist has eight added implementation/review/release/measurement tasks. Actual reviews and release gates remain pending.
+
+## Current validation
+
+- **112/112 automated tests pass**, including a disposable full 47-page build with synthetic test-only approvals and enabled fixture configuration. Both candidates have hub and contextual links, correct manifest metadata and exact reviewed XLSX/PDF bytes. Post-preflight workbook corruption fails before promotion; all previous public bytes remain unchanged. No synthetic review reaches the real catalog or public output.
+- Marketing ESLint, scoped Prettier and `git diff --check` pass. No dependency or lockfile changes. The history CLI passes real-Git predecessor tests and recognizes this as the initial ledger migration.
+- Canonical `docs/` regenerated. Repeated root output has identical manifest and bytes for all **119 generated files**. Every existing public HTML, asset and download hash is unchanged from main. Only the public manifest metadata changes. Inventory remains **45 registered pages, 43 indexable URLs and 22 template downloads**.
+- Local served audits pass **775/775 at `/` and 775/775 at `/openlintel/`**. Root and subpath Playwright suites pass all 45 pages at five viewport widths, keyboard/history/print/no-JavaScript checks and all downloads, with zero browser errors or failed requests. The configured growth suite passes with vendor requests intercepted; no real submissions or analytics collection occur.
+- Private candidate HTML passes at 360, 768 and 1440 pixels, remains noindex, and serves all four intended artifacts. Both full-page previews were visually inspected. Long hash/URL wrapping and spacing between download links were corrected in the private wrapper.
+- LibreOffice 24.2.7.2 opens, edits, saves and reopens both new workbooks. All **11 authored PDF pages and 19 workbook print pages** were inspected without clipping. Example values, explicit zero and unrelated blanks survive editing. All 22 legacy downloads remain byte-identical.
+- Both final XLSX files convert to private native Google Sheets with all three tabs, example records, unresolved blanks, numeric values and nonnegative validation preserved. Explicit zero was written, read back and cleared in each blank template. Owner-only sharing was verified. Native formatting metadata was inspected; Google-rendered layout and Sheets print pagination were not verified. Microsoft Office desktop was not tested.
+
+Local evidence remains under ignored `output/seo/` and `output/playwright/`, including exact bundle manifests, artifact hashes, native compatibility results, served audits and browser screenshots. Files containing private Google IDs remain outside tracked source. These checks establish implementation and compatibility evidence, not practitioner approval.
+
+## Remaining release gates
+
+All 30 existing practitioner reviews and both new candidate reviews remain pending. Discovery intake and analytics remain disabled until real operational/account acceptance. Verified OpenLintel GA4/GSC reporting access and actual acquisition outcomes are still unavailable. Neither candidate is in the public registry, sitemap or downloads; milestone clocks have not started. See [the pilot runbook](operations/PROGRAMMATIC-SEO.md), [launch runbook](operations/LAUNCH.md) and [analytics acceptance](operations/ANALYTICS-ACCEPTANCE.md).
+
+---
+
 # SEO implementation verification — September 26, 2026
 
 This entry records the current source changes. The dated sections below are preserved as historical evidence and do not establish the status of this release candidate.

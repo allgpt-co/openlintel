@@ -3,6 +3,8 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { writePrivateReport } from './report-output.mjs';
 import { createRegistry, publishedPages } from './registry.mjs';
+import { loadSiteConfig } from './config.mjs';
+import { publicationHistory } from './publication-history.mjs';
 import {
   REPORT_LIMITS,
   capture,
@@ -12,6 +14,8 @@ import {
   rollupSearchRows,
   rollupAcquisition,
   sourceStatus,
+  publicationGroups,
+  cohortGscFilters,
 } from './search-report-data.mjs';
 
 const DAY = 86_400_000;
@@ -61,14 +65,14 @@ export function contextPeriod(now = new Date()) {
     endDate,
   };
 }
-export function isOpenLintelSite(site) {
+export function isOpenLintelSite(site, { basePath = '/' } = {}) {
   if (site === 'sc-domain:openlintel.com') return true;
   try {
     const u = new URL(site);
     return (
       u.protocol === 'https:' &&
       TARGET_HOSTS.includes(u.hostname) &&
-      u.pathname === '/' &&
+      (u.pathname === '/' || u.pathname === basePath) &&
       !u.search &&
       !u.hash &&
       !u.username &&
@@ -162,9 +166,9 @@ async function refreshAccessToken(env, fetcher) {
   return result.access_token;
 }
 
-function inspectionUrls(value, site, registry) {
+function inspectionUrls(value, site, registry, siteLocation) {
   if (!value) return [];
-  const origin = site.startsWith('sc-domain:') ? 'https://openlintel.com/' : site;
+  const origin = new URL(siteLocation.basePath, siteLocation.origin).href;
   const paths = [
     '',
     'resources/',
@@ -209,7 +213,9 @@ function inspectionUrls(value, site, registry) {
       u.search ||
       u.hash ||
       (!site.startsWith('sc-domain:') && u.origin !== new URL(site).origin) ||
-      !registry.some((page) => page.indexable && `/${page.path}` === u.pathname)
+      !registry.some(
+        (page) => page.indexable && `${siteLocation.basePath}${page.path}` === u.pathname,
+      )
     )
       throw new Error(
         'Inspection URLs must be indexable registry pages covered by the selected OpenLintel property.',
@@ -218,7 +224,17 @@ function inspectionUrls(value, site, registry) {
   return urls;
 }
 
-async function collectGsc({ site, token, periods, context, registry, inspections, fetcher }) {
+async function collectGsc({
+  site,
+  token,
+  periods,
+  context,
+  registry,
+  inspections,
+  fetcher,
+  groups,
+  siteLocation,
+}) {
   if (!token) throw new Error('A read-only Search Console access token is required.');
   const sites = await jsonRequest(
     'https://www.googleapis.com/webmasters/v3/sites',
@@ -244,7 +260,31 @@ async function collectGsc({ site, token, periods, context, registry, inspections
     inspections: { status: 'not_requested' },
   };
   const tables = [];
-  for (const [segment, filters] of Object.entries(SEARCH_SEGMENTS)) {
+  const marketingFilter = {
+    dimension: 'page',
+    operator: 'includingRegex',
+    expression: `^${(siteLocation.origin + siteLocation.basePath).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`,
+  };
+  const segments = {
+    ...SEARCH_SEGMENTS,
+    marketingGlobal: [marketingFilter],
+    marketingUS: [marketingFilter, { dimension: 'country', operator: 'equals', expression: 'usa' }],
+  };
+  for (const [segment, filters] of Object.entries(segments)) {
+    if (
+      segment.startsWith('marketing') &&
+      !site.startsWith('sc-domain:') &&
+      !(siteLocation.origin + siteLocation.basePath).startsWith(
+        site.endsWith('/') ? site : `${site}/`,
+      )
+    ) {
+      source.segments[segment] = {
+        status: 'out_of_scope',
+        reason:
+          'The configured marketing origin/base path is outside this URL-prefix property; no traffic count inferred.',
+      };
+      continue;
+    }
     if (segment === 'appGlobal' && !site.startsWith('sc-domain:')) {
       source.segments[segment] = {
         status: 'out_of_scope',
@@ -290,7 +330,7 @@ async function collectGsc({ site, token, periods, context, registry, inspections
       result.queryIntent = rollupSearchRows(result.queries, (row) => classifyQuery(row.keys[0]));
       result.contentClusters = rollupSearchRows(
         result.pages,
-        (row) => classifyPage(row.keys[0], registry).cluster,
+        (row) => classifyPage(row.keys[0], registry, siteLocation).cluster,
       );
       segmentResult.periods[name] = result;
     }
@@ -323,6 +363,81 @@ async function collectGsc({ site, token, periods, context, registry, inspections
   // Preserve the original independent property-period interface.
   source.periods = source.segments.propertyGlobal.periods;
   source.daily90 = source.segments.propertyGlobal.daily90;
+  for (const kind of ['families', 'cohorts']) {
+    source[kind] = {};
+    for (const group of Object.values(groups[kind])) {
+      const result = { ...group, releaseStatus: group.status };
+      source[kind][group.id] = result;
+      if (group.status === 'not_released') continue;
+      result.segments = {};
+      const groupTables = [];
+      for (const [segment, us] of [
+        ['global', false],
+        ['us', true],
+      ]) {
+        let filters;
+        try {
+          filters = cohortGscFilters(group, site, us);
+        } catch (error) {
+          result.segments[segment] = { status: 'unavailable', reason: error.message };
+          groupTables.push(result.segments[segment]);
+          continue;
+        }
+        if (!filters) {
+          result.segments[segment] = {
+            status: 'out_of_scope',
+            reason: 'Cohort canonical URLs are outside this URL-prefix property.',
+          };
+          continue;
+        }
+        const segmentResult = { filters, periods: {} };
+        const segmentTables = [];
+        const query = (range, dimensions) =>
+          collectRows(
+            (startRow, rowLimit) =>
+              jsonRequest(
+                `${endpoint}/searchAnalytics/query`,
+                token,
+                {
+                  startDate: range.startDate,
+                  endDate: range.endDate,
+                  type: 'web',
+                  dataState: 'final',
+                  aggregationType: 'auto',
+                  dimensions,
+                  startRow,
+                  rowLimit,
+                  dimensionFilterGroups: [{ groupType: 'and', filters }],
+                },
+                fetcher,
+              ),
+            'gsc',
+          );
+        for (const period of periods) {
+          const reports = {};
+          for (const [key, dimensions] of [
+            ['totals', []],
+            ['queryPages', ['query', 'page']],
+            ['devices', ['device']],
+          ]) {
+            reports[key] = await query(period, dimensions);
+            segmentTables.push(reports[key]);
+          }
+          reports.queryIntent = rollupSearchRows(reports.queryPages, (row) =>
+            classifyQuery(row.keys[0]),
+          );
+          segmentResult.periods[period.name] = reports;
+        }
+        segmentResult.daily90 = await query(context, ['date']);
+        segmentTables.push(segmentResult.daily90);
+        segmentResult.status = sourceStatus(segmentTables);
+        groupTables.push(...segmentTables);
+        result.segments[segment] = segmentResult;
+      }
+      result.status = groupTables.length ? sourceStatus(groupTables) : 'out_of_scope';
+      tables.push(...groupTables);
+    }
+  }
   source.sitemaps = await capture(() =>
     jsonRequest(`${endpoint}/sitemaps`, token, undefined, fetcher),
   );
@@ -369,12 +484,16 @@ const GA_STANDARD = [
   ['events', ['eventName'], ['eventCount']],
 ];
 const GA_CUSTOM = [
-  ['downloads', ['resource_id', 'resource_format', 'resource_variant'], ['resource_download']],
+  [
+    'downloads',
+    ['page_id', 'resource_id', 'resource_format', 'resource_variant'],
+    ['resource_download'],
+  ],
   ['chapters', ['chapter_id'], ['sample_chapter_view']],
   ['ctaSources', ['source_page_id'], ['pilot_cta_click']],
   ['intakeEvents', ['page_id'], ['pilot_form_start', 'generate_lead']],
 ];
-async function collectGa({ property, token, periods, context, activationDate, fetcher }) {
+async function collectGa({ property, token, periods, context, activationDate, fetcher, groups }) {
   if (!token) throw new Error('A read-only Google Analytics access token is required.');
   const admin = `https://analyticsadmin.googleapis.com/v1beta/properties/${property}`;
   const data = `https://analyticsdata.googleapis.com/v1beta/properties/${property}`;
@@ -420,6 +539,8 @@ async function collectGa({ property, token, periods, context, activationDate, fe
     activationDateSource: activationDate ? 'operator_configuration' : 'unavailable',
     metadata: { property: adminMetadata, dimensions: dataMetadata },
     segments: {},
+    families: {},
+    cohorts: {},
   };
   const tables = [];
   for (const [surface, hosts] of [
@@ -486,6 +607,13 @@ async function collectGa({ property, token, periods, context, activationDate, fe
         [context],
       );
       tables.push(reports.daily90);
+      reports.acceptedSubmissionsByLanding = await request(
+        ['landingPage', 'eventName'],
+        ['eventCount'],
+        periods,
+        ['generate_lead'],
+      );
+      tables.push(reports.acceptedSubmissionsByLanding);
       for (const [key, custom, events] of GA_CUSTOM) {
         const required = custom.map((name) => `customEvent:${name}`);
         const missing = required.filter((name) => !dimensions.has(name));
@@ -507,6 +635,90 @@ async function collectGa({ property, token, periods, context, activationDate, fe
     segment.status = sourceStatus(Object.values(segment.reports).flatMap(Object.values));
     source.segments[surface] = segment;
   }
+  const marketing = source.segments.marketing;
+  for (const kind of ['families', 'cohorts']) {
+    for (const group of Object.values(groups[kind])) {
+      const result = { ...group, releaseStatus: group.status };
+      source[kind][group.id] = result;
+      if (group.status === 'not_released') continue;
+      if (!marketing.streamIds?.length) {
+        result.status = 'unavailable';
+        result.reason = 'No verified marketing stream; cohort traffic is unavailable.';
+        continue;
+      }
+      result.reports = {};
+      const groupTables = [];
+      for (const [channel, extra] of [
+        ['allChannels', []],
+        ['organic', [exact('sessionDefaultChannelGroup', 'Organic Search')]],
+        [
+          'organicUS',
+          [exact('sessionDefaultChannelGroup', 'Organic Search'), exact('countryId', 'US')],
+        ],
+      ]) {
+        const filter = and(
+          inList('hostName', marketing.hosts),
+          inList('streamId', marketing.streamIds),
+          inList('landingPage', group.landingPaths),
+          ...extra,
+        );
+        const request = (dimensions, metrics, dateRanges = periods, events) =>
+          collectRows(
+            (offset, limit) =>
+              jsonRequest(
+                `${data}:runReport`,
+                token,
+                {
+                  dateRanges,
+                  dimensions: names(dimensions),
+                  metrics: names(metrics),
+                  offset: String(offset),
+                  limit: String(limit),
+                  returnPropertyQuota: true,
+                  dimensionFilter: events
+                    ? and(...filter.andGroup.expressions, inList('eventName', events))
+                    : filter,
+                },
+                fetcher,
+              ),
+            'ga4',
+          );
+        const reports = {
+          overview: await request([], ['sessions', 'totalUsers', 'engagedSessions', 'keyEvents']),
+          landingPages: await request(
+            ['landingPage'],
+            ['sessions', 'engagedSessions', 'keyEvents'],
+          ),
+          acceptedSubmissionsByLanding: await request(
+            ['landingPage', 'eventName'],
+            ['eventCount'],
+            periods,
+            ['generate_lead'],
+          ),
+          daily90: await request(['date'], ['sessions', 'engagedSessions', 'keyEvents'], [context]),
+        };
+        const downloadDimensions = [
+          'page_id',
+          'resource_id',
+          'resource_format',
+          'resource_variant',
+        ].map((name) => `customEvent:${name}`);
+        const missing = downloadDimensions.filter((name) => !dimensions.has(name));
+        reports.downloads =
+          dataMetadata.status !== 'available'
+            ? { status: 'unavailable', reason: 'Custom dimension metadata is unavailable.' }
+            : missing.length
+              ? { status: 'not_registered', missingDimensions: missing }
+              : await request(['eventName', ...downloadDimensions], ['eventCount'], periods, [
+                  'resource_download',
+                ]);
+        groupTables.push(...Object.values(reports));
+        result.reports[channel] = reports;
+      }
+      result.status = sourceStatus(groupTables);
+      tables.push(...groupTables);
+    }
+  }
   // Existing consumers can continue to locate marketing organic reports here.
   source.reports = source.segments.marketing.reports?.organic || {};
   const dataStatus = sourceStatus(tables);
@@ -521,7 +733,12 @@ async function collectGa({ property, token, periods, context, activationDate, fe
 
 // Ignore generic property IDs in shared environments; verify each explicitly
 // selected source before data queries. Provider failures cannot erase siblings.
-export async function collectSearchReport(env = process.env, fetcher = fetch, now = new Date()) {
+export async function collectSearchReport(
+  env = process.env,
+  fetcher = fetch,
+  now = new Date(),
+  { history = publicationHistory() } = {},
+) {
   const site = env.OPENLINTEL_GSC_SITE;
   const property = env.OPENLINTEL_GA4_PROPERTY_ID?.replace(/^properties\//, '');
   if (!site && !property)
@@ -532,18 +749,25 @@ export async function collectSearchReport(env = process.env, fetcher = fetch, no
     await readFile(new URL('./data/project.json', import.meta.url), 'utf8'),
   );
   const registry = publishedPages(createRegistry(project));
+  const siteConfig = loadSiteConfig(env);
+  if (!isOpenLintelSite(siteConfig.origin))
+    throw new Error('Search reporting is restricted to a verified OpenLintel origin.');
+  const siteLocation = { origin: siteConfig.origin, basePath: siteConfig.base };
+  const groups = publicationGroups(history, { ...siteLocation, now });
   const periods = comparisonPeriods(now);
   const context = contextPeriod(now);
   const needsRefresh =
     (site && !env.OPENLINTEL_GSC_ACCESS_TOKEN) || (property && !env.OPENLINTEL_GA_ACCESS_TOKEN);
   const refreshed = needsRefresh ? await capture(() => refreshAccessToken(env, fetcher)) : {};
   const report = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     generatedAt: now.toISOString(),
     periods,
     contextPeriod: context,
     target: 'openlintel.com',
     limits: REPORT_LIMITS,
+    siteLocation,
+    publicationGroups: groups,
     caveats: [
       'Unavailable data is not zero. Empty rows mean the provider returned no rows for these filters, not proof of no activity.',
       'GSC final-data windows end three UTC days before execution. GSC dates use Pacific Time; GA4 dates use its property timezone.',
@@ -556,6 +780,8 @@ export async function collectSearchReport(env = process.env, fetcher = fetch, no
       'Downloads and accepted submissions are microconversions, not qualified or completed conversations. Use the private studio outcome report for business outcomes.',
       'Generative AI impressions require a separate available export and overlap Web search; do not add them to Web totals.',
       'AI-referral categories use only bounded all-channel source/medium rows and exact allowlisted referral domains. They remain separate from Google organic and do not identify every AI-assisted discovery.',
+      'Family/cohort totals are independently requested for released canonical URLs. Pending cohorts are not_released without traffic counts; cohort age uses verified first-live history, never modification dates.',
+      'Family and cohort groups can overlap. Do not sum them together. GA cohort sessions use session landing paths; private studio attribution uses earliest valid observed organic acquisition evidence.',
     ],
   };
   for (const [key, configured, operation] of [
@@ -563,7 +789,7 @@ export async function collectSearchReport(env = process.env, fetcher = fetch, no
       'gsc',
       site,
       async () => {
-        if (!isOpenLintelSite(site))
+        if (!isOpenLintelSite(site, siteLocation))
           throw new Error('GSC property must be the OpenLintel domain or its HTTPS root URL.');
         const token = env.OPENLINTEL_GSC_ACCESS_TOKEN || refreshed.data || env.GSC_ACCESS_TOKEN;
         if (!token && refreshed.reason) throw new Error(refreshed.reason);
@@ -573,7 +799,9 @@ export async function collectSearchReport(env = process.env, fetcher = fetch, no
           periods,
           context,
           registry,
-          inspections: inspectionUrls(env.OPENLINTEL_INSPECT_URLS, site, registry),
+          groups,
+          siteLocation,
+          inspections: inspectionUrls(env.OPENLINTEL_INSPECT_URLS, site, registry, siteLocation),
           fetcher,
         });
       },
@@ -594,7 +822,7 @@ export async function collectSearchReport(env = process.env, fetcher = fetch, no
             new Date(activationDate).toISOString().slice(0, 10) !== activationDate)
         )
           throw new Error('GA4 activation date must be an actual date in YYYY-MM-DD format.');
-        return collectGa({ property, token, periods, context, activationDate, fetcher });
+        return collectGa({ property, token, periods, context, activationDate, fetcher, groups });
       },
     ],
   ]) {

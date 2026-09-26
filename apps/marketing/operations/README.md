@@ -4,6 +4,7 @@ These are **internal operating materials**, not marketing assets. The static bui
 
 - [Launch runbook](LAUNCH.md): verified hosting state, environment configuration, integrations, release and rollback.
 - [Six-month execution backlog](ROADMAP.md): responsibilities, content ownership, evidence gates and cadence.
+- [Programmatic SEO pilot](PROGRAMMATIC-SEO.md): two private selection/procurement candidates, exact-bundle review, release controls and 30/60/90-day evidence gates.
 - [September 25 implementation audit](SEO-AUDIT-2026-09-25.md): verified production baseline, Google access limits and research interpretation.
 - [Real analytics acceptance](ANALYTICS-ACCEPTANCE.md): pending live-tag tests, including session attribution and foreground engagement.
 - [Measurement contract](MEASUREMENT.md): event definitions, source attribution, qualification and reporting.

@@ -1,0 +1,1455 @@
+{
+  "researchedAt": "2026-09-26",
+  "provider": "DataForSEO",
+  "market": "United States",
+  "language": "en",
+  "keywordRetrievedAt": "2026-09-26T05:42:15Z",
+  "serpsRetrievedAt": "2026-09-26T05:42:39Z",
+  "description": "Normalized evidence from actual provider responses; this is not a raw API export.",
+  "notes": [
+    "Search-volume estimates overlap and are not website traffic, identifiable studios, expected clicks, or conversions.",
+    "Missing records and missing metrics mean unavailable, not zero.",
+    "Underlying keyword-information update times and monthly observations are retained. Retrieval freshness is not observation freshness.",
+    "Google SERPs are a point-in-time US-English desktop sample; provider intent is separate from editorial intent analysis.",
+    "Advertising competition is not organic ranking difficulty. The historical September 25 snapshot remains unchanged."
+  ],
+  "keywordOverview": {
+    "endpoint": "dataforseo_labs/google/keyword_overview",
+    "taskId": "09260542-1512-0607-0000-9b1f271db872",
+    "statusCode": 20000,
+    "requestedKeywords": [
+      "kitchen finish schedule",
+      "bathroom finish schedule",
+      "room finish schedule template",
+      "room data sheet template",
+      "interior design room data sheet",
+      "kitchen specification template",
+      "bathroom specification template",
+      "kitchen design specification",
+      "bathroom fixture schedule",
+      "plumbing fixture schedule template",
+      "lighting schedule template",
+      "furniture schedule template",
+      "door schedule template",
+      "material schedule template",
+      "interior finish schedule template",
+      "kitchen design questionnaire",
+      "bathroom design questionnaire",
+      "interior design consultation checklist",
+      "interior design intake form",
+      "interior design discovery call questions",
+      "interior design client onboarding template",
+      "interior design client welcome packet",
+      "interior design design brief template",
+      "interior design procurement template",
+      "furniture procurement tracker",
+      "interior design purchase order template",
+      "interior design change order template",
+      "interior design change order form",
+      "change order log template",
+      "interior design project tracker",
+      "interior design installation checklist",
+      "interior design punch list template",
+      "interior design fee calculator",
+      "interior design budget calculator",
+      "furniture budget calculator",
+      "interior design markup calculator",
+      "procurement markup calculator",
+      "kitchen design questionnaire template",
+      "bathroom design questionnaire template",
+      "interior design specification template",
+      "furniture specification sheet template",
+      "lighting specification template",
+      "interior design scope of work template",
+      "interior design procurement schedule",
+      "interior design project timeline template"
+    ],
+    "returnedCount": 30,
+    "omittedKeywords": [
+      "interior design room data sheet",
+      "kitchen specification template",
+      "bathroom specification template",
+      "kitchen design specification",
+      "bathroom fixture schedule",
+      "interior design client onboarding template",
+      "interior design design brief template",
+      "interior design procurement template",
+      "furniture procurement tracker",
+      "interior design change order template",
+      "interior design markup calculator",
+      "procurement markup calculator",
+      "kitchen design questionnaire template",
+      "bathroom design questionnaire template",
+      "interior design procurement schedule"
+    ],
+    "records": [
+      {
+        "keyword": "bathroom design questionnaire",
+        "keywordInfo": {
+          "last_updated_time": "2026-06-15 00:28:42 +00:00",
+          "categories": [10004, 10273, 13734]
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 13:03:38 +00:00"
+        }
+      },
+      {
+        "keyword": "bathroom finish schedule",
+        "keywordInfo": {
+          "last_updated_time": "2026-06-12 09:28:54 +00:00",
+          "categories": [10009, 10415, 11576]
+        },
+        "keywordProperties": {
+          "core_keyword": "bathroom finishing schedule",
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-24 21:37:31 +00:00"
+        }
+      },
+      {
+        "keyword": "change order log template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-12 20:06:39 +00:00",
+          "competition": 0.59,
+          "competition_level": "MEDIUM",
+          "cpc": 13.31,
+          "search_volume": 110,
+          "low_top_of_page_bid": 5.12,
+          "high_top_of_page_bid": 13.79,
+          "categories": [10016, 10139, 10743, 12018],
+          "monthly_searches": {
+            "2026-08": 50,
+            "2026-07": 70,
+            "2026-06": 110,
+            "2026-05": 50,
+            "2026-04": 110,
+            "2026-03": 110,
+            "2026-02": 140,
+            "2026-01": 110,
+            "2025-12": 90,
+            "2025-11": 110,
+            "2025-10": 170,
+            "2025-09": 110
+          },
+          "search_volume_trend": {
+            "monthly": -29,
+            "quarterly": -55,
+            "yearly": -64
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-26 09:20:14 +00:00"
+        }
+      },
+      {
+        "keyword": "door schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-14 06:47:03 +00:00",
+          "competition": 0.02,
+          "competition_level": "LOW",
+          "search_volume": 90,
+          "categories": [10004, 10300, 11334, 12580],
+          "monthly_searches": {
+            "2026-08": 70,
+            "2026-07": 70,
+            "2026-06": 50,
+            "2026-05": 70,
+            "2026-04": 90,
+            "2026-03": 90,
+            "2026-02": 90,
+            "2026-01": 90,
+            "2025-12": 70,
+            "2025-11": 90,
+            "2025-10": 110,
+            "2025-09": 110
+          },
+          "search_volume_trend": {
+            "quarterly": 40
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-29 11:50:12 +00:00"
+        }
+      },
+      {
+        "keyword": "furniture budget calculator",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 09:41:57 +00:00",
+          "competition": 0,
+          "competition_level": "LOW",
+          "search_volume": 40,
+          "categories": [10004, 10300],
+          "monthly_searches": {
+            "2026-08": 30,
+            "2026-07": 30,
+            "2026-06": 20,
+            "2026-05": 30,
+            "2026-04": 50,
+            "2026-03": 70,
+            "2026-02": 40,
+            "2026-01": 70,
+            "2025-12": 30,
+            "2025-11": 50,
+            "2025-10": 30,
+            "2025-09": 50
+          },
+          "search_volume_trend": {
+            "quarterly": 50,
+            "yearly": -79
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 10:20:53 +00:00"
+        }
+      },
+      {
+        "keyword": "furniture schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-17 10:36:29 +00:00",
+          "competition": 0.96,
+          "competition_level": "HIGH",
+          "cpc": 0.15,
+          "search_volume": 30,
+          "categories": [10004, 10300, 11334, 12580],
+          "monthly_searches": {
+            "2026-08": 20,
+            "2026-07": 30,
+            "2026-06": 10,
+            "2026-05": 30,
+            "2026-04": 50,
+            "2026-03": 30,
+            "2026-02": 30,
+            "2026-01": 20,
+            "2025-12": 40,
+            "2025-11": 40,
+            "2025-10": 30,
+            "2025-09": 20
+          },
+          "search_volume_trend": {
+            "monthly": -33,
+            "quarterly": 100,
+            "yearly": -33
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-29 07:49:21 +00:00"
+        }
+      },
+      {
+        "keyword": "furniture specification sheet template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-14 05:56:25 +00:00",
+          "competition": 0.01,
+          "competition_level": "LOW",
+          "cpc": 7.49,
+          "search_volume": 50,
+          "categories": [10009, 10413, 11574],
+          "monthly_searches": {
+            "2026-08": 40,
+            "2026-07": 40,
+            "2026-06": 40,
+            "2026-05": 50,
+            "2026-04": 70,
+            "2026-03": 70,
+            "2026-02": 50,
+            "2026-01": 40,
+            "2025-12": 30,
+            "2025-11": 50,
+            "2025-10": 40,
+            "2025-09": 50
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-29 19:40:20 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design budget calculator",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 00:27:57 +00:00",
+          "competition": 0.13,
+          "competition_level": "LOW",
+          "search_volume": 40,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 50,
+            "2026-07": 20,
+            "2026-06": 20,
+            "2026-05": 30,
+            "2026-04": 30,
+            "2026-03": 50,
+            "2026-02": 50,
+            "2026-01": 50,
+            "2025-12": 20,
+            "2025-11": 30,
+            "2025-10": 70,
+            "2025-09": 40
+          },
+          "search_volume_trend": {
+            "monthly": 150,
+            "quarterly": 150,
+            "yearly": 150
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 16:16:25 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design change order form",
+        "keywordInfo": {
+          "last_updated_time": "2026-06-18 04:02:54 +00:00",
+          "categories": [10004, 10273, 13734]
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["transactional", "navigational"],
+          "last_updated_time": "2026-04-27 23:49:45 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design client welcome packet",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-14 01:27:43 +00:00",
+          "competition": 1,
+          "competition_level": "HIGH",
+          "search_volume": 10,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-28 00:43:56 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design consultation checklist",
+        "keywordInfo": {
+          "last_updated_time": "2026-06-18 17:52:12 +00:00",
+          "categories": [10004, 10273, 13734]
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 14:01:50 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design discovery call questions",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-12 23:21:09 +00:00",
+          "competition": 0.25,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          }
+        },
+        "keywordProperties": {
+          "keyword_difficulty": 4,
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-27 23:47:44 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design fee calculator",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-16 17:23:45 +00:00",
+          "competition": 0.14,
+          "competition_level": "LOW",
+          "search_volume": 20,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 20,
+            "2026-04": 20,
+            "2026-03": 20,
+            "2026-02": 20,
+            "2026-01": 20,
+            "2025-12": 20,
+            "2025-11": 20,
+            "2025-10": 30,
+            "2025-09": 20
+          },
+          "search_volume_trend": {
+            "yearly": -67
+          }
+        },
+        "keywordProperties": {
+          "keyword_difficulty": 4,
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 08:02:18 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design installation checklist",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-15 17:28:56 +00:00",
+          "competition": 0.24,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          },
+          "search_volume_trend": {
+            "yearly": -50
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 17:07:45 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design intake form",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-12 20:18:13 +00:00",
+          "competition": 0.97,
+          "competition_level": "HIGH",
+          "cpc": 14.77,
+          "search_volume": 10,
+          "low_top_of_page_bid": 4.64,
+          "high_top_of_page_bid": 25.28,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 20,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 30
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "navigational",
+          "foreign_intent": ["informational"],
+          "last_updated_time": "2026-04-28 03:39:56 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design project timeline template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-17 09:26:39 +00:00",
+          "competition": 0,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "categories": [10004, 10273],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 20,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 20,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          },
+          "search_volume_trend": {
+            "quarterly": -50
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 11:25:55 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design project tracker",
+        "keywordInfo": {
+          "last_updated_time": "2026-06-14 15:15:55 +00:00",
+          "categories": [10004, 10004, 10273, 10273, 13734]
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 13:44:57 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design punch list template",
+        "keywordInfo": {
+          "last_updated_time": "2026-06-14 12:30:12 +00:00",
+          "categories": [10004, 10004, 10273, 10273, 13734]
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "navigational",
+          "foreign_intent": ["informational"],
+          "last_updated_time": "2026-04-28 00:48:48 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design purchase order template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 19:25:50 +00:00",
+          "competition": 1,
+          "competition_level": "HIGH",
+          "cpc": 0.01,
+          "search_volume": 20,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 20,
+            "2026-06": 20,
+            "2026-05": 20,
+            "2026-04": 30,
+            "2026-03": 50,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 20,
+            "2025-11": 20,
+            "2025-10": 20,
+            "2025-09": 30
+          },
+          "search_volume_trend": {
+            "monthly": -50,
+            "quarterly": -50,
+            "yearly": -75
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["transactional"],
+          "last_updated_time": "2026-04-28 10:06:57 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design scope of work template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-12 13:52:03 +00:00",
+          "competition": 0.78,
+          "competition_level": "HIGH",
+          "cpc": 0.1,
+          "search_volume": 30,
+          "low_top_of_page_bid": 2.57,
+          "high_top_of_page_bid": 6.68,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 20,
+            "2026-07": 40,
+            "2026-06": 30,
+            "2026-05": 40,
+            "2026-04": 40,
+            "2026-03": 30,
+            "2026-02": 20,
+            "2026-01": 30,
+            "2025-12": 30,
+            "2025-11": 30,
+            "2025-10": 20,
+            "2025-09": 20
+          },
+          "search_volume_trend": {
+            "monthly": -50,
+            "quarterly": -33,
+            "yearly": -33
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 16:47:13 +00:00"
+        }
+      },
+      {
+        "keyword": "interior design specification template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-12 16:50:37 +00:00",
+          "competition": 0.9,
+          "competition_level": "HIGH",
+          "cpc": 0.45,
+          "search_volume": 10,
+          "low_top_of_page_bid": 2,
+          "high_top_of_page_bid": 6.45,
+          "categories": [10004, 10004, 10273, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 20,
+            "2026-04": 20,
+            "2026-03": 20,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 15:12:26 +00:00"
+        }
+      },
+      {
+        "keyword": "interior finish schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 22:14:30 +00:00",
+          "competition": 0.89,
+          "competition_level": "HIGH",
+          "cpc": 2.65,
+          "search_volume": 70,
+          "low_top_of_page_bid": 2.26,
+          "high_top_of_page_bid": 8.71,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 50,
+            "2026-07": 50,
+            "2026-06": 70,
+            "2026-05": 50,
+            "2026-04": 70,
+            "2026-03": 90,
+            "2026-02": 50,
+            "2026-01": 70,
+            "2025-12": 90,
+            "2025-11": 50,
+            "2025-10": 70,
+            "2025-09": 70
+          },
+          "search_volume_trend": {
+            "quarterly": -29,
+            "yearly": -44
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-28 07:11:56 +00:00"
+        }
+      },
+      {
+        "keyword": "kitchen design questionnaire",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 14:23:01 +00:00",
+          "competition": 0.19,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "categories": [10009, 11282],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 20,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 20,
+            "2025-12": 10,
+            "2025-11": 20,
+            "2025-10": 20,
+            "2025-09": 20
+          },
+          "search_volume_trend": {
+            "yearly": -50
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 10:42:08 +00:00"
+        }
+      },
+      {
+        "keyword": "kitchen finish schedule",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-14 00:14:36 +00:00",
+          "competition": 0,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "categories": [10009, 11282],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 05:59:02 +00:00"
+        }
+      },
+      {
+        "keyword": "lighting schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 17:03:01 +00:00",
+          "competition": 0.1,
+          "competition_level": "LOW",
+          "cpc": 0.05,
+          "search_volume": 50,
+          "categories": [10004, 10300, 11334, 12580],
+          "monthly_searches": {
+            "2026-08": 50,
+            "2026-07": 40,
+            "2026-06": 40,
+            "2026-05": 40,
+            "2026-04": 70,
+            "2026-03": 50,
+            "2026-02": 40,
+            "2026-01": 30,
+            "2025-12": 30,
+            "2025-11": 110,
+            "2025-10": 70,
+            "2025-09": 90
+          },
+          "search_volume_trend": {
+            "monthly": 25,
+            "quarterly": 25,
+            "yearly": -29
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 08:15:40 +00:00"
+        }
+      },
+      {
+        "keyword": "lighting specification template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-13 14:24:45 +00:00",
+          "competition": 0,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "categories": [10004, 10282, 11293, 12610],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 13:16:45 +00:00"
+        }
+      },
+      {
+        "keyword": "material schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-14 07:45:50 +00:00",
+          "competition": 0.29,
+          "competition_level": "LOW",
+          "cpc": 14.63,
+          "search_volume": 20,
+          "low_top_of_page_bid": 3.44,
+          "high_top_of_page_bid": 8.64,
+          "categories": [10004, 10300, 11334, 12580],
+          "monthly_searches": {
+            "2026-08": 20,
+            "2026-07": 10,
+            "2026-06": 10,
+            "2026-05": 10,
+            "2026-04": 20,
+            "2026-03": 10,
+            "2026-02": 10,
+            "2026-01": 20,
+            "2025-12": 30,
+            "2025-11": 20,
+            "2025-10": 20,
+            "2025-09": 10
+          },
+          "search_volume_trend": {
+            "monthly": 100,
+            "quarterly": 100,
+            "yearly": 100
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "keyword_difficulty": 44,
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "foreign_intent": ["navigational"],
+          "last_updated_time": "2026-04-29 14:25:26 +00:00"
+        }
+      },
+      {
+        "keyword": "plumbing fixture schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-17 03:31:18 +00:00",
+          "competition": 0.06,
+          "competition_level": "LOW",
+          "search_volume": 40,
+          "categories": [10004, 10300, 11334, 12580],
+          "monthly_searches": {
+            "2026-08": 40,
+            "2026-07": 30,
+            "2026-06": 20,
+            "2026-05": 30,
+            "2026-04": 30,
+            "2026-03": 40,
+            "2026-02": 40,
+            "2026-01": 40,
+            "2025-12": 40,
+            "2025-11": 40,
+            "2025-10": 50,
+            "2025-09": 30
+          },
+          "search_volume_trend": {
+            "monthly": 33,
+            "quarterly": 100,
+            "yearly": 100
+          }
+        },
+        "keywordProperties": {
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 18:09:19 +00:00"
+        }
+      },
+      {
+        "keyword": "room data sheet template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-17 15:26:48 +00:00",
+          "competition": 0.18,
+          "competition_level": "LOW",
+          "search_volume": 10,
+          "low_top_of_page_bid": 3.9,
+          "high_top_of_page_bid": 8.11,
+          "categories": [10019, 10168, 10296, 10885, 11271, 12209],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 10,
+            "2026-06": 20,
+            "2026-05": 10,
+            "2026-04": 10,
+            "2026-03": 20,
+            "2026-02": 20,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 10,
+            "2025-09": 10
+          },
+          "search_volume_trend": {
+            "quarterly": -50,
+            "yearly": -67
+          }
+        },
+        "keywordProperties": {
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-29 22:56:36 +00:00"
+        }
+      },
+      {
+        "keyword": "room finish schedule template",
+        "keywordInfo": {
+          "last_updated_time": "2026-09-17 09:01:27 +00:00",
+          "competition": 0.21,
+          "competition_level": "LOW",
+          "cpc": 0.5,
+          "search_volume": 10,
+          "categories": [10004, 10273, 13734],
+          "monthly_searches": {
+            "2026-08": 10,
+            "2026-07": 20,
+            "2026-06": 10,
+            "2026-05": 20,
+            "2026-04": 10,
+            "2026-03": 20,
+            "2026-02": 10,
+            "2026-01": 10,
+            "2025-12": 10,
+            "2025-11": 10,
+            "2025-10": 20,
+            "2025-09": 30
+          },
+          "search_volume_trend": {
+            "monthly": -50,
+            "yearly": -50
+          }
+        },
+        "keywordProperties": {
+          "core_keyword": "room finishes schedule template",
+          "synonym_clustering_algorithm": "text_processing",
+          "detected_language": "en"
+        },
+        "searchIntentInfo": {
+          "main_intent": "informational",
+          "last_updated_time": "2026-04-28 21:24:44 +00:00"
+        }
+      }
+    ]
+  },
+  "serps": [
+    {
+      "keyword": "lighting schedule template",
+      "endpoint": "serp/google/organic/live/advanced",
+      "taskId": "09260542-1512-0139-0000-3e2c80c59dab",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["images", "organic", "people_also_ask", "ai_overview"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "FF&E Schedule | Interior Design Templates",
+          "url": "https://www.etsy.com/ca/listing/1672854868/interior-design-bundle-interior-design",
+          "description": "27 pages that include: • Cover. Electrical floor plan • Lighting schedule • Plumbing schedule • Tile schedule. A template is a pre-designed layout. You'll ..."
+        },
+        {
+          "rank": 2,
+          "title": "Free Download Event Lighting Cue Sheet Template",
+          "url": "https://www.meegle.com/en_us/advanced-templates/event_planning/event_lighting_cue_sheet_template",
+          "description": "May 19, 2025 — An Event Lighting Cue Sheet Template is a structured document used to plan and execute lighting cues during live events. Read more"
+        },
+        {
+          "rank": 3,
+          "title": "Lighting Cue Sheet Template | PDF",
+          "url": "https://www.scribd.com/document/948485142/Lighting-Cue-Sheet",
+          "description": "Lighting Cue Sheet - Free download as PDF File (.pdf), Text File (.txt) or view presentation slides online."
+        },
+        {
+          "rank": 4,
+          "title": "Lighting questionnaire template (26 questions)",
+          "url": "https://contentsnare.com/form-templates/lighting-questionnaire/",
+          "description": "The lighting questionnaire is a structured intake form used by contractors to gather space specifications, fixture preferences, and compliance standards"
+        },
+        {
+          "rank": 5,
+          "title": "Printable Electrical Panel Schedule Template",
+          "url": "https://www.pinterest.com/ideas/printable-electrical-panel-schedule-template/955841759506/",
+          "description": "Find and save ideas about printable electrical panel schedule template [PDF, Excel] +Sample. Free - Download Now"
+        },
+        {
+          "rank": 6,
+          "title": "Electrical panel schedule template",
+          "url": "https://cdn.prod.website-files.com/67543214df51f215bb124d94/68894ffcb96165af7a89d269_xawofofanof.pdf",
+          "description": "These fillable electrical panel schedule templates are readily available in Word, PDF, and Excel formats. Lighting Panels display lighting fixture locations ..."
+        },
+        {
+          "rank": 7,
+          "title": "FF&E Schedule Template | CUSTOMISABLE",
+          "url": "https://www.etsy.com/ie/listing/1040917908/ffe-schedule-template-customisable",
+          "description": "FF&E Schedule Template. Editable for Interior Designers, Decorator, Architects, Lighting Schedule, Plumbing Sheet Sale Price €4.24 €4.24 €5.66. Front Desk with ..."
+        },
+        {
+          "rank": 8,
+          "title": "Template schedule hi-res stock photography and images",
+          "url": "https://www.alamy.com/stock-photo/template-schedule.html",
+          "description": "Find the perfect template schedule stock photo, image, vector, illustration or 360 image. Available for both RF and RM licensing."
+        }
+      ],
+      "relatedSearches": []
+    },
+    {
+      "keyword": "plumbing fixture schedule template",
+      "endpoint": "serp/google/organic/live/advanced",
+      "taskId": "09260542-1512-0139-0000-4b7bb04466d2",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["images", "organic", "people_also_ask"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "PLUMBING FIXTURE SCHEDULE (OWNER FURNISHED)",
+          "url": "https://sc.edu/purchasing/solicitations/documents/s_1494258391.pdf",
+          "description": "Mar 18, 2017 — Template is available for download at elkay.com. Like 6 thru 119 gallon capacity. Element sizes from 1.5 to 6 KW. Maximum input 12 KW"
+        },
+        {
+          "rank": 2,
+          "title": "Plumbing Fixture Schedules & Cover Sheets in Revit",
+          "url": "https://www.youtube.com/watch?v=rdcRLcZvjFk&xstg=CAMSBhUD-7L2Hw%3D%3D"
+        },
+        {
+          "rank": 3,
+          "title": "Plumbing Fixture Schedule Template",
+          "url": "https://www.housecallpro.com/plumbing/templates-calculators/plumbing-fixtures-schedule-template/",
+          "description": "This free Plumbing Fixture Schedule Template provides an organized starting point to create schedules tailored to your services and customer needs."
+        },
+        {
+          "rank": 4,
+          "title": "Plumbing Fixture Schedule Overview | PDF",
+          "url": "https://www.scribd.com/document/854902366/22-06-40-13-Plumbing-Fixture-Schedule",
+          "description": "This document outlines the plumbing fixture schedule for a project, detailing the types, models, manufacturers, and specifications of fixtures to be installed."
+        },
+        {
+          "rank": 5,
+          "title": "Plumbing Fixture Schedule Template",
+          "url": "https://www.pinterest.com/ideas/plumbing-fixture-schedule-template/898391580890/",
+          "description": "Discover Pinterest's best ideas and inspiration for Plumbing fixture schedule template. Free Download Printable Plumbing"
+        },
+        {
+          "rank": 6,
+          "title": "PLUMBING FIXTURES DRAIN AND CLEANOUT ...",
+          "url": "https://flydayton.com/wp-content/uploads/2016/11/DAY-Terminal-Plumbing_95.pdf",
+          "description": "FIXTURE SCHEDULE NOTES : 1. VERIFY MOUNTING HEIGHT OF FIXTURE WITH ARCHITECTURAL PLANS PRIOR TO ROUGH-IN. 2. SENSOR OPERATED AUTOMATIC FLUSHING SYSTEM ... Read more"
+        },
+        {
+          "rank": 7,
+          "title": "Guide to Plumbing Fixture Schedule Mastery - Kreo Software",
+          "url": "https://www.kreo.net/news-2d-takeoff/guide-to-plumbing-fixture-schedule-mastery",
+          "description": "Oct 12, 2023 — A plumbing fixture schedule is essentially a detailed list or chart that specifies the types, locations, and specifics of plumbing fixtures in ..."
+        },
+        {
+          "rank": 8,
+          "title": "Creating a Plumbing, HVAC, or Appliance Schedule",
+          "url": "https://www.chiefarchitect.com/support/article/KB-00929/creating-a-plumbing-hvac-or-appliance-schedule.html",
+          "description": "May 22, 2024 — You can create a plumbing, HVAC, or appliance schedule by creating a Fixtures Schedule and then making a few simple changes to it."
+        },
+        {
+          "rank": 9,
+          "title": "Plumbing Fixture Schedule",
+          "url": "https://www.etsy.com/market/plumbing_fixture_schedule",
+          "description": "Discover unique plumbing fixture schedules, perfect for plumbers, DIY enthusiasts, and home renovators. Explore a variety of styles, from humorous apparel ..."
+        }
+      ],
+      "relatedSearches": []
+    },
+    {
+      "keyword": "kitchen design questionnaire",
+      "endpoint": "serp/google/organic/live/advanced",
+      "taskId": "09260542-1512-0139-0000-7c9c0ec29a6a",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "organic",
+        "images",
+        "ai_overview",
+        "people_also_ask",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Kitchen Design Survey Form",
+          "url": "https://kb.nkba.org/uploads/2020/06/BMF08_Kitchen_Design_Survey_Form.pdf",
+          "description": "1.How long do you intend to own the jobsite residence? 2. What do you dislike most about your present kitchen? 3..What do you like most about your present  ..."
+        },
+        {
+          "rank": 2,
+          "title": "KITCHEN DESIGN QUESTIONNAIRE",
+          "url": "https://platinumdesignsllc.com/files/KITCHEN_DESIGN_QUESTIONNAIRE.pdf",
+          "description": "Kitchens are highly complex rooms that serve many different functions. To best meet your expectations, please tell us about your lifestyle, needs, and desires. Read more"
+        },
+        {
+          "rank": 3,
+          "title": "Kitchen Design Questionnaire - Custom Kitchen Cabinets",
+          "url": "https://kitchenplace.com/design_questionnaire.html",
+          "description": "Please complete this questionnaire and pay the $700 design fee to begin the design process. Estimated time to complete: 15-30 minutes. Call: 1-774-355-3580"
+        },
+        {
+          "rank": 4,
+          "title": "KITCHEN DESIGN QUESTIONNAIRE",
+          "url": "https://static1.squarespace.com/static/536aea3ae4b0750dff7da93e/t/5bfc7de74d7a9c901e7cba89/1543273959647/KitchenVisions-Resources-KitchenDesignQuestionnaire.pdf",
+          "description": "1. How old is your current kitchen? Does the style of your current kitchen match: Do you have enough cabinet space? Do you have enough pantry space? Do you ..."
+        },
+        {
+          "rank": 5,
+          "title": "Kitchen Design Questionnaire Form",
+          "url": "https://www.pinterest.com/ideas/kitchen-design-questionnaire-form/950286350930/",
+          "description": "Explore Kitchen design questionnaire form. Essential Questions to Ask Clients | Printable interior design questionnaire,"
+        },
+        {
+          "rank": 6,
+          "title": "kitchen design questionnaire & checklist",
+          "url": "https://www.worldwidecabinetsgallery.com/questionnaire",
+          "description": "The Gallery has created this KITCHEN DESIGN QUESTIONNAIRE & CHECKLIST to help you in your planning. We encourage you to complete this and share your responses ... Read more"
+        },
+        {
+          "rank": 7,
+          "title": "Kitchen and Home Design Questionnaire | PDF",
+          "url": "https://www.scribd.com/document/749936242/Interiors-Questionnaire",
+          "description": "What kind of kitchen do you want ? Any which list items?  Do you cook yourself or is this a staff used kitchen?  Do you want a space for wet kitchen"
+        },
+        {
+          "rank": 8,
+          "title": "Kitchen Design Checklist - Part 1 | Understanding Your Needs",
+          "url": "https://www.youtube.com/watch?v=H1imPf1JGDI"
+        }
+      ],
+      "relatedSearches": [
+        "Kitchen design questionnaire pdf",
+        "Kitchen design questionnaire template",
+        "Kitchen design Checklist pdf",
+        "Kitchen remodel Questionnaire",
+        "Questions to ask a kitchen designer",
+        "Kitchen servery"
+      ]
+    },
+    {
+      "keyword": "kitchen finish schedule",
+      "endpoint": "serp/google/organic/live/advanced",
+      "taskId": "09260542-1512-0139-0000-f9277c423831",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "images",
+        "ai_overview",
+        "people_also_ask",
+        "organic",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Scheduling Example for Kitchen Remodel",
+          "url": "https://rwshawservices.com/wp-content/uploads/How-to-Plan-a-Kitchen-Remodeling-Project-Scheduling-Example-June-2022.pdf",
+          "description": "From measurement to kitchen planning – takes approx. 5-7 business days. finishing work (trim, toekick, The process takes approx. 5-7 business days to receive ..."
+        },
+        {
+          "rank": 2,
+          "title": "Is there a tutorial for making a finish schedule with sample ...",
+          "url": "https://www.facebook.com/groups/UsersofChiefArchitect/posts/10162530812106098/",
+          "description": "Is there a tutorial for making a finish schedule?  I'm so lost.  I'm doing a kitchen and want to make a schedule with all of the finishes in the room along ..."
+        },
+        {
+          "rank": 3,
+          "title": "Kitchen Remodel Timeline: What Really Sets The Date",
+          "url": "https://langskitchens.com/blog/kitchen-remodel-timeline-weeks-without-a-kitchen/",
+          "description": "Sep 2, 2026 — A full kitchen remodel usually runs four to six months of design, selections and permitting, then roughly twelve to sixteen weeks of ... Read more"
+        },
+        {
+          "rank": 4,
+          "title": "Construction Finish Schedule Template Inspirational ...",
+          "url": "https://cz.pinterest.com/pin/745838388330157265/",
+          "description": "Plan and track your construction finishes with this inspiring and informative schedule template. How to choose kitchen finishes, Download this ..."
+        },
+        {
+          "rank": 5,
+          "title": "Your Kitchen Remodel Timeline: A Phase-by- ...",
+          "url": "https://www.trusselltransforms.com/kitchen-remodel-timeline/",
+          "description": "Aug 16, 2026 — Most kitchen remodels take between 8 and 46 weeks from first design meeting to final walkthrough, depending on scope. 1–3 weeks Installation ..."
+        },
+        {
+          "rank": 6,
+          "title": "Interior Finishes Schedule Overview | PDF | Cabinetry | Home",
+          "url": "https://www.scribd.com/document/376417721/Interior-Finish-Schedule",
+          "description": "The document provides an interior finish schedule listing products, colors, finishes, suppliers and images for various areas of a home including an audio visual ... Read more"
+        },
+        {
+          "rank": 7,
+          "title": "What Is A Finish Schedule In Rendering Project?",
+          "url": "https://7cgi.com/blog/finish-schedule/",
+          "description": "Aug 26, 2026 — a finish schedule is used to ensure that the 3D rendered images of the interior accurately represent the intended materials, finishes, and ..."
+        },
+        {
+          "rank": 8,
+          "title": "Cabinet Finish Schedule: Coordinate Materials Across Rooms",
+          "url": "https://www.allurekitchencabinet.com/blog/cabinet-finish-schedule",
+          "description": "4 days ago — A cabinet finish schedule is the project document that keeps whole-home cabinetry visually coordinated and operationally traceable. Read more"
+        }
+      ],
+      "relatedSearches": [
+        "Kitchen finish schedule template",
+        "Kitchen finish schedule pdf",
+        "Kitchen finish schedule printable",
+        "Kitchen finish schedule template free",
+        "Kitchen finish schedule template pdf",
+        "Kitchen finish schedule free"
+      ]
+    },
+    {
+      "keyword": "change order log template",
+      "endpoint": "serp/google/organic/live/advanced",
+      "taskId": "09260542-1512-0139-0000-8d5ff7351b2a",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "images",
+        "organic",
+        "ai_overview",
+        "people_also_ask",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Change Log Template for Excel (Free Download)",
+          "url": "https://www.projectmanager.com/templates/change-log-template",
+          "description": "Download your free change log template for Excel and start tracking project change. Manage change orders and more!"
+        },
+        {
+          "rank": 2,
+          "title": "Free Change Log Templates: Excel, Microsoft Word & ...",
+          "url": "https://www.smartsheet.com/content/change-log-templates?srsltid=AU7gw4VBRYQn8ytOELsYr84f1sOMRxxmDcdhmCAVph5dhKHhOg4kzOqH",
+          "description": "Jan 16, 2024 — Download free, customizable change management, change control, product change, document change, and software change log templates."
+        },
+        {
+          "rank": 3,
+          "title": "Free Change Order Log Template for Construction (Excel & ...",
+          "url": "https://archdesk.com/blog/change-order-log-template-construction",
+          "description": "Aug 13, 2026 — A free change order log template for construction in Excel and CSV, with example rows, column-by-column guidance and no form gate."
+        },
+        {
+          "rank": 4,
+          "title": "How To Create A Change Order Log Template",
+          "url": "https://www.youtube.com/watch?v=BoCXrnTpj8s",
+          "description": "Get your optimized template instantly. In this video, I walk you through how to create a Change Order Log Template... to Manage the Change ..."
+        },
+        {
+          "rank": 5,
+          "title": "Free Project Change Order Log Template",
+          "url": "https://sinc.business/tools/free-excel-construction-templates/project-change-order-log-template/",
+          "description": "This Change Order Log template will really help you keep change orders in order. This interactive Excel file is pre filled with the formulas you need"
+        },
+        {
+          "rank": 6,
+          "title": "Change Log Template | IPM",
+          "url": "https://instituteprojectmanagement.com/blog/change-log-template/",
+          "description": "By using this template, project teams can systematically document change requests, evaluations, approvals, and implementations, enhancing decision-making and ... Read more"
+        },
+        {
+          "rank": 7,
+          "title": "Free Construction Change Order Log Template for Excel",
+          "url": "https://dailybuild.co/free-construction-change-order-log-template",
+          "description": "Log a complete change order in 2 minutes. · 01. Customize the Settings tab · 02. Enter a new change order · 03. Describe the scope · 04. Set status, priority, ... Read more"
+        },
+        {
+          "rank": 8,
+          "title": "Free Change Order Templates for Construction Projects",
+          "url": "https://technologyadvice.com/blog/project-management/change-order-templates/",
+          "description": "Jan 7, 2026 — Check out our free change order templates for contractors and project managers to record project changes and track construction timelines."
+        }
+      ],
+      "relatedSearches": [
+        "Change order log template excel",
+        "Construction change order log template Excel",
+        "Simple change order log template",
+        "Change order log template word",
+        "Change order log template free download",
+        "Simple change log template Excel",
+        "Change Log template Excel free",
+        "Document change log Template word"
+      ]
+    },
+    {
+      "keyword": "interior design budget calculator",
+      "endpoint": "serp/google/organic/live/advanced",
+      "taskId": "09260542-1512-0139-0000-6d43a6e8f4f9",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["ai_overview", "organic", "people_also_ask"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Full Home Interior Cost Calculator",
+          "url": "https://www.livspace.com/in/interiors/home-interior-price-calculator",
+          "description": "So get started with our full home interior price calculator, make your choices, and get your interior design budget with our fairly accurate calculator. Read more"
+        },
+        {
+          "rank": 2,
+          "title": "BD INTERIOR Cost Calculator: Estimate Your Design Expenses",
+          "url": "https://bdinterior.com/cost-calculator/",
+          "description": "Get a precise estimate for your interior design project in minutes using the BD INTERIOR cost calculator for clear, informed decisions."
+        },
+        {
+          "rank": 3,
+          "title": "Interior Design Solution Cost Calculator",
+          "url": "https://www.asianpaints.com/resources/tools/interior-design-solutions-calculator.html",
+          "description": "The Beautiful Homes Interior Design Solution Cost Calculator simplifies the process of budget estimation by offering quick results you can rely on."
+        },
+        {
+          "rank": 4,
+          "title": "Interior Design Project Budget Calculator",
+          "url": "https://shop.designersoasis.com/products/interior-design-project-budget-calculator?srsltid=AU7gw4Vl58hf-J4A-49QdkHkAofo3L8nBcoZprHN14rAlPL1gZhbrdMj",
+          "description": "This calculator is plug-and-play with over 125 commonly specified items that includes Good-Better-Best pricing, taking the guesswork out of budgeting"
+        },
+        {
+          "rank": 5,
+          "title": "Interior Design Budget Calculator: Estimate the Cost",
+          "url": "https://www.decorilla.com/online-decorating/interior-design-budget-caclulator",
+          "description": "Jun 22, 2026 — Decorilla's Interior Design Budget Calculator gives you a room-by-room estimate based on your space, style, location, and priorities, so you ..."
+        },
+        {
+          "rank": 6,
+          "title": "Home Interior Budget Calculator in Bhubaneswar",
+          "url": "https://kritikreations.in/home-interior-design-budget-calculator/",
+          "description": "Check estimated home interior design budget in Bhubaneswar with our free calculator tool. Your home interior estimate is almost ready!"
+        },
+        {
+          "rank": 7,
+          "title": "Furnishing Budget Calculator for Interior Designers | HYDC",
+          "url": "https://shop.hotyoungdesignersclub.com/products/furnishing-budget-calculator",
+          "description": "The Furnishing Budget Calculator is a client-friendly approach to establishing initial budgets for your decorating and furnishing projects. Read more"
+        },
+        {
+          "rank": 8,
+          "title": "Interactive Interior Design Cost Calculator",
+          "url": "https://aidaform.com/templates/interior-design-cost-calculator.html",
+          "description": "Help your clients learn how much interior designers charge: customize the interior design fee calculator template and embed it on your website without any ..."
+        },
+        {
+          "rank": 9,
+          "title": "Interior Design Cost Calculator | Start Here.",
+          "url": "https://www.theupstudio.com/interiordesigncalculator/",
+          "description": "Quickly understand how much it will cost to furnish your home (or future home)! This free calculator will help you estimate product costs and interior ..."
+        }
+      ],
+      "relatedSearches": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+name: Marketing production availability
+
+on:
+  schedule:
+    - cron: '10 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marketing-production-availability
+  cancel-in-progress: false
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check published pages and generated artifact hashes
+        run: node apps/marketing/production-check.mjs
+      - name: Summarize public availability only
+        if: always()
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile, appendFile } from 'node:fs/promises';
+          try {
+            const report = JSON.parse(await readFile('output/seo/production-check.json', 'utf8'));
+            const passed = report.checks.filter(check => check.pass).length;
+            await appendFile(process.env.GITHUB_STEP_SUMMARY,
+              `Production availability: **${report.status}** (${passed}/${report.checks.length} checks).\n\nChecked ${report.checkedAt}. This does not verify Google indexing, analytics, intake delivery or business outcomes.\n`);
+          } catch {
+            await appendFile(process.env.GITHUB_STEP_SUMMARY, 'Production audit did not produce a result; inspect the job error.\n');
+          }
+          NODE

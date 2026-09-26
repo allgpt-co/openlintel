@@ -444,16 +444,13 @@ export function enrichTemplate(item) {
   if (!entry) throw new Error(`Missing authored guidance for template: ${item.id}`);
   return {
     ...item,
-    title:
-      item.id === 'presentation'
-        ? 'Interior design presentation storyboard template (DOCX)'
-        : item.title,
+    title: item.title,
     use: `${item.use} ${entry.step}`,
     sections: [entry.section],
     unitsNote: item.budget
       ? 'US-first examples use USD teaching figures, not current market prices. Use one currency; keep tax, delivery, installation, and other cost assumptions explicit. Do not infer a tax rate from this example.'
       : 'The worked example keeps its original nominal metric dimensions. For a US project, choose and label a primary imperial or metric convention, distinguish item counts from areas, and document any display conversion and rounding. Never relabel metric values as imperial or treat conversion as site verification.',
     pilot: entry.pilot,
-    modified: '2026-09-15',
+    modified: '2026-09-26',
   };
 }

@@ -120,6 +120,13 @@ for (const base of ['/', '/openlintel/']) {
           assert.equal(breadcrumb.itemListElement.at(-1).item, canonical);
           assert.match(html, /aria-label="Breadcrumb"/);
         }
+        if (record.kind === 'hub') {
+          const presentationCard = [
+            ...html.matchAll(/<article class="resource-card">[\s\S]*?<\/article>/g),
+          ].find(([card]) => card.includes('templates/interior-design-presentation/'))?.[0];
+          assert.match(presentationCard || '', /PPTX/);
+          assert.match(presentationCard || '', /PDF/);
+        }
         if (record.kind === 'guide') {
           const article = schemas.find((s) => s['@type'] === 'Article');
           assert.equal(article.author.name, 'OpenLintel');
@@ -198,10 +205,17 @@ for (const base of ['/', '/openlintel/']) {
         for (const download of record.downloads) {
           const buffer = await readFile(join(output, download.path));
           assert.equal(buffer.length, download.size);
-          assert.equal(buffer.subarray(0, 2).toString(), 'PK');
+          assert.equal(
+            buffer.subarray(0, download.format === 'PDF' ? 5 : 2).toString(),
+            download.format === 'PDF' ? '%PDF-' : 'PK',
+          );
           assert.ok(manifest.files.includes(download.path));
         }
       }
+      assert.ok(
+        !manifest.files.some((path) => path.includes('interior-design-purchase-order')),
+        'Unreviewed purchase-order draft is never published',
+      );
       const csv = await readFile(
         join(output, 'assets/downloads/window-room-materials.csv'),
         'utf8',
@@ -286,10 +300,11 @@ test('All Office documents parse, match their definitions, and build reproducibl
         createHash('sha256').update(second[index].buffer).digest('hex'),
         `${download.path}: deterministic bytes`,
       );
+      if (!['DOCX', 'XLSX'].includes(download.format)) continue; // PPTX/PDF structure has dedicated tests.
       const zip = await JSZip.loadAsync(download.buffer);
       assert.ok(zip.file('[Content_Types].xml'));
       assert.ok(!Object.keys(zip.files).some((name) => /vbaProject|externalLinks/.test(name)));
-      if (definition.format === 'docx') {
+      if (download.format === 'DOCX') {
         const document = await zip.file('word/document.xml').async('string');
         for (const field of definition.fields)
           assert.ok(document.includes(field.label.replaceAll('&', '&amp;')), field.label);

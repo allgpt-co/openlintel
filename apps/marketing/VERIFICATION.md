@@ -1,3 +1,37 @@
+# SEO implementation verification — September 26, 2026
+
+This entry records the current source changes. The dated sections below are preserved as historical evidence and do not establish the status of this release candidate.
+
+## Current implementation and verified baseline
+
+- The pre-change local baseline passed **42/42 automated tests**. A read-only audit of the previously deployed production build on September 25, 2026 (September 26 UTC) passed **796/796 checks**, including the public host, HTTPS, redirects and reviewed files. This supersedes the historical unresolved-DNS status below. It is not evidence that the new changes are deployed.
+- The public URL inventory remains **45 registered pages plus the custom 404**, with **43 indexable sitemap URLs**. Source adds two editable eight-slide PPTX decks and two PDFs to the original twelve DOCX and six XLSX downloads, plus two assembled mood-board SVGs. The existing presentation and mood-board URLs remain unchanged. DOCX/XLSX print layouts use US Letter; diagrams and worked examples retain their stated nominal units and review limitations.
+- Closed discovery intake now offers availability information, with no pilot CTA event when intake is disabled. About, Privacy and editorial corrections use the published contact consistently. A displayed contact does not bypass verified contact, provider, ownership or privacy requirements. The hosted application is described as experimental; its landing metadata defaults to noindex, and sign-in remains noindex.
+- Optional review credits require actual permission, reviewer identity and scope, valid completed dates, and an exact authored-content hash. Actual download generation was checked in memory across all twelve template definitions: appending generated file metadata preserves the hash. No practitioner review was invented or marked complete. Guide revision dates belong to individual authored records.
+- Search reporting adds explicit host/stream segments, bounded pagination, independent totals, US/global cuts, 90-day context, content/query groupings, registered custom-event detail and optional read-only URL Inspection. Private outcome reporting deduplicates studio records and emits aggregate counts with data-quality diagnostics. Independent review and the final regression suite verified reporting corrections, including unknown and partial states.
+
+## Final local validation
+
+Verified September 26, 2026, before deployment:
+
+- `node --test apps/marketing/*.test.mjs`: **76/76 passed**, including reporting failures, receipt-relative source evidence, studio deduplication, review hashes, draft exclusion and mixed-format generation.
+- Marketing ESLint, affected application-file ESLint, scoped Prettier and `git diff --check`: passed. Pinned pnpm 9.15.4 accepted the frozen lockfile offline in an isolated copy of all seven workspace manifests; this did not reinstall the working environment.
+- Canonical `docs/` regenerated. A separate root build produced an identical manifest and identical bytes for all **119 generated files**. The subdirectory build also passed.
+- Served-output audits: **775/775 checks at `/` and 775/775 at `/openlintel/`**, explicitly local previews. The previous live production result remains the pre-change 796/796 baseline; these new artifacts have not been deployed.
+- Playwright CLI smoke passed for both paths: all 45 pages at 360, 390, 768, 1024 and 1440 px, sample chapters/history, keyboard/focus, print, no-JavaScript access, reduced motion, 200% zoom and all **22 template downloads** plus three sample downloads. Both runs reported zero browser errors and zero failed requests.
+- Configured growth fixture passed consent acceptance/rejection/withdrawal, cross-tab teardown, source/consent expiry, blocked storage, accepted-only conversions, provider failure paths and native no-JavaScript submission. Actual XLSX, both PPTX and both PDF downloads completed and each emitted exactly one correctly classified mock event. All provider requests were intercepted; no live submission or Google collection occurred. Deliberate 422/network/429 failure cases produced expected browser console messages.
+- LibreOffice 24.2.7.2 opened all 18 DOCX/XLSX files and converted them to 54 US Letter pages. Representative first-six print pages were inspected after fixing narrow print text. Both eight-slide PPTX decks opened; native title and shape-color edits survived save/reopen. All 16 slide renders and all ten PDF pages were visually inspected without clipping. Budget recalculation preserved positive totals, overruns, explicit zero and missing inputs.
+- A private Google Slides import retained eight slides and native editable objects; all eight native slide thumbnails were visually inspected. Its structural issue check returned zero issues. The connector PDF export was unavailable, so native thumbnails supplied the rendering evidence.
+- A private Google Sheets budget import retained formulas and recalculated total 2,500 / remaining -1,000, explicit zero / zero and missing quantity / blank. Test inputs were then cleared. This tested the same calculation logic before final print-width changes; it does not certify final Sheets print pagination or every workbook. Microsoft Office desktop was not tested.
+
+Ignored verification artifacts are under `output/seo/` and `output/playwright/`, including the release test log, root/subpath served reports, browser logs, native Google validation and artifact-review evidence. These machine and interoperability checks do not replace practitioner review.
+
+## Remaining external gates
+
+These changes have not established a deployment, accessible OpenLintel GA4/GSC reporting properties, actual Google-runtime collection, real Formspree delivery, completed discovery conversations, practitioner reviews, or outreach. Pilot and analytics activation require the actual readiness checks in [the launch runbook](operations/LAUNCH.md) and [analytics acceptance record](operations/ANALYTICS-ACCEPTANCE.md). The purchase-order resource remains an unpublished draft. Preserve historical provider observations and mark missing data unavailable rather than zero.
+
+---
+
 # SEO implementation verification — September 15, 2026
 
 ## Current local release candidate

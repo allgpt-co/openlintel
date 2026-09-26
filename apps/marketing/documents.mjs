@@ -1,6 +1,11 @@
 import ExcelJS from 'exceljs';
 import JSZip from 'jszip';
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Footer, PageNumber } from 'docx';
+import {
+  createPresentation,
+  createPresentationPdf,
+  createQuestionnairePdf,
+} from './presentation-assets.mjs';
 
 export const exampleNotice =
   'Illustrative teaching extension of The Window Room; not a client record, supplier quote, site survey, or construction-ready document. Pending professional review.';
@@ -75,6 +80,17 @@ async function workbook(definition) {
       'Review',
       'These are educational planning aids, not legal agreements, professional certification, or instructions for construction.',
     ],
+    [
+      'Google Sheets import',
+      'Upload the XLSX to your own Drive and open it in Google Sheets. Before using it, check formulas, blank-versus-zero behavior, validation, number formats and print breaks. Keep the original XLSX. ' +
+        (definition.budget
+          ? 'Budget calculation logic was checked in Google Sheets on September 26, 2026; review the layout of your imported copy separately.'
+          : 'This workbook has not been independently checked in Google Sheets.'),
+    ],
+    [
+      'Printing',
+      'US Letter, landscape. Fit one page wide and inspect the preview; long tables may span multiple pages.',
+    ],
     ...definition.steps.map((step, i) => [`Step ${i + 1}`, step]),
     ...definition.columns.map((c) => [c.label, c.help]),
     ...(definition.budget
@@ -96,7 +112,7 @@ async function workbook(definition) {
   });
   instructions.getRow(1).font = { bold: true, size: 14, color: { argb: 'FF252722' } };
   instructions.pageSetup = {
-    paperSize: 9,
+    paperSize: 1,
     orientation: 'landscape',
     fitToPage: true,
     fitToWidth: 1,
@@ -111,13 +127,23 @@ async function workbook(definition) {
   ]) {
     const sheet = book.addWorksheet(name, { views: [{ state: 'frozen', ySplit: 5, xSplit: 2 }] });
     const count = definition.columns.length;
+    // The old 27/48-character widths reduced a ten-column printed table to
+    // about five-point type. Keep screens editable and Letter printouts legible.
     sheet.columns = definition.columns.map((c, i) => ({
       width:
-        c.type === 'number' || c.type === 'money' || c.type === 'formula'
-          ? 18
-          : i === count - 1
-            ? 48
-            : 27,
+        i === count - 1
+          ? 26
+          : ['money', 'formula'].includes(c.type)
+            ? 12
+            : c.type === 'number'
+              ? 9
+              : c.label === 'Unit'
+                ? 7
+                : /^(Reference|Revision)$/.test(c.label)
+                  ? 12
+                  : /^(Selection|Item)$/.test(c.label)
+                    ? 20
+                    : 15,
     }));
     for (let row = 1; row <= 4; row++) sheet.mergeCells(row, 1, row, count);
     sheet.getCell('A1').value = definition.title;
@@ -150,7 +176,20 @@ async function workbook(definition) {
       const values = example ? definition.rows[i] || [] : [];
       const row = sheet.getRow(rowIndex);
       row.values = values;
-      row.height = example && i < definition.rows.length ? 80 : 36;
+      row.height =
+        example && i < definition.rows.length
+          ? Math.max(
+              72,
+              ...values.map(
+                (value, index) =>
+                  Math.ceil(String(value ?? '').length / (sheet.columns[index].width * 0.85)) * 14 +
+                  12,
+              ),
+            )
+          : 36;
+      // Retain formula rows in the example but avoid printing an empty register.
+      // The blank template keeps all twenty input rows visible.
+      if (example && definition.budget && i >= definition.rows.length) row.hidden = true;
       for (let c = 1; c <= count; c++) {
         const cell = row.getCell(c);
         const column = definition.columns[c - 1];
@@ -202,7 +241,8 @@ async function workbook(definition) {
       to: { row: dataRows + 5, column: count },
     };
     sheet.pageSetup = {
-      paperSize: 9,
+      paperSize: 1,
+      margins: { left: 0.4, right: 0.4, top: 0.45, bottom: 0.45, header: 0.2, footer: 0.2 },
       orientation: 'landscape',
       fitToPage: true,
       fitToWidth: 1,
@@ -217,6 +257,8 @@ async function workbook(definition) {
     sheet.eachRow((row) =>
       row.eachCell((cell) => {
         cell.alignment = { vertical: 'top', wrapText: true, ...cell.alignment };
+        if (typeof cell.value === 'string')
+          cell.alignment = { ...cell.alignment, horizontal: 'left', indent: 1 };
         cell.font = { name: 'Calibri', size: 11, ...cell.font };
       }),
     ),
@@ -228,7 +270,7 @@ async function document(definition, example) {
   const p = (text, options = {}) =>
     new Paragraph({
       text,
-      spacing: { after: 140 },
+      spacing: { after: 100 },
       ...(options.heading ? { keepNext: true } : {}),
       ...options,
     });
@@ -273,7 +315,7 @@ async function document(definition, example) {
       default: {
         document: {
           run: { font: 'Calibri', size: 22, color: '252722' },
-          paragraph: { spacing: { line: 280 } },
+          paragraph: { spacing: { line: 260 } },
         },
         heading1: {
           run: { font: 'Calibri', size: 30, color: '914F38' },
@@ -281,13 +323,18 @@ async function document(definition, example) {
         },
         heading2: {
           run: { font: 'Calibri', size: 25, bold: true, color: '252722' },
-          paragraph: { spacing: { before: 180, after: 120 }, keepNext: true },
+          paragraph: { spacing: { before: 140, after: 100 }, keepNext: true },
         },
       },
     },
     sections: [
       {
-        properties: { page: { margin: { top: 900, bottom: 900, left: 1000, right: 1000 } } },
+        properties: {
+          page: {
+            size: { width: 12240, height: 15840 },
+            margin: { top: 900, bottom: 900, left: 1000, right: 1000 },
+          },
+        },
         children,
         footers: {
           default: new Footer({
@@ -327,21 +374,58 @@ export async function generateDownloads(definition) {
         path: `${prefix}.xlsx`,
         label: 'Download editable workbook',
         format: 'XLSX',
+        variant: 'workbook',
         buffer,
         size: buffer.length,
       },
     ];
   }
-  return Promise.all(
+  const downloads = await Promise.all(
     [false, true].map(async (example) => {
       const buffer = await document(definition, example);
       return {
         path: `${prefix}-${example ? 'example' : 'blank'}.docx`,
         label: example ? 'Download worked example' : 'Download blank template',
         format: 'DOCX',
+        variant: example ? 'example' : 'blank',
         buffer,
         size: buffer.length,
       };
     }),
   );
+  const append = (suffix, label, format, variant, buffer) =>
+    downloads.push({
+      path: `${prefix}-${suffix}.${format.toLowerCase()}`,
+      label,
+      format,
+      variant,
+      buffer,
+      size: buffer.length,
+    });
+  if (definition.id === 'presentation') {
+    for (const example of [false, true])
+      append(
+        example ? 'example' : 'blank',
+        example ? 'Download editable slide example' : 'Download editable blank slides',
+        'PPTX',
+        example ? 'example' : 'blank',
+        await createPresentation(example, definition.modified),
+      );
+    append(
+      'preview',
+      'Download slide preview',
+      'PDF',
+      'preview',
+      await createPresentationPdf(definition.modified),
+    );
+  }
+  if (definition.id === 'client-questionnaire')
+    append(
+      'blank',
+      'Download printable questionnaire',
+      'PDF',
+      'blank',
+      createQuestionnairePdf(definition),
+    );
+  return downloads;
 }

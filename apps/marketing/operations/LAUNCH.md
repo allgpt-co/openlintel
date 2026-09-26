@@ -1,12 +1,20 @@
 # Marketing launch and activation runbook
 
-## Verified infrastructure state — 2026-09-19
+## Current infrastructure state — September 25 audit
+
+The domain is now live. GitHub Pages uses `main:/docs`, `https_enforced` is true, and the September 20 build serves revision `2cdc7b2d25fc0074f2ab0a2f1a974ba99d122c69`. Fresh September 25 Chicago-time verification passed **796/796 production checks**, including reviewed file hashes, route availability, HTTPS/www/default-host redirects, canonical/indexing rules, downloads and real 404s. This supersedes the historical DNS failure below. Do not reconfigure working DNS as an unfinished launch task. The checked-in availability workflow performs GET-only production checks daily after it is released to the default branch.
+
+The remaining activation dependencies are correct Google-property access, monitored intake configuration, operational owners, actual provider-runtime validation and practitioner review. The public `rahul@quickintell.com` contact is already published; this does not attest to intake coverage or privacy/retention approval. No OpenLintel GSC property or GA4 stream was found among the connected account's accessible properties. Obtain access to an existing property first; create only if its owner confirms none exists. See [audit evidence](SEO-AUDIT-2026-09-25.md), [current backlog](ROADMAP.md), and [real analytics acceptance record](ANALYTICS-ACCEPTANCE.md).
+
+## Historical infrastructure state — 2026-09-19
 
 Read-only GitHub API inspection confirmed `allgpt-co/openlintel` Pages uses `main:/docs` (`build_type: legacy`, status `built`), with custom domain `openlintel.com`. The returned site URL was HTTP, `https_enforced` was false, and `https_certificate` was null. Public DNS-over-HTTPS returned no apex A/AAAA answers and NXDOMAIN for the www CNAME query. A built Pages status is **not** evidence that the current local revision is deployed or reachable.
 
 The September 19 recheck confirmed the same unresolved domain state. Cloudflare is authoritative, but no usable DNS-provider connection is available. No accessible OpenLintel Search Console property or verified OpenLintel GA4 stream was identified. The implementation has not changed DNS, purchased services, created analytics properties, submitted a sitemap, enabled a real form, sent outreach, or certified editorial content. No usable Cloudflare credential, verified Formspree ID, OpenLintel GA4 measurement ID, or operational contact was available. The shared environment's generic analytics properties must not be reused.
 
-## 1. Ownership and DNS
+## 1. Ownership and DNS recovery reference
+
+DNS/HTTPS below is a recovery checklist, not pending configuration work. Verify the observed state before changing any records.
 
 1. Assign a domain/Pages administrator, privacy owner, lead owner and backup, and editorial reviewer. Confirm the actual domain and repository ownership.
 2. Verify the custom domain in GitHub before creating DNS records. Keep the existing `main:/docs` publishing source; do not switch the app deployment workflow.
@@ -49,7 +57,7 @@ An unconfigured build intentionally shows availability information rather than a
 2. Submit `https://openlintel.com/sitemap.xml` after the production audit passes. Inspect the home, a hub, a guide, a template, and the pilot page; confirm the print summary/confirmation are intentionally excluded.
 3. Obtain or create a dedicated OpenLintel GA4 web stream. Check its default website URL and data owner. Disable the entire enhanced-measurement feature, including automatic page/form/download/history/scroll interactions; keep Google Signals and advertising features off for this v1.
 4. Use the Google tag's basic opt-in behavior. No Google script, event or consent ping before acceptance. Denial must not stop reading, downloads or form submission. Test withdrawal and cross-tab updates with the browser network panel.
-5. Validate the actual Google tag in the isolated analytics frame on the verified HTTPS domain: correct property/stream and hostname, page location, categorized acquisition, cookie continuity, engagement behavior, and withdrawal without further requests. Test supported browsers; mocked tests do not validate Google’s real runtime.
+5. Complete `ANALYTICS-ACCEPTANCE.md` using the actual Google tag in the isolated analytics frame on the verified HTTPS domain: correct property/stream and hostname, page location, categorized acquisition, cookie/session continuity, foreground engagement, and withdrawal without further requests. Specifically test organic landing → internal template → pilot attribution and a later direct entry. Current internal-navigation campaign configuration and frame engagement are validation questions, not demonstrated failures. Test supported browsers; mocked tests do not validate Google's real runtime or processed reports.
 6. Verify `generate_lead` only after accepted AJAX submission, not a CTA, thank-you URL or failed request. Set it as a GA4 key event; keep downloads as microconversions. Do not assign made-up currency values or call them qualified leads.
 
 ```sh
@@ -101,4 +109,4 @@ Record the real release date and deployed commit; do not treat an editorial modi
 - Revert a failed marketing release and republish the prior reviewed static output. Preserve valid redirects and lead records; never delete lead data as part of a code rollback.
 - Run uptime checks for home and pilot daily, check form delivery using designated test records weekly, inspect indexing weekly after launch, and compare complete reporting periods monthly.
 
-Practitioner review, legal/privacy approval, actual pilot outcomes, video production, backlinks and six months of measurement are ongoing human/external work—not automatically completed by this code release.
+Practitioner review, privacy/operational approval, actual pilot outcomes, workshop participation, editorial links and six months of measurement are ongoing human/external work—not automatically completed by this code release. The two educational website videos are already supplied; a genuine app demonstration needs separate release-specific evidence.

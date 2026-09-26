@@ -30,6 +30,8 @@ const contentTypes = {
   '.woff2': ['font/woff2', 'application/font-woff2'],
   '.docx': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
   '.xlsx': ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  '.pptx': ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+  '.pdf': ['application/pdf'],
 };
 function validContentType(file, response) {
   const expected = contentTypes[extname(file)];
@@ -152,8 +154,10 @@ export async function auditProduction(
           );
           if (/\.(html|xml|txt)$/.test(file))
             bodies.set(file, { text: body.toString('utf8'), headers: response.headers });
-          if (/\.(docx|xlsx)$/.test(file))
+          if (/\.(docx|xlsx|pptx)$/.test(file))
             add(`${file}: Office archive`, body.subarray(0, 2).toString() === 'PK');
+          if (/\.pdf$/.test(file))
+            add(`${file}: PDF header`, body.subarray(0, 5).toString() === '%PDF-');
         } catch (error) {
           add(`${file}: fetch`, false, error.cause?.code || error.name);
         }

@@ -53,7 +53,7 @@
       "kind": "hub",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "templates",
@@ -61,37 +61,42 @@
       "kind": "hub",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "pilot",
       "path": "pilot/",
       "kind": "growth",
-      "indexable": true
+      "indexable": true,
+      "modified": "2026-09-26"
     },
     {
       "id": "product-status",
       "path": "product-status/",
       "kind": "growth",
-      "indexable": true
+      "indexable": true,
+      "modified": "2026-09-26"
     },
     {
       "id": "about",
       "path": "about/",
       "kind": "growth",
-      "indexable": true
+      "indexable": true,
+      "modified": "2026-09-26"
     },
     {
       "id": "editorial-policy",
       "path": "editorial-policy/",
       "kind": "growth",
-      "indexable": true
+      "indexable": true,
+      "modified": "2026-09-26"
     },
     {
       "id": "privacy",
       "path": "privacy/",
       "kind": "growth",
-      "indexable": true
+      "indexable": true,
+      "modified": "2026-09-26"
     },
     {
       "id": "pilot-thanks",
@@ -109,17 +114,26 @@
           "path": "assets/downloads/templates/interior-design-client-questionnaire-blank.docx",
           "label": "Download blank template",
           "format": "DOCX",
-          "size": 10186
+          "variant": "blank",
+          "size": 10183
         },
         {
           "path": "assets/downloads/templates/interior-design-client-questionnaire-example.docx",
           "label": "Download worked example",
           "format": "DOCX",
-          "size": 10472
+          "variant": "example",
+          "size": 10471
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-client-questionnaire-blank.pdf",
+          "label": "Download printable questionnaire",
+          "format": "PDF",
+          "variant": "blank",
+          "size": 3473
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "design-brief",
@@ -131,17 +145,19 @@
           "path": "assets/downloads/templates/interior-design-brief-blank.docx",
           "label": "Download blank template",
           "format": "DOCX",
-          "size": 10031
+          "variant": "blank",
+          "size": 10027
         },
         {
           "path": "assets/downloads/templates/interior-design-brief-example.docx",
           "label": "Download worked example",
           "format": "DOCX",
-          "size": 10334
+          "variant": "example",
+          "size": 10331
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "proposal",
@@ -153,17 +169,19 @@
           "path": "assets/downloads/templates/interior-design-proposal-blank.docx",
           "label": "Download blank template",
           "format": "DOCX",
-          "size": 9939
+          "variant": "blank",
+          "size": 9936
         },
         {
           "path": "assets/downloads/templates/interior-design-proposal-example.docx",
           "label": "Download worked example",
           "format": "DOCX",
-          "size": 10293
+          "variant": "example",
+          "size": 10290
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "scope-of-work",
@@ -175,17 +193,19 @@
           "path": "assets/downloads/templates/interior-design-scope-of-work-blank.docx",
           "label": "Download blank template",
           "format": "DOCX",
-          "size": 9963
+          "variant": "blank",
+          "size": 9960
         },
         {
           "path": "assets/downloads/templates/interior-design-scope-of-work-example.docx",
           "label": "Download worked example",
           "format": "DOCX",
-          "size": 10256
+          "variant": "example",
+          "size": 10253
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "budget",
@@ -197,11 +217,12 @@
           "path": "assets/downloads/templates/interior-design-budget.xlsx",
           "label": "Download editable workbook",
           "format": "XLSX",
-          "size": 14186
+          "variant": "workbook",
+          "size": 14586
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "spec-sheet",
@@ -213,11 +234,12 @@
           "path": "assets/downloads/templates/interior-design-spec-sheet.xlsx",
           "label": "Download editable workbook",
           "format": "XLSX",
-          "size": 11199
+          "variant": "workbook",
+          "size": 11579
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "ffe-schedule",
@@ -229,11 +251,12 @@
           "path": "assets/downloads/templates/ffe-schedule.xlsx",
           "label": "Download editable workbook",
           "format": "XLSX",
-          "size": 11460
+          "variant": "workbook",
+          "size": 11837
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "finish-schedule",
@@ -245,11 +268,12 @@
           "path": "assets/downloads/templates/finish-schedule.xlsx",
           "label": "Download editable workbook",
           "format": "XLSX",
-          "size": 11352
+          "variant": "workbook",
+          "size": 11691
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "room-data",
@@ -261,11 +285,12 @@
           "path": "assets/downloads/templates/room-data-sheet.xlsx",
           "label": "Download editable workbook",
           "format": "XLSX",
-          "size": 10846
+          "variant": "workbook",
+          "size": 11229
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "timeline",
@@ -277,11 +302,12 @@
           "path": "assets/downloads/templates/interior-design-project-timeline.xlsx",
           "label": "Download editable workbook",
           "format": "XLSX",
-          "size": 11090
+          "variant": "workbook",
+          "size": 11422
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "site-survey",
@@ -293,17 +319,19 @@
           "path": "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx",
           "label": "Download blank template",
           "format": "DOCX",
-          "size": 10011
+          "variant": "blank",
+          "size": 10007
         },
         {
           "path": "assets/downloads/templates/interior-design-site-survey-checklist-example.docx",
           "label": "Download worked example",
           "format": "DOCX",
-          "size": 10280
+          "variant": "example",
+          "size": 10277
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "presentation",
@@ -315,17 +343,40 @@
           "path": "assets/downloads/templates/interior-design-presentation-blank.docx",
           "label": "Download blank template",
           "format": "DOCX",
-          "size": 10050
+          "variant": "blank",
+          "size": 10123
         },
         {
           "path": "assets/downloads/templates/interior-design-presentation-example.docx",
           "label": "Download worked example",
           "format": "DOCX",
-          "size": 10378
+          "variant": "example",
+          "size": 10448
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-blank.pptx",
+          "label": "Download editable blank slides",
+          "format": "PPTX",
+          "variant": "blank",
+          "size": 39068
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-example.pptx",
+          "label": "Download editable slide example",
+          "format": "PPTX",
+          "variant": "example",
+          "size": 7717597
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-preview.pdf",
+          "label": "Download slide preview",
+          "format": "PDF",
+          "variant": "preview",
+          "size": 5361368
         }
       ],
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "mood-board",
@@ -333,7 +384,7 @@
       "kind": "guide",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-15"
+      "modified": "2026-09-26"
     },
     {
       "id": "material-board",
@@ -480,6 +531,8 @@
     "assets/diagrams/drawing-index.svg",
     "assets/diagrams/ffe.svg",
     "assets/diagrams/measure.svg",
+    "assets/diagrams/mood-board-deep-olive.svg",
+    "assets/diagrams/mood-board-quiet-oak.svg",
     "assets/diagrams/process.svg",
     "assets/diagrams/procurement.svg",
     "assets/diagrams/rcp.svg",
@@ -489,9 +542,13 @@
     "assets/downloads/templates/interior-design-brief-example.docx",
     "assets/downloads/templates/interior-design-budget.xlsx",
     "assets/downloads/templates/interior-design-client-questionnaire-blank.docx",
+    "assets/downloads/templates/interior-design-client-questionnaire-blank.pdf",
     "assets/downloads/templates/interior-design-client-questionnaire-example.docx",
     "assets/downloads/templates/interior-design-presentation-blank.docx",
+    "assets/downloads/templates/interior-design-presentation-blank.pptx",
     "assets/downloads/templates/interior-design-presentation-example.docx",
+    "assets/downloads/templates/interior-design-presentation-example.pptx",
+    "assets/downloads/templates/interior-design-presentation-preview.pdf",
     "assets/downloads/templates/interior-design-project-timeline.xlsx",
     "assets/downloads/templates/interior-design-proposal-blank.docx",
     "assets/downloads/templates/interior-design-proposal-example.docx",
@@ -598,7 +655,7 @@
     "assets/fonts/manrope-700.woff2": "f1f5ee91c78174cbbbf174e76eb7b4e9386c3d03de5616f940f24e580b4aff8c",
     "assets/fonts/manrope-OFL.txt": "f612090fb72b6dca3e807e66fa0d2b5def163cef86f1a3209b5c897cba5ee4b7",
     "assets/growth.css": "50513710882014a568b7b53b1fab56048756ff37704d6890f32c9963064be4ba",
-    "assets/growth.js": "3c589b800d4dfaf823102827159ecdbb9ccc95fbda9563ff4dc0713a74fe46f0",
+    "assets/growth.js": "76e192e139abb96b19f46063a351f3ecea56a6e61af713a4fafb22523fe9667a",
     "assets/images/alternative-1536.webp": "8d306b8b71bb71a06d7df3d98fba797a0ce84123ba1c19717cd04ee8b6086db0",
     "assets/images/alternative-480.webp": "801530cae6b9d44b38a397bde27ba23f02d3e52d5edf4d8c9b5d93df432e0923",
     "assets/images/alternative-960.webp": "1b32488733d9a249b6c4a27b393983fc8165447276597c74a8f7a85c671456ce",
@@ -614,7 +671,7 @@
     "assets/images/room-1536.webp": "c28a920564a33784f3349d3d78a2097627709a9a47f9247d872e0cde0cfedffb",
     "assets/images/room-480.webp": "811558d762862f164a27405d33b96cc7d56c6660557a8969dd50cb3b022c2ea7",
     "assets/images/room-960.webp": "caeaa3cd1f064103e2652aa9e9b804565d0c519ac55183b4e0b376ac62474591",
-    "assets/site.css": "efa034eaea582d1fcad8b5fc4af72f29dc0f8052722c38b83e4052569a6671cb",
+    "assets/site.css": "0bb59d8c18b69575d4e8e0a313a90342eb1d0340b68eb279b1a3f460adac49b6",
     "assets/site.js": "4ae8546966153543f596cbf4f0cce73f2e847046cbb881fc9aed2808d56d6e62",
     "assets/videos/template-workflow-walkthrough-poster.webp": "acba08a96773b9f7a2f4ba27725d42a6ad708800b2fa4b039f74855a0a23d64d",
     "assets/videos/template-workflow-walkthrough-transcript.txt": "a4cc5cbb60a90984c37853decad3865a91b33bc28379ad7543a36680950229fa",
@@ -624,70 +681,74 @@
     "assets/videos/window-room-walkthrough-transcript.txt": "e1dff353b9c90b6d98ca4f032b69a9a5ca1769c2c9e8fb8d4de46dafe0bbde52",
     "assets/videos/window-room-walkthrough.mp4": "f9c9d7372537c5ced9a672d167ec6308cb1714986bdab9a04332f153d20cc3b1",
     "assets/videos/window-room-walkthrough.vtt": "79613db667c6645ea71645cb6714cf7b399595e53d617423d1e7811a90fea7d0",
-    "index.html": "6eed1fed323881d2b6abcb9f73c13140c445d6b7ad97d0479fb7d37dc211cb59",
-    "how-it-works/index.html": "542d2e33eb12054b6b32942dd360a948a0bcd62e083d99a439d8c5e72bbf5987",
-    "sample-project/index.html": "e79454bf89c87455c4d280bd899f18a2465d3b5589a900d6a04c27ca1138f0a3",
-    "for-design-studios/index.html": "88ad249a8b55d69492a09c0f6c0d973d919d9313616d4a9e2f7d265857012c2e",
-    "for-architects/index.html": "74cfeba68cbaf945a4c44897f28a5e62dfd4649671af7a17481ed4d76f4e6bc7",
-    "open-source/index.html": "4fe3809044846985457af58b831c39dc6a668852672a85a04200137a7501a1c4",
-    "sample-project/summary/index.html": "f858aa5ad15de64c5fad85c1b984c976e64c299c345bfbaeff96475dc18d4efd",
-    "resources/index.html": "a8934aae3614a219c3f3f13d0b44320e7c1bc5f8410537f6075ea7f6b9215fd3",
-    "templates/index.html": "2a6bfa7c40ccebe5a5bff0dd69541cdc8bf41fa0780e755416c1378687c61a25",
-    "pilot/index.html": "f52a3547c41c3d91dc40ff760ee57abc4df77a72ffd6f8456a39d1e94a6ae011",
-    "product-status/index.html": "9460863df804844bf3efb232d6416522a0ffc10b2b56a40ad762fff7a14e074f",
-    "about/index.html": "584fc3127c79e3bf906003f7d14b1cafd1f92cd8e50a41b81ad8dde832b1a9f1",
-    "editorial-policy/index.html": "1bfaeff5c406cdef39bf626210d155b587cd5939506d14df09e3077e906d85db",
-    "privacy/index.html": "dcbb71a9f697143d9c468bd637d8feb534e3eff43d66954720a3b18b6b293be6",
-    "pilot/thanks/index.html": "dc041424e0dd8420e5975c4481d0a9911bdebaaf1c3cb56f5fc5042bfef04c2d",
-    "assets/downloads/templates/interior-design-client-questionnaire-blank.docx": "1752f6deda81ed18fcfccd28b09552ebcdf64dce80ebe23c56ed1851360685ac",
-    "assets/downloads/templates/interior-design-client-questionnaire-example.docx": "2e28f6d3f3edd99b6c899ab9f9b45a9eeb633982c8449f6e49b7e3025b5ab395",
-    "templates/interior-design-client-questionnaire/index.html": "c6b892739b3f68b0e8f590dfae3fc069e5e93c5b673b17a76da293104224d15f",
-    "assets/downloads/templates/interior-design-brief-blank.docx": "fbbf42dded60cecb72b22999cc1010ca79e7c16a2aca7aa5c0f979c1c3e7f1b6",
-    "assets/downloads/templates/interior-design-brief-example.docx": "6310bde76f523d7829f12e2e779e34872410b6dfbd3213e5ed0e1cdc2485fb63",
-    "templates/interior-design-brief/index.html": "8f15aec49fb2d777de74ba30200eb3cf00d19f81c8468ad7a88beb7a9ff5a262",
-    "assets/downloads/templates/interior-design-proposal-blank.docx": "d6353025228d427b30657cf4b605e2be77814f59a0c56f7cf68b38b42e410eee",
-    "assets/downloads/templates/interior-design-proposal-example.docx": "62b375c2465745cacf5aa5e5c5d8cebc1fc214918afc7181f2304806620dcf94",
-    "templates/interior-design-proposal/index.html": "dcdf127af03cc3def085e06124f3f4ad70a1e572db46b16f67ff02f8366fe409",
-    "assets/downloads/templates/interior-design-scope-of-work-blank.docx": "7363ef2a0020d08308c60216feefc42b62831e6d8f6f4c732b0d41fd7a2d5135",
-    "assets/downloads/templates/interior-design-scope-of-work-example.docx": "70c0c7ba6bdca193092019689257b921336e81870b400631d9c1f5ad2e475a05",
-    "templates/interior-design-scope-of-work/index.html": "78e59d3b4c441fec19cf2e2fec8f6177635909f824fb1ef7c80f716342b9683f",
-    "assets/downloads/templates/interior-design-budget.xlsx": "22b2ccb6adfbd71da9d288d8efa5fa82a89d3cd0e34f0a47c7ddfcb5e8142e1c",
-    "templates/interior-design-budget/index.html": "016390d8594f77a344f68bdb088c0698e02a49711277115196daae2927181f05",
-    "assets/downloads/templates/interior-design-spec-sheet.xlsx": "889f83345d149ce3ce107dcbc2021a79605d620d5feea17f72fcae569c43ad2c",
-    "templates/interior-design-spec-sheet/index.html": "af57f15bee671daaed97e780fd5b5cd6eae50aacf8c66794659fca22ea60b4c9",
-    "assets/downloads/templates/ffe-schedule.xlsx": "792f1cbab687de6572501da33afac48a4ca0237e1ad1eaa6334fe54efc79b189",
-    "templates/ffe-schedule/index.html": "8fc07581f671af553c36f32adcc1062b0fc8d3d526fda9e6490e98bab66f8e78",
-    "assets/downloads/templates/finish-schedule.xlsx": "cafb0ce5c3594d9696c405b2478e914cb637563f7bc9c1ca0a911d6dce5ce314",
-    "templates/finish-schedule/index.html": "f65b5ff035f5df172aee28126fb078a5cdade700d298da9145fe03d5962aa4e7",
-    "assets/downloads/templates/room-data-sheet.xlsx": "85834b9e12382310fdcabdb1775d23669ef7d2f292a2e2f66164981975befe16",
-    "templates/room-data-sheet/index.html": "b933971aecf5423ec5d5f174e4e5c23c93fd0e16bb9ca7afb126982a44db9e3d",
-    "assets/downloads/templates/interior-design-project-timeline.xlsx": "159d43672f126e7290cbad539d77175eec7d1c87b29be5b9e7c6b86f88f5aa1d",
-    "templates/interior-design-project-timeline/index.html": "e1f9b2bcaf534f9b3ffb982c50c06c468617144897effc8ba3c184f5f7292a76",
-    "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx": "50a080e496cb78cd0d0193a89a0bcfce23b6bb809751945d7cb31ef0e665c97a",
-    "assets/downloads/templates/interior-design-site-survey-checklist-example.docx": "8d4cac6bcc949f070247a4d26cd7ee1e254f5fdde047bd252aa10361293c5dfa",
-    "templates/interior-design-site-survey-checklist/index.html": "abed96f334bd313043b8e71d763d793c0c1b698cb6091a597e4bb4ddc6d8d5ec",
-    "assets/downloads/templates/interior-design-presentation-blank.docx": "c08d0013c57f63bd3bd6290d987cc9244511c18c349a67074215a35758ff96b0",
-    "assets/downloads/templates/interior-design-presentation-example.docx": "e10bcbb10073c3737adfd6ec41f42e44ac665958d7e856616097e57277eebca7",
-    "templates/interior-design-presentation/index.html": "85bfb54032b981cbb8e8f2fa222b4934bb8f6a43d9fef3d5bbd0297f5e39236b",
-    "resources/interior-design-mood-board-examples/index.html": "d888459f5ff3ee117a56fca1ffc0ac913f2249431ef0b5db8940795b6f21cfa8",
-    "resources/interior-design-material-board/index.html": "228622d07ad1251bbc137836b4632bcf014801b6ce93e160433825e6f7782d5e",
-    "resources/interior-design-concept-board/index.html": "4a8f88a688f73576d564b981201ff3044b0814ee52f58b8017a46eebaffc88b5",
-    "resources/interior-design-space-planning/index.html": "92d0f2ad31e01130aeaab4155420e40ed3948a3626852cf4be18f9e55db6af13",
-    "resources/how-to-measure-a-room/index.html": "9ff5d28b164dd0df23a749db1e59adfccac552143b84a6ed4696d97bf2753be9",
-    "resources/interior-design-process/index.html": "03d83d087924e67c98729e034615774d539f654153ea1fc3ed7dfef9ef1c031c",
-    "resources/interior-design-procurement/index.html": "dfa5526a3d9eca3e3a0e74ace937105650e10677243053a23031ba5c386d8bad",
-    "resources/interior-elevation-drawings/index.html": "8c050bacdc69587c7f5d7330302cc5eb9291a709fdc06304f48591beb880039b",
-    "resources/reflected-ceiling-plan/index.html": "93894b53c0ea12fed68f3bacbef3f1f8ab5e2f6227c3d3eba8dbb992eedb5553",
-    "resources/ffe-in-interior-design/index.html": "1a50f66eab89611653210cecfe3184ebce9411ef5664b91aca9cc734a4123185",
-    "resources/interior-design-project-management/index.html": "ca450f4b90a44ecace0914e732ddb3d98224a1990dbae454f41b79d5cb44ce9f",
-    "resources/interior-design-drawing-checklist/index.html": "2823aed61fbf89004ec853d7b8fc8ab9925bbb0c8fb3d78df40eedba4d5e57c5",
-    "resources/ai-concept-images-vs-design-documentation/index.html": "b2fc065fa58dff1a0e732a4315b094fb9b9bad11e592b09f164e51436409e798",
-    "resources/brief-to-coordinated-schedules/index.html": "6ca5d708f8847ed7261b1e5074cd36ed7f69351a28696c7023adf4081393a574",
-    "resources/interior-design-specification-change/index.html": "60adc65537c398625affb94b9f7d7515a78a1c23bea787976bb6c27e43425cf7",
-    "resources/interior-design-handoff-package/index.html": "104e5185bad312eff7b363157b3d59ad6f02813131ad508cf76c6347ee8be048",
-    "resources/interior-design-approval-states/index.html": "6dc685ac9ff23b217ab3f1c41e6b2c851d1e30fe15043cd4a486e917ebf2aaac",
-    "resources/evaluating-ai-interior-design-software/index.html": "ae391765749911e8b74160b6734f7568241d5e9cd681b960bc3311977b577ec8",
-    "404.html": "72e858ca613a07e997622dc2c732da7cba15d3fa5b30d97b223b45447d864953",
+    "assets/downloads/templates/interior-design-client-questionnaire-blank.docx": "902fcf2efc97fcb24d662b6eed71ec54ac2955d2597e9298b26501ddb709ae5c",
+    "assets/downloads/templates/interior-design-client-questionnaire-example.docx": "737e130a90cf68ed3b056a5132940017c3a585a7463a4704ce1cb1ce714ec731",
+    "assets/downloads/templates/interior-design-client-questionnaire-blank.pdf": "179534c8a8b79f2f7903bfdb9a4533ddc3f96a40d0b891611fd854b53d3fd9ce",
+    "assets/downloads/templates/interior-design-brief-blank.docx": "2cd1b2480efb79d8a9703a34edaef91e5486ae91f717267ef9deb90d6bf6a9e5",
+    "assets/downloads/templates/interior-design-brief-example.docx": "e6827545b88103c63de7108a32d15404469edbc9f08d7075670f13cf6f8a29fe",
+    "assets/downloads/templates/interior-design-proposal-blank.docx": "5604780f33911ddad88e09ca88c7949c2bbb6879c35360dd0ce5534ededd7222",
+    "assets/downloads/templates/interior-design-proposal-example.docx": "f6011ec7730892a854b977802e79807a7e465fb0c151fa73cef0207c571a58a7",
+    "assets/downloads/templates/interior-design-scope-of-work-blank.docx": "385e1cdec794c58cd0751cbc047ca28e93c84ad4881266105567257691e49acf",
+    "assets/downloads/templates/interior-design-scope-of-work-example.docx": "263a9f9bd6912d0d740e398bc74a2e8dd00319610ee573a2b2d295bc1556c385",
+    "assets/downloads/templates/interior-design-budget.xlsx": "57ee6aea05edef8d61930ab4afe74fb070d8f18016e9ad8c813cef150a191c0d",
+    "assets/downloads/templates/interior-design-spec-sheet.xlsx": "3baafe90f1053f09345cdc8c1d736adcc68be8084d7b4395b7d12b7a0e5e68b4",
+    "assets/downloads/templates/ffe-schedule.xlsx": "830c12f88f4a9286b1599e20ea223f9e5463f0915c0ccfb20ac5b4af70534f2f",
+    "assets/downloads/templates/finish-schedule.xlsx": "9c028fce537c2485f15d1fc53691f8dc8db9140ade7660396464371cffec01a5",
+    "assets/downloads/templates/room-data-sheet.xlsx": "23563fd44a25775969f13c62c5a2962e4c82f4f73f25c25771805f97f4e108ce",
+    "assets/downloads/templates/interior-design-project-timeline.xlsx": "55b4f4a123286600701b753c2c169aa4bae344d876bf6c9ef8291211f249975b",
+    "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx": "cb0c56bc87e879ace3d4cac618a1181e30c28ab38db24651733eeea49a4151c8",
+    "assets/downloads/templates/interior-design-site-survey-checklist-example.docx": "8ab09a88dc2468f4fc7eca5ce0c32a25ec1c3a4a878c6c4eec0454869638edf9",
+    "assets/downloads/templates/interior-design-presentation-blank.docx": "1603e772deab3b4763625a3e92ee4b51f8fc71f67e52f1a0a5d80ad164fb98d9",
+    "assets/downloads/templates/interior-design-presentation-example.docx": "d0fa8603c9beb9e30e6661e4dc38de7cbd15c5fe972c3f0d61f49d3b53c95303",
+    "assets/downloads/templates/interior-design-presentation-blank.pptx": "7b4d29aeaad9fccef38363de860bbd7eaa0fe3f04988fa91ec73331f4c1d7547",
+    "assets/downloads/templates/interior-design-presentation-example.pptx": "35a148d1dffae1fffc94d1b0ae9dbef00476127e0135dc3082890a980fc497cf",
+    "assets/downloads/templates/interior-design-presentation-preview.pdf": "d8da9e560bf0d744f2e13f3b1d1733022c5f7e5ad69cc92bcce2191116168f25",
+    "index.html": "8094b63397036066b263a1010fa2fce407dd85c75d33426683af4e9d073bad2e",
+    "how-it-works/index.html": "9360b97a9825d709e8a6943094b62f3cca440f5848aaae6db3cb1ca0707f7d31",
+    "sample-project/index.html": "5f4907edcaab74a7b6ae8844d6a1457f93f599a912f8f944446f82b5e6fb8276",
+    "for-design-studios/index.html": "836366009fac8a0128d176412e7df05af8beb58509ce19c7f60abdef0dd1c52a",
+    "for-architects/index.html": "ce4eac231f1427cf375162c3699afa978fd9b8d1a6fcbe96392ff79d462f928a",
+    "open-source/index.html": "1491c09e44dc4259488cadeadef3c7c24adc62950479dc6ed25dcbfdca6e8e8a",
+    "sample-project/summary/index.html": "e10b995f9344ba559cf3c269eeeacfb06823e92593a645ffde2109643cc13096",
+    "resources/index.html": "a165e8eee6c16e228c79ee40c5aa03b50279ca50d0dbe425f940d4e6812a3c80",
+    "templates/index.html": "523ed5195e77012e80f29edeb01bc413bfcd49a7cfd9d74ce63737faae8ea442",
+    "pilot/index.html": "5ceb8be3c5b0c15ad15467b378e46ab3ca16a89a84eacef3074a7081369c90c4",
+    "product-status/index.html": "3ef2297f3088c7e2ff754eb2b3d9a32cab0a70056f4577f38a8f8354780193bc",
+    "about/index.html": "a7585f5ac6ab374d804528b49847e1f6738607f93e4b7b19b8af218a7a433c7c",
+    "editorial-policy/index.html": "6c66fbd7d92161c6ba418bad3a3aefddba3e85ae5109db56580b9a9ba4d49395",
+    "privacy/index.html": "2337e1e6ca79763bb7b1cac6fe836372d0073459f9ccd0bb3e43e6a176351b48",
+    "pilot/thanks/index.html": "4a27435af726d3624b068bea15532914b85b31b67f00089d50bba8cc44bb67af",
+    "templates/interior-design-client-questionnaire/index.html": "ab56725e2a9ebfb6fc97679fd19b8b5e12edcd84d11413b4f6dffe2b7c2eb0fd",
+    "templates/interior-design-brief/index.html": "6966f11f8e8e19515016edb7fb0c93ab6bb617dc663215c4943700c84a8efe57",
+    "templates/interior-design-proposal/index.html": "650ab588e1b3ae0df086a00e12b7fe86f5cad1624671fc3b5cb16ee5313feb32",
+    "templates/interior-design-scope-of-work/index.html": "e87a47d942fa5829f36677ccb7630d465c23925b12dd2a7da138e4b51752d8bc",
+    "templates/interior-design-budget/index.html": "409edcd9b52bb8e83a5319fa6169b59728aeb29d0fd4df2f81decf9762039cc5",
+    "templates/interior-design-spec-sheet/index.html": "a07aa9d5a5b8dff2a046608296d7e9f4270f4ac0b1dd390fb757927b85c053e3",
+    "templates/ffe-schedule/index.html": "8b2e967e45ab6424f27af974a83268c180402f3ceaa3fdac63202c1d75603023",
+    "templates/finish-schedule/index.html": "a57f01b6b0ead6f8dbc21e2ffa6dffd6c15d675449d7b54a82d31879a1d6d6fd",
+    "templates/room-data-sheet/index.html": "c88271a70f340d21283dcedf2304d866b6184c8b32170fbd6c167bc6971a5386",
+    "templates/interior-design-project-timeline/index.html": "d0f2d95f526334b25a6cffbf619d69e361ef9c2c62b9ff1062a0c7cea30084ea",
+    "templates/interior-design-site-survey-checklist/index.html": "bbb4bc12b77e521284e4e8d58cd02733b8ffb5178c2092555fb4f3570d15f2e7",
+    "templates/interior-design-presentation/index.html": "795d7cd11a960009c734d342b4910612fd6c1f5565c1a8c8aa2f6e8af8d8eb1f",
+    "resources/interior-design-mood-board-examples/index.html": "1022d4e9aa569700528a886efb2fe8d764dc73879a31ac191845a496ca028696",
+    "resources/interior-design-material-board/index.html": "97a5bee0028049ad6bead39e564f854a9c98f40e06d7c8e0f26b62c9b6fe388a",
+    "resources/interior-design-concept-board/index.html": "2804b1bead1fbad44224f295339a6f16a0c03b6be1d918aa8b56516963db4d6c",
+    "resources/interior-design-space-planning/index.html": "b3eacf5826d2625d29b5b1c7d111536c723f32cf6df5e58da7675f93cc317431",
+    "resources/how-to-measure-a-room/index.html": "be07fd809911e03934987558058fa1e2e353cd22011c384f1c51d39106d4df82",
+    "resources/interior-design-process/index.html": "e81b58f19f4e1445d7a8b2f37ea1ec8c78aeaa04cd314162e3bb30eb45119c8d",
+    "resources/interior-design-procurement/index.html": "358fa7b7da09a67bd56db834a8ab3a73ec01992c6c4b18f1fa455a13a90cb05f",
+    "resources/interior-elevation-drawings/index.html": "dbc7c3dbcacfd48b3fd03997efb0bde672a95ec957fa18564598190fdea98fa0",
+    "resources/reflected-ceiling-plan/index.html": "b1a0150246edeb7172f61f50f9e099db33d46e02f0dff94cfad65b14a9fb2963",
+    "resources/ffe-in-interior-design/index.html": "e065136c08e2894569582e43681d933579393777ff8403a91e8b2ecd602f04ec",
+    "resources/interior-design-project-management/index.html": "55235f482757e051961072570126ab7fc72e47ec5d9047099b2be206064362fa",
+    "resources/interior-design-drawing-checklist/index.html": "cdacc40aab283760210f9faa1b2a3e69c9ecec9f3e322e6affd39d5a661a04df",
+    "resources/ai-concept-images-vs-design-documentation/index.html": "223aff58350f55f814d1ff1aa6a4a110b00c70b8d671e2226543b789853cf40c",
+    "resources/brief-to-coordinated-schedules/index.html": "812b83b8b322d1f0c04dd602f8a34ed0208a47b5e92fa8d654442f78d2dfe85b",
+    "resources/interior-design-specification-change/index.html": "792c453cce8a3437fc0b111738f22a5da2adc3bbf7a251a958ff15cd561bd399",
+    "resources/interior-design-handoff-package/index.html": "0414faca68feb8450d4884bd58ac3c4c8c86b968f562a5c30b1a753421fa23c9",
+    "resources/interior-design-approval-states/index.html": "50ac98e740c6d109093381a8e56108818d7b1ead6de459327d8422566345d273",
+    "resources/evaluating-ai-interior-design-software/index.html": "7fe6a46b5ea84a8a331d92c28c5dc191056d82829e18e6a02b774894bdee3fc9",
+    "404.html": "c43dcbf8fe2d4b2fee53e15f92c3f5d5faa7e810990599d16e00fe8253bd4ed2",
     "assets/diagrams/measure.svg": "8ff5c601c99990b38fbc6211752e748b92a4d95beb18d449e9e35623faf77f76",
     "assets/diagrams/process.svg": "65d8cb173be50eeae495f409cb4ba3c3a3090356f30102314566dfca475a6656",
     "assets/diagrams/procurement.svg": "ed99b7f379f2319f5b991ed450b2b389f5f8a75111485ee0043e049cd0d0fb6a",
@@ -695,10 +756,12 @@
     "assets/diagrams/drawing-index.svg": "ab0ad6f567eacfd01fb4503a6b2bf2b2dc4a3de78a0111c8089ded56de2aaffc",
     "assets/diagrams/ffe.svg": "ef80981e8a2aa4997c89b216bc638ec0a99250671959d300c93e4768309358dd",
     "assets/diagrams/rcp.svg": "ab496b9fadf28b243810d6f14e0c9e754bd8ef217eeadcb19868e10afaaf3339",
+    "assets/diagrams/mood-board-quiet-oak.svg": "4dc13f5e0779e1501584a09ae7806c766c727d95b47348c4b3250cf37a6939c7",
+    "assets/diagrams/mood-board-deep-olive.svg": "9146386385a17c41a98511169e2320dfc80064abe65d480a7f14ff4c3ed9e8fd",
     "assets/downloads/window-room-plan.svg": "b1689f27003acb3227fb1d00553b23409c02c123ba83ccf67e2487537d9fa4da",
     "assets/downloads/window-room-elevation.svg": "9a7c58e8c34386def6ce02ded35a65f577b40acdaedda60d682126fc1afc894c",
     "assets/downloads/window-room-materials.csv": "627e63425562751e5472eddbeaea199bb97426ebec27ead782c5950e30caddf4",
-    "sitemap.xml": "0e83bd61ec5ce17c8b3840a95cdf7c64d82a765be07615d0b8eb56d9f8bb3e3c",
+    "sitemap.xml": "6508777380334a2592317e1891977b131fe2248c49584e0af11c80473dc41d00",
     "robots.txt": "b47719198685492f529aafe6fb8a7bcd72df29fd6840350729a6257155b0bb97",
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   }

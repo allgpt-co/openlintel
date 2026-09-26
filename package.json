@@ -36,6 +36,8 @@
     "marketing:growth-smoke": "node apps/marketing/growth-smoke.mjs",
     "marketing:production-check": "node apps/marketing/production-check.mjs",
     "marketing:search-report": "node apps/marketing/search-report.mjs",
+    "marketing:programmatic-review": "node apps/marketing/programmatic-review-cli.mjs",
+    "marketing:studio-outcomes": "node apps/marketing/studio-outcomes.mjs",
     "marketing:lint": "eslint --config apps/marketing/eslint.config.mjs apps/marketing"
   },
   "devDependencies": {

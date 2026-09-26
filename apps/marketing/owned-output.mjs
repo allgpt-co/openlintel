@@ -9,12 +9,25 @@ const safePath = (path) =>
   /^(?:[A-Za-z0-9_-][A-Za-z0-9_.-]*\/)*[A-Za-z0-9_.-]+$/.test(path) &&
   !path.split('/').some((part) => part === '.' || part === '..');
 
+export function validReleaseMetadata(page, schemaVersion) {
+  if (schemaVersion === 2) return true;
+  const key = (value) => typeof value === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
+  return (
+    ['familyId', 'cohortId', 'intentKey'].every((name) => key(page[name])) &&
+    (page.programmatic === undefined || typeof page.programmatic === 'boolean') &&
+    (!page.programmatic ||
+      (page.familyId !== 'legacy' &&
+        page.cohortId !== 'legacy' &&
+        /^sha256:[a-f0-9]{64}$/.test(page.approvedBundleHash || '')))
+  );
+}
+
 // A legacy/no-hash manifest cannot prove ownership and is deliberately not pruned.
 export function validateOwnershipManifest(manifest) {
   if (
     !manifest ||
     manifest.generator !== 'OpenLintel marketing' ||
-    manifest.schemaVersion !== 2 ||
+    ![2, 3].includes(manifest.schemaVersion) ||
     !Array.isArray(manifest.pages) ||
     !Array.isArray(manifest.files) ||
     !manifest.fileHashes ||
@@ -41,7 +54,8 @@ export function validateOwnershipManifest(manifest) {
       typeof page.path !== 'string' ||
       (page.path !== '' && !/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\/$/.test(page.path)) ||
       pages.has(page.path) ||
-      typeof page.indexable !== 'boolean'
+      typeof page.indexable !== 'boolean' ||
+      !validReleaseMetadata(page, manifest.schemaVersion)
     )
       return false;
     pages.add(page.path);

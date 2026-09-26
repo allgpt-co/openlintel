@@ -14,6 +14,9 @@ import {
   sourceStatus,
   categorizeAcquisition,
   rollupAcquisition,
+  classifyPage,
+  publicationGroups,
+  cohortGscFilters,
 } from './search-report-data.mjs';
 
 const now = new Date('2026-09-26T17:00:00Z');
@@ -144,14 +147,14 @@ test('All-channel, organic and US GA reports isolate verified marketing and app 
   assert.ok(
     requests.some(
       (request) =>
-        request.dimensionFilter.andGroup.expressions[2]?.filter.stringFilter.value ===
+        request.dimensionFilter.andGroup.expressions[2]?.filter.stringFilter?.value ===
         'Organic Search',
     ),
   );
   assert.ok(
     requests.some(
       (request) =>
-        request.dimensionFilter.andGroup.expressions[3]?.filter.stringFilter.value === 'US',
+        request.dimensionFilter.andGroup.expressions[3]?.filter.stringFilter?.value === 'US',
     ),
   );
   assert.equal(result.ga4.reports.downloads.status, 'not_registered');
@@ -519,4 +522,240 @@ test('AI referral categories remain bounded, period-specific and separate from G
     'unknown',
   );
   assert.equal(rollupAcquisition({ status: 'unavailable' }).status, 'unavailable');
+});
+
+const cohortHistory = [
+  {
+    id: 'published-cohort-page',
+    path: 'templates/published-cohort-page/',
+    state: 'published',
+    familyId: 'selection-procurement',
+    cohortId: 'cohort-one',
+    firstVerifiedLiveAt: '2026-09-01T00:00:00Z',
+    modified: '2026-09-25',
+  },
+  {
+    id: 'unreleased-page',
+    path: 'templates/unreleased-page/',
+    state: 'candidate',
+    familyId: 'future-family',
+    cohortId: 'future-cohort',
+    firstVerifiedLiveAt: null,
+  },
+];
+
+test('Publication groups use verified first-live evidence, preserve pending cohorts and classify subpaths by configured site', () => {
+  const site = { origin: 'https://openlintel.com', basePath: '/preview/' };
+  const groups = publicationGroups(cohortHistory, { ...site, now });
+  assert.equal(groups.cohorts['cohort-one'].ageDays, 25);
+  assert.deepEqual(groups.cohorts['cohort-one'].landingPaths, [
+    '/preview/templates/published-cohort-page/',
+  ]);
+  assert.equal(groups.cohorts['future-cohort'].status, 'not_released');
+  assert.equal(groups.cohorts['future-cohort'].ageDays, null);
+  const registry = [{ ...cohortHistory[0], cluster: 'coordinate' }];
+  assert.equal(
+    classifyPage('https://openlintel.com/preview/templates/published-cohort-page/', registry, site)
+      .cohortId,
+    'cohort-one',
+  );
+  assert.equal(
+    classifyPage('https://openlintel.com/templates/published-cohort-page/', registry, site).surface,
+    'other',
+  );
+  assert.equal(
+    classifyPage(
+      'https://openlintel.com.evil.test/preview/templates/published-cohort-page/',
+      registry,
+      site,
+    ).surface,
+    'other',
+  );
+  assert.equal(
+    classifyPage('https://other.example/preview/templates/published-cohort-page/', registry, {
+      ...site,
+      origin: 'https://other.example',
+    }).pageId,
+    'published-cohort-page',
+  );
+});
+
+test('Partial release retains pending members and youngest-page age while legacy ages stay unknown', () => {
+  const entries = [
+    ...cohortHistory,
+    {
+      ...cohortHistory[0],
+      id: 'newer-page',
+      path: 'templates/newer-page/',
+      firstVerifiedLiveAt: '2026-09-20T00:00:00Z',
+    },
+    {
+      ...cohortHistory[1],
+      id: 'pending-sibling',
+      cohortId: 'cohort-one',
+      familyId: 'selection-procurement',
+    },
+    {
+      id: 'home',
+      path: '',
+      state: 'legacy',
+      cohortId: 'legacy',
+      familyId: 'legacy',
+      firstVerifiedLiveAt: null,
+    },
+  ];
+  const groups = publicationGroups(entries, { now });
+  assert.equal(groups.cohorts['cohort-one'].status, 'partially_released');
+  assert.equal(groups.cohorts['cohort-one'].ageDays, 25);
+  assert.equal(groups.cohorts['cohort-one'].minimumPageAgeDays, 6);
+  assert.equal(groups.cohorts['cohort-one'].urls.length, 2);
+  assert.deepEqual(groups.cohorts['cohort-one'].pendingPageIds, ['pending-sibling']);
+  assert.equal(groups.cohorts.legacy.status, 'legacy_date_unknown');
+  assert.equal(groups.cohorts.legacy.ageDays, null);
+  assert.deepEqual(groups.cohorts.legacy.urls, ['https://openlintel.com/']);
+  const partiallyDatedLegacy = publicationGroups(
+    [
+      ...entries,
+      {
+        id: 'older-page',
+        path: 'older-page/',
+        state: 'legacy',
+        cohortId: 'legacy',
+        familyId: 'legacy',
+        firstVerifiedLiveAt: '2026-09-01T00:00:00Z',
+      },
+    ],
+    { now },
+  );
+  assert.equal(partiallyDatedLegacy.cohorts.legacy.ageDays, null);
+  assert.equal(partiallyDatedLegacy.cohorts.legacy.minimumPageAgeDays, null);
+  assert.equal(partiallyDatedLegacy.cohorts.legacy.firstVerifiedLiveAt, null);
+  assert.equal(cohortGscFilters(groups.cohorts['cohort-one'], 'https://www.openlintel.com/'), null);
+});
+
+test('Schema3 requests independent family/cohort GSC totals and GA landing-path reports with verified stream filters', async () => {
+  const { fetcher, calls } = fixture({
+    custom: [
+      'page_id',
+      'resource_id',
+      'resource_format',
+      'resource_variant',
+      'chapter_id',
+      'source_page_id',
+    ],
+  });
+  const result = await collectSearchReport(
+    { ...gscEnv, ...gaEnv, MARKETING_BASE_PATH: '/preview/' },
+    fetcher,
+    now,
+    { history: cohortHistory },
+  );
+  assert.equal(result.schemaVersion, 3);
+  assert.equal(result.gsc.cohorts['future-cohort'].status, 'not_released');
+  assert.ok(!('segments' in result.gsc.cohorts['future-cohort']));
+  assert.equal(result.ga4.cohorts['future-cohort'].status, 'not_released');
+  assert.ok(!('reports' in result.ga4.cohorts['future-cohort']));
+  assert.equal(
+    result.gsc.cohorts['cohort-one'].segments.global.periods.current.totals.status,
+    'empty',
+  );
+  const cohortQueries = calls.filter(
+    (call) =>
+      call.url.includes('searchAnalytics') &&
+      call.body.dimensionFilterGroups?.[0].filters.some((filter) =>
+        filter.expression.includes('published-cohort-page'),
+      ),
+  );
+  assert.ok(cohortQueries.some((call) => call.body.dimensions.length === 0));
+  for (const { body } of cohortQueries) {
+    const pattern = body.dimensionFilterGroups[0].filters.find(
+      (filter) => filter.dimension === 'page',
+    ).expression;
+    assert.ok(
+      new RegExp(pattern).test('https://openlintel.com/preview/templates/published-cohort-page/'),
+    );
+    assert.ok(!new RegExp(pattern).test('https://openlintel.com/templates/published-cohort-page/'));
+  }
+  const cohortGa = calls.filter(
+    (call) =>
+      call.url.includes(':runReport') &&
+      call.body.dimensionFilter.andGroup.expressions.some(
+        (expression) => expression.filter.fieldName === 'landingPage',
+      ),
+  );
+  assert.ok(cohortGa.length);
+  for (const { body } of cohortGa) {
+    const expressions = body.dimensionFilter.andGroup.expressions;
+    assert.deepEqual(
+      expressions.find((item) => item.filter.fieldName === 'streamId').filter.inListFilter.values,
+      ['456'],
+    );
+    assert.deepEqual(
+      expressions.find((item) => item.filter.fieldName === 'landingPage').filter.inListFilter
+        .values,
+      ['/preview/templates/published-cohort-page/'],
+    );
+  }
+  const leads = cohortGa.find((call) =>
+    call.body.dimensionFilter.andGroup.expressions.some(
+      (item) =>
+        item.filter.fieldName === 'eventName' &&
+        item.filter.inListFilter.values.includes('generate_lead'),
+    ),
+  );
+  assert.ok(leads.body.dimensions.some((dimension) => dimension.name === 'landingPage'));
+  const downloads = cohortGa.find((call) =>
+    call.body.dimensions.some((dimension) => dimension.name === 'customEvent:resource_id'),
+  );
+  assert.ok(
+    downloads.body.dimensions.some((dimension) => dimension.name === 'customEvent:page_id'),
+  );
+  assert.ok(!calls.some((call) => JSON.stringify(call.body || {}).includes('unreleased-page')));
+});
+
+test('Failed cohort request preserves other cohort tables and the existing provider baseline', async () => {
+  const { fetcher } = fixture({
+    override: (url, body) =>
+      url.includes('searchAnalytics') &&
+      !body.dimensions.length &&
+      body.dimensionFilterGroups?.[0].filters.some((filter) =>
+        filter.expression.includes('published-cohort-page'),
+      )
+        ? { ok: false, status: 429 }
+        : null,
+  });
+  const result = await collectSearchReport(gscEnv, fetcher, now, { history: cohortHistory });
+  assert.equal(result.gsc.status, 'partial');
+  assert.equal(result.gsc.periods.current.totals.status, 'empty');
+  assert.equal(
+    result.gsc.cohorts['cohort-one'].segments.global.periods.current.totals.status,
+    'unavailable',
+  );
+  assert.equal(
+    result.gsc.cohorts['cohort-one'].segments.global.periods.current.queryPages.status,
+    'empty',
+  );
+});
+
+test('GSC URL-prefix mismatch preserves property totals without querying incompatible marketing filters', async () => {
+  const { fetcher, calls } = fixture({
+    override: (url) =>
+      url.endsWith('/sites')
+        ? ok({
+            siteEntry: [{ siteUrl: 'https://www.openlintel.com/', permissionLevel: 'siteOwner' }],
+          })
+        : null,
+  });
+  const result = await collectSearchReport(
+    { ...gscEnv, OPENLINTEL_GSC_SITE: 'https://www.openlintel.com/' },
+    fetcher,
+    now,
+  );
+  assert.equal(result.gsc.periods.current.totals.status, 'empty');
+  assert.equal(result.gsc.segments.marketingGlobal.status, 'out_of_scope');
+  assert.equal(result.gsc.segments.marketingUS.status, 'out_of_scope');
+  assert.ok(!('periods' in result.gsc.segments.marketingGlobal));
+  const queries = calls.filter((call) => call.url.includes('searchAnalytics'));
+  assert.ok(queries.length);
+  assert.ok(queries.every((call) => !call.body.dimensionFilterGroups));
 });

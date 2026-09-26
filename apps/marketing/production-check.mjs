@@ -3,6 +3,7 @@ import { extname, resolve } from 'node:path';
 import { writePrivateReport } from './report-output.mjs';
 import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
+import { validReleaseMetadata } from './owned-output.mjs';
 
 const unescapeXml = (value) =>
   value
@@ -42,13 +43,13 @@ function validContentType(file, response) {
 export function validateAuditManifest(manifest) {
   if (
     manifest.generator !== 'OpenLintel marketing' ||
-    manifest.schemaVersion !== 2 ||
+    ![2, 3].includes(manifest.schemaVersion) ||
     typeof manifest.indexable !== 'boolean' ||
     !Array.isArray(manifest.pages) ||
     !Array.isArray(manifest.files) ||
     !manifest.fileHashes
   )
-    throw new Error('Build a schemaVersion 2 marketing manifest before auditing.');
+    throw new Error('Build a schemaVersion 2 or 3 marketing manifest before auditing.');
   const origin = new URL(manifest.origin);
   if (
     origin.protocol !== 'https:' ||
@@ -72,6 +73,7 @@ export function validateAuditManifest(manifest) {
     if (
       !/^(?:[a-z0-9-]+\/)*$/.test(page.path) ||
       typeof page.indexable !== 'boolean' ||
+      !validReleaseMetadata(page, manifest.schemaVersion) ||
       !manifest.files.includes(`${page.path}index.html`)
     )
       throw new Error('Invalid page record in audit manifest.');

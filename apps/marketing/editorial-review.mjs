@@ -2,8 +2,27 @@ import { createHash } from 'node:crypto';
 
 /** Generated download sizes are not editorial revisions; authored content is. */
 export function editorialRevision(page) {
+  // Generated cohorts approve authored material independently of release bookkeeping.
+  // Preserve the legacy revision algorithm for all existing resources.
+  const excluded = page.programmatic
+    ? [
+        'review',
+        'downloads',
+        'status',
+        'indexable',
+        'approvedBundleHash',
+        'releaseEvidence',
+        'publicationGates',
+        'programmaticRelated',
+        'published',
+        'firstVerifiedLiveAt',
+        'liveCommit',
+        'publicationEvidence',
+        'evidence',
+      ]
+    : ['review', 'downloads', 'programmaticRelated'];
   const content = Object.fromEntries(
-    Object.entries(page).filter(([key]) => !['review', 'downloads'].includes(key)),
+    Object.entries(page).filter(([key]) => !excluded.includes(key)),
   );
   return `sha256:${createHash('sha256').update(JSON.stringify(content)).digest('hex')}`;
 }

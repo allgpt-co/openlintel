@@ -37,6 +37,9 @@ The second configuration previews at `http://localhost:4173/openlintel/`. Use th
 - `documents.mjs`: reproducible mixed-format download generation and budget calculation helpers.
 - `presentation-assets.mjs`: native editable slide elements, assembled mood boards, presentation PDF preview, and printable questionnaire PDF.
 - `editorial-review.mjs`: optional permissioned reviewer credits tied to an exact authored-content revision; no actual reviews are supplied by the code.
+- `programmatic-catalog.mjs`, `programmatic-review.mjs`, `programmatic-review-cli.mjs`: private candidate catalog, exact-output review bundles and mandatory publication gates for the new selection/procurement cohort.
+- `publication-history.mjs` and `data/publication-history.json`: stable historical page identities and evidence-based first-live records; unknown legacy dates remain unknown.
+- `release-output.mjs`: complete staged-output validation before promotion into the owned public paths.
 - `components.mjs`: shared document shell, navigation, footer, image and table helpers.
 - `pages.mjs`: homepage, workflow, sample, audience, open-source, and summary content.
 - `drawings.mjs`: deterministic sample SVGs with review labels and references.
@@ -123,6 +126,7 @@ pnpm marketing:check             # all marketing *.test.mjs suites
 pnpm marketing:growth-smoke      # disposable configured fixture; mocked external services
 pnpm marketing:production-check # reviewed manifest versus actual public HTTPS release
 pnpm marketing:search-report     # verified explicit properties and read-only OAuth required
+pnpm marketing:programmatic-review # private HTML/XLSX/PDF bundles; does not publish
 ```
 
 Production availability has a dated verified baseline; each new release still needs its own deployed-manifest check. Real integration IDs and delivery, correct Google property access, operational ownership, privacy review, and practitioner review remain external prerequisites. Displaying the already published contact address does not satisfy integration-readiness flags. Code/tests do not complete these attestations. The sample and recorded website tours remain educational examples, with no invented reviewer, customer result, or verified application workflow.
@@ -157,4 +161,4 @@ node apps/marketing/studio-outcomes.mjs \
 
 CSV imports use column names, including operator-assigned `studio_id` and actual `pilot_decision_at`. Preserve durable receipt IDs and timezone-bearing event timestamps. The output contains aggregate studio counts and diagnostics, not names, emails or studio identities. Qualification, completion and source evidence remain manual business records; browser events cannot create them. The output uses explicitly recorded UTC reporting windows and does not represent a same-cohort funnel. Keep input exports private and never add live leads to tracked CSV templates.
 
-The purchase-order resource remains a draft in `content/purchase-order.mjs`, outside the public registry, sitemap and downloads. Review its private artifact and meet the roadmap gates before publication. Real GA runtime acceptance, monitored intake delivery, professional review and outreach remain separate work; see [analytics acceptance](operations/ANALYTICS-ACCEPTANCE.md) and [the roadmap](operations/ROADMAP.md).
+The purchase-order and plumbing-fixture resources remain private candidates, outside the public registry, sitemap and downloads. The [programmatic SEO runbook](operations/PROGRAMMATIC-SEO.md) documents bundle generation, the release allowlist, family/cohort reporting, immutable identity history and expansion gates. New candidates require an exact HTML/artifact/source bundle approval and actual operational readiness. Existing pending-review disclosures remain intact. Real GA runtime acceptance, monitored intake delivery, professional review and outreach remain separate work; see [analytics acceptance](operations/ANALYTICS-ACCEPTANCE.md) and [the roadmap](operations/ROADMAP.md).

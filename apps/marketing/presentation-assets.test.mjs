@@ -147,6 +147,14 @@ test('purchase-order draft stays outside all public routes until its evidence ga
   const [download] = await generateDownloads(draft);
   const book = new ExcelJS.Workbook();
   await book.xlsx.load(download.buffer);
-  assert.equal(book.getWorksheet('Blank Template').getCell('A6').value, null);
-  assert.match(book.getWorksheet('Worked Example').getCell('J6').value, /not ordered/);
+  const blankValues = [];
+  book.getWorksheet('Blank Template').eachRow((row) => {
+    if (!row.getCell(1).isMerged) blankValues.push(row.getCell(2).value);
+  });
+  assert.ok(blankValues.every((value) => value == null || value === ''));
+  const exampleValues = [];
+  book
+    .getWorksheet('Worked Example')
+    .eachRow((row) => exampleValues.push(String(row.getCell(2).value || '')));
+  assert.ok(exampleValues.includes('Not ordered'));
 });

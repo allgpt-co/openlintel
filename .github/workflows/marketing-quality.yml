@@ -35,9 +35,15 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Preserve publication history identities and first-live evidence
+        env:
+          PUBLICATION_HISTORY_BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event_name == 'push' && github.event.before || '' }}
+        run: node apps/marketing/publication-history-cli.mjs
       - name: Install pinned workspace dependencies
         run: npx --yes pnpm@9.15.4 install --frozen-lockfile
       - name: Lint marketing source

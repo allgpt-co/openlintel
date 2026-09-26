@@ -783,15 +783,15 @@ export function templateDefinitions(project) {
     {
       id: 'presentation',
       slug: 'interior-design-presentation',
-      title: 'Interior design presentation template',
+      title: 'Interior design presentation templates (PPTX and DOCX)',
       cluster: 'design',
       wave: 3,
       format: 'docx',
       description:
-        'Download a DOCX client-presentation storyboard with image placeholders, design rationale, options, decisions, and an illustrative room example.',
+        'Download editable PowerPoint slides, a DOCX storyboard, and a PDF preview with composed mood boards, design rationale, and an illustrative room example.',
       intro:
-        'A client presentation should make a decision easier. This editable storyboard organizes the story from brief to proposed direction, then makes the requested feedback explicit.',
-      use: 'This is a DOCX storyboard, not a PowerPoint deck or an automatic mood-board tool. Replace the image placeholders with your own licensed project visuals and transfer the sequence to your preferred presentation software if needed.',
+        'A client presentation should make a decision easier. Use the editable PowerPoint deck to present the brief, mood boards, references and review decisions; use the DOCX storyboard to plan the narrative.',
+      use: 'Download the blank PPTX and replace its editable text, palette swatches, diagram shapes and image placeholders. The worked PPTX and PDF preview show the illustrative Window Room. The companion DOCX is a planning storyboard. You can also import the PPTX into Google Slides; check fonts, image crops and line breaks again after adding your own material.',
       fields: [
         field(
           'Opening: purpose of the review',

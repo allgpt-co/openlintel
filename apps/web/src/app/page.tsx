@@ -11,20 +11,25 @@ export default function Home() {
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">OpenLintel</h1>
         </div>
         <p className="mb-8 text-lg text-gray-600">
-          End-to-end home design automation — from room photos to finished living spaces.
+          An experimental interior design workspace in active development.
         </p>
-        <div className="flex items-center justify-center gap-4">
+        <p className="mb-8 text-sm text-gray-600">
+          Access depends on the configured account and deployment. Complete design workflows,
+          exports, and a supported hosted trial have not been verified. Explore our public resources
+          and product status before providing project information.
+        </p>
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/auth/signin"
             className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
           >
-            Get Started
+            Sign in to the workspace
           </Link>
           <Link
-            href="/auth/signin"
+            href="https://openlintel.com/product-status/"
             className="inline-flex h-11 items-center justify-center rounded-lg border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
           >
-            Sign In
+            Product status
           </Link>
         </div>
       </div>

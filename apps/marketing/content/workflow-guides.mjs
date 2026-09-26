@@ -17,6 +17,7 @@ const link = (href, label) => ({ href, label });
 export const workflowGuides = [
   {
     id: 'concept-vs-documents',
+    modified: '2026-09-15',
     slug: 'ai-concept-images-vs-design-documentation',
     title: 'AI concept images vs. dimensioned design documentation',
     cluster: 'design',
@@ -104,6 +105,7 @@ export const workflowGuides = [
   },
   {
     id: 'brief-to-schedules',
+    modified: '2026-09-15',
     slug: 'brief-to-coordinated-schedules',
     title: 'From a residential design brief to coordinated schedules',
     cluster: 'coordinate',
@@ -203,6 +205,7 @@ export const workflowGuides = [
   },
   {
     id: 'specification-change',
+    modified: '2026-09-15',
     slug: 'interior-design-specification-change',
     title: 'Managing an interior design specification change',
     cluster: 'handoff',
@@ -330,6 +333,7 @@ export const workflowGuides = [
   },
   {
     id: 'handoff-package',
+    modified: '2026-09-15',
     slug: 'interior-design-handoff-package',
     title: 'What belongs in an interior design handoff package?',
     cluster: 'handoff',
@@ -441,6 +445,7 @@ export const workflowGuides = [
   },
   {
     id: 'approval-states',
+    modified: '2026-09-15',
     slug: 'interior-design-approval-states',
     title: 'Client approval, technical review, and purchasing approval',
     cluster: 'handoff',
@@ -552,6 +557,7 @@ export const workflowGuides = [
   },
   {
     id: 'software-evaluation',
+    modified: '2026-09-15',
     slug: 'evaluating-ai-interior-design-software',
     title: 'How to evaluate AI interior design software for a studio',
     cluster: 'discover',

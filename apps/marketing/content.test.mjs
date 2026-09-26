@@ -2,7 +2,9 @@ import test from 'node:test';
 import { URL } from 'node:url';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createRegistry } from './registry.mjs';
+import { createRegistry, validateRegistry } from './registry.mjs';
+import { editorialRevision } from './editorial-review.mjs';
+import { loadGrowthConfig } from './growth-config.mjs';
 import { resourcePage, editorialDate } from './resources.mjs';
 import { workflowGuides } from './content/workflow-guides.mjs';
 import { url, esc } from './config.mjs';
@@ -147,7 +149,77 @@ test('Editorial dates are valid UTC dates rather than a hardcoded label', () => 
   }
 });
 
-test('Authored comparison cells and headings are escaped, and storyboard format is explicit', () => {
+test('Review credits require permission, exact unchanged content, and completed dated source checks', () => {
+  const page = JSON.parse(JSON.stringify(guides[1]));
+  page.review = {
+    state: 'verified',
+    reviewerName: 'Test reviewer <name>',
+    reviewerRole: 'Test role',
+    scope: 'Test-only editorial assessment',
+    permissionToPublish: true,
+    reviewedRevision: editorialRevision(page),
+    reviewedAt: page.modified,
+    sourcesCheckedAt: page.modified,
+  };
+  assert.doesNotThrow(() => validateRegistry([page, ...registry.filter((p) => p.id !== page.id)]));
+  const html = resourcePage(page, registry, project);
+  assert.match(html, /Test reviewer &lt;name&gt;/);
+  assert.match(html, /data-reviewed-revision="sha256:/);
+  assert.match(html, /Test-only editorial assessment/);
+  assert.doesNotMatch(html, /have not received independent professional review/);
+  for (const change of [
+    { permissionToPublish: false },
+    { reviewerName: '' },
+    { reviewedAt: '2026-02-30' },
+    { reviewedAt: '2999-01-01' },
+    { sourcesCheckedAt: '2025-01-01' },
+    { reviewedRevision: 'sha256:old' },
+  ]) {
+    assert.throws(
+      () => resourcePage({ ...page, review: { ...page.review, ...change } }, registry, project),
+      /Incomplete or stale verified review/,
+    );
+  }
+  const changed = JSON.parse(JSON.stringify(page));
+  changed.sections[0].paragraphs[0] += ' Changed after review on the same day.';
+  assert.throws(
+    () => resourcePage(changed, registry, project),
+    /Incomplete or stale verified review/,
+  );
+  assert.throws(
+    () =>
+      validateRegistry([
+        { ...page, review: undefined, sources: [{ title: 'Unsafe', url: 'javascript:alert(1)' }] },
+      ]),
+    /Invalid source URL/,
+  );
+});
+
+test('Mixed download formats retain each file’s format and variant, and closed intake offers availability', () => {
+  const page = withDownloads(templates.find((entry) => entry.id === 'client-questionnaire'));
+  page.downloads.push({
+    path: 'assets/downloads/templates/questionnaire.pdf',
+    label: 'Print the blank questionnaire',
+    format: 'PDF',
+    variant: 'blank',
+    size: 2048,
+  });
+  const html = resourcePage(page, registry, project, loadGrowthConfig({}));
+  assert.match(html, /data-resource-format="pdf" data-resource-variant="blank"/);
+  assert.match(html, /Check discovery availability/);
+  assert.match(html, /Discovery requests are not open yet/);
+  assert.doesNotMatch(html, />Request a (?:pilot )?discovery conversation</);
+  const open = resourcePage(page, registry, project, { pilotEnabled: true });
+  assert.match(open, />Request a discovery conversation</);
+});
+
+test('Guide revision dates belong to individual authored entries', () => {
+  assert.equal(guides.find((page) => page.id === 'mood-board').modified, '2026-09-26');
+  assert.equal(guides.find((page) => page.id === 'material-board').modified, '2026-09-15');
+  assert.ok(workflowGuides.every((page) => page.modified === '2026-09-15'));
+});
+
+test('Authored comparison cells are escaped and presentation formats retain the existing URL', () => {
   const unsafe = '<img src=x onerror=alert(1)>';
   const page = JSON.parse(JSON.stringify(guides[0]));
   page.sections.at(-1).table.headers[0] = unsafe;
@@ -156,8 +228,9 @@ test('Authored comparison cells and headings are escaped, and storyboard format 
   assert.ok(html.includes(esc(unsafe)));
   assert.ok(!html.includes(unsafe));
   const storyboard = templates.find((entry) => entry.id === 'presentation');
-  assert.match(storyboard.title, /storyboard.*DOCX/);
-  assert.match(storyboard.use, /not a PowerPoint deck/);
+  assert.match(storyboard.title, /PPTX and DOCX/);
+  assert.match(storyboard.use, /editable text, palette swatches/);
+  assert.match(storyboard.use, /companion DOCX is a planning storyboard/);
   assert.ok(
     storyboard.path.endsWith('/interior-design-presentation/'),
     'Preserve the established URL',

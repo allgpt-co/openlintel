@@ -18,6 +18,7 @@ const bricsys = {
 export const guides = [
   {
     id: 'mood-board',
+    modified: '2026-09-26',
     slug: 'interior-design-mood-board-examples',
     title: 'Interior design mood board examples',
     cluster: 'design',
@@ -25,7 +26,7 @@ export const guides = [
     description:
       'Explore two annotated interior design mood boards for one illustrative room, with palette decisions, material references, and a client-review checklist.',
     intro:
-      'A useful mood board communicates a direction, not a list of things to buy. These two boards use the same illustrative room to show how material and color choices change the conversation while the brief stays fixed.',
+      'A useful mood board communicates a direction, not a list of things to buy. These two assembled boards combine room references, palette swatches, and annotations to show how material and color choices change the conversation while the brief stays fixed. The presentation download includes editable versions.',
     visual: 'mood-boards',
     sections: [
       section('quiet-oak', 'Example 1: Quiet Oak', [
@@ -64,6 +65,7 @@ export const guides = [
   },
   {
     id: 'material-board',
+    modified: '2026-09-15',
     slug: 'interior-design-material-board',
     title: 'How to make an interior design material board',
     cluster: 'design',
@@ -110,6 +112,7 @@ export const guides = [
   },
   {
     id: 'concept-board',
+    modified: '2026-09-15',
     slug: 'interior-design-concept-board',
     title: 'Interior design concept boards: from brief to direction',
     cluster: 'design',
@@ -157,6 +160,7 @@ export const guides = [
   },
   {
     id: 'space-planning',
+    modified: '2026-09-15',
     slug: 'interior-design-space-planning',
     title: 'Interior design space planning: a practical workflow',
     cluster: 'design',
@@ -203,6 +207,7 @@ export const guides = [
   },
   {
     id: 'measure-room',
+    modified: '2026-09-15',
     slug: 'how-to-measure-a-room',
     title: 'How to measure a room for interior design',
     cluster: 'discover',
@@ -251,6 +256,7 @@ export const guides = [
   },
   {
     id: 'design-process',
+    modified: '2026-09-15',
     slug: 'interior-design-process',
     title: 'The interior design process, from brief to handoff',
     cluster: 'discover',
@@ -289,6 +295,7 @@ export const guides = [
   },
   {
     id: 'procurement',
+    modified: '2026-09-15',
     slug: 'interior-design-procurement',
     title: 'Interior design procurement: a coordination guide',
     cluster: 'coordinate',
@@ -336,6 +343,7 @@ export const guides = [
   },
   {
     id: 'elevation-guide',
+    modified: '2026-09-15',
     slug: 'interior-elevation-drawings',
     title: 'How to read interior elevation drawings',
     cluster: 'coordinate',
@@ -383,6 +391,7 @@ export const guides = [
   },
   {
     id: 'rcp-guide',
+    modified: '2026-09-15',
     slug: 'reflected-ceiling-plan',
     title: 'What is a reflected ceiling plan?',
     cluster: 'coordinate',
@@ -431,6 +440,7 @@ export const guides = [
   },
   {
     id: 'ffe-guide',
+    modified: '2026-09-15',
     slug: 'ffe-in-interior-design',
     title: 'What does FF&E mean in interior design?',
     cluster: 'coordinate',
@@ -478,6 +488,7 @@ export const guides = [
   },
   {
     id: 'project-management',
+    modified: '2026-09-15',
     slug: 'interior-design-project-management',
     title: 'Interior design project management: decisions and handoffs',
     cluster: 'handoff',
@@ -525,6 +536,7 @@ export const guides = [
   },
   {
     id: 'drawing-checklist',
+    modified: '2026-09-15',
     slug: 'interior-design-drawing-checklist',
     title: 'Interior design drawing package checklist',
     cluster: 'handoff',
@@ -588,6 +600,6 @@ export const guides = [
     kind: 'guide',
     path: `resources/${item.slug}/`,
     status: 'published',
-    modified: '2026-09-15',
+    modified: item.modified,
     sources: item.sources || [],
   }));

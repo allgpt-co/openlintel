@@ -389,7 +389,11 @@ document.addEventListener('click', (event) => {
       resource_variant: 'sample',
     });
   }
-  if (target.origin === location.origin && target.pathname === `${settings.basePath}pilot/`)
+  if (
+    settings.pilotEnabled &&
+    target.origin === location.origin &&
+    target.pathname === `${settings.basePath}pilot/`
+  )
     measure('pilot_cta_click', {
       source_page_id: safeId(anchor.dataset.sourcePageId) || settings.pageId,
     });

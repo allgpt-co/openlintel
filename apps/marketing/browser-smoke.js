@@ -204,12 +204,12 @@ async (page) => {
     if (record.kind === 'template') {
       check(
         (await noJsPage.locator('[data-resource-download]').count()) === record.downloads.length,
-        'All Office downloads available without JavaScript',
+        'All artifact downloads available without JavaScript',
       );
       const href = await noJsPage.locator('[data-resource-download]').first().getAttribute('href');
       check(
         (await noJsPage.request.get(origin + href)).ok(),
-        'Office resource available without JavaScript',
+        'Resource artifact available without JavaScript',
       );
     }
   }
@@ -277,15 +277,15 @@ async (page) => {
       const pending = page.waitForEvent('download');
       await anchor.click();
       const download = await pending;
-      check(!(await download.failure()), `Office download: ${metadata.path}`);
+      check(!(await download.failure()), `Artifact download: ${metadata.path}`);
       check(
         download.suggestedFilename() === metadata.path.split('/').pop(),
-        'Correct Office filename',
+        'Correct artifact filename',
       );
       const response = await page.request.get(at(metadata.path));
       check(
         (await response.body()).length === metadata.size && metadata.size > 1000,
-        'Office bytes match manifest',
+        'Artifact bytes match manifest',
       );
     }
   }
@@ -307,7 +307,7 @@ async (page) => {
     `Unexpected external requests: ${externalRequests.join('; ')}`,
   );
   results.push(
-    'Resource hubs, TOCs, sample links, history, 18 Office downloads, no-JavaScript resources, print, keyboard, and no tracking requests pass',
+    `Resource hubs, TOCs, sample links, history, ${manifest.pages.filter((item) => item.kind === 'template').reduce((count, item) => count + item.downloads.length, 0)} artifact downloads, no-JavaScript resources, print, keyboard, and no tracking requests pass`,
   );
   check(errors.length === 0, `Browser errors: ${errors.join('; ')}`);
   check(failedRequests.length === 0, `Failed requests: ${failedRequests.join('; ')}`);

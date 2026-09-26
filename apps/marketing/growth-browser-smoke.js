@@ -180,13 +180,41 @@ async (page) => {
   );
 
   const other = await context.newPage();
-  await other.goto(`${base}templates/interior-design-spec-sheet/`);
-  await other.locator('[data-resource-id]').first().click();
-  await pause(150);
-  check(
-    events.some((e) => e[1] === 'resource_download'),
-    'Download initiation measured',
-  );
+  const downloadCases = [
+    ['interior-design-spec-sheet', 'spec-sheet', 'xlsx', 'workbook', ''],
+    ['interior-design-presentation', 'presentation', 'pptx', 'blank', '-blank'],
+    ['interior-design-presentation', 'presentation', 'pptx', 'example', '-example'],
+    ['interior-design-presentation', 'presentation', 'pdf', 'preview', '-preview'],
+    ['interior-design-client-questionnaire', 'client-questionnaire', 'pdf', 'blank', '-blank'],
+  ];
+  for (const [slug, resourceId, format, variant, suffix] of downloadCases) {
+    await other.goto(`${base}templates/${slug}/`);
+    const filename = `${slug}${suffix}.${format}`;
+    const before = events.length;
+    const downloaded = other.waitForEvent('download');
+    const measured = context.waitForEvent('request', {
+      timeout: 5000,
+      predicate: (request) => {
+        if (!request.url().startsWith('https://www.google-analytics.com/g/collect')) return false;
+        const event = request.postDataJSON();
+        return (
+          event?.[1] === 'resource_download' &&
+          event[2]?.resource_id === resourceId &&
+          event[2]?.resource_format === format &&
+          event[2]?.resource_variant === variant
+        );
+      },
+    });
+    await other.locator(`[data-resource-download][href$="/${filename}"]`).click();
+    const [download] = await Promise.all([downloaded, measured]);
+    check(!(await download.failure()), `Download succeeds: ${filename}`);
+    check(download.suggestedFilename() === filename, `Download filename: ${filename}`);
+    await pause(100);
+    check(
+      events.slice(before).filter((event) => event[1] === 'resource_download').length === 1,
+      `Exactly one mocked download event with the correct format and variant: ${filename}`,
+    );
+  }
   await other.goto(`${base}sample-project/`);
   await pause(100);
   const pageViewsBeforeHash = events.filter((e) => e[1] === 'page_view').length;
@@ -404,7 +432,7 @@ async (page) => {
       'accepted-only conversions',
       'provider failure',
       'native no-JS',
-      'download',
+      `${downloadCases.length} XLSX/PPTX/PDF download format and variant checks`,
       'sample/hash',
       'five viewports',
     ],

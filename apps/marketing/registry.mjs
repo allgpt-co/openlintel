@@ -2,6 +2,7 @@ import { pages as marketingPages } from './config.mjs';
 import { templateDefinitions } from './content/templates.mjs';
 import { guides } from './content/guides.mjs';
 import { growthPages } from './growth-pages.mjs';
+import { verifiedReview } from './editorial-review.mjs';
 
 export const clusters = [
   {
@@ -37,7 +38,7 @@ export const hubs = [
     status: 'published',
     indexable: true,
     wave: 1,
-    modified: '2026-09-15',
+    modified: '2026-09-26',
     title: 'Interior design resources for a connected workflow',
     description:
       'Practical interior design guides and editable templates, from the first client questionnaire to drawing review and project handoff.',
@@ -49,7 +50,7 @@ export const hubs = [
     status: 'published',
     indexable: true,
     wave: 1,
-    modified: '2026-09-15',
+    modified: '2026-09-26',
     title: 'Free interior design templates',
     description:
       'Download editable interior design questionnaires, briefs, proposals, schedules, and budget spreadsheets with blank templates and illustrative examples.',
@@ -82,6 +83,17 @@ export function validateRegistry(records) {
     }
     if (page.published && page.modified && page.published > page.modified)
       throw new Error(`Publication date follows modified date: ${page.id}`);
+    verifiedReview(page);
+    for (const source of page.sources || []) {
+      let parsed;
+      try {
+        parsed = new URL(source.url);
+      } catch {
+        throw new Error(`Invalid source URL for ${page.id}.`);
+      }
+      if (!source.title || parsed.protocol !== 'https:' || parsed.username || parsed.password)
+        throw new Error(`Invalid source URL for ${page.id}.`);
+    }
     ids.add(page.id);
     paths.add(page.path);
   }

@@ -1,3 +1,6 @@
+/** Already published contact; displaying it does not attest to integration readiness. */
+export const publicContactEmail = 'rahul@quickintell.com';
+
 /** Public build-time integration settings; never put credentials in these variables. */
 export function loadGrowthConfig(env = process.env) {
   const flag = (key) => {
@@ -41,9 +44,13 @@ export function loadGrowthConfig(env = process.env) {
     pilotEnabled,
     analyticsEnabled,
     contactEmail,
+    displayContactEmail: contactEmail || publicContactEmail,
     // Omit unverified integration identifiers entirely from generated pages.
     formEndpoint: pilotEnabled ? `https://formspree.io/f/${formId}` : '',
     measurementId: analyticsEnabled ? measurementId : '',
   });
 }
 export const growthConfig = loadGrowthConfig();
+
+export const pilotCtaLabel = (settings = growthConfig) =>
+  settings.pilotEnabled ? 'Request a discovery conversation' : 'Check discovery availability';

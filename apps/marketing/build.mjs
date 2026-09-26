@@ -10,6 +10,7 @@ import { drawingSvg } from './drawings.mjs';
 import { createRegistry, publishedPages } from './registry.mjs';
 import { hub, resourcePage, diagramLabels, diagramSvg } from './resources.mjs';
 import { generateDownloads } from './documents.mjs';
+import { moodBoardScene, sceneSvg } from './presentation-assets.mjs';
 import { renderGrowthPage } from './growth-pages.mjs';
 import { assertSafeOutputPath, digest, pruneObsoleteOutput } from './owned-output.mjs';
 
@@ -55,17 +56,20 @@ const renderers = {
   'open-source/': openSource,
   summary: () => summary(project),
 };
+// Hubs render before leaf pages; populate every download list first so hub cards
+// accurately describe all delivered formats rather than just the primary format.
+for (const page of pages.filter((entry) => entry.kind === 'template')) {
+  const downloads = await generateDownloads(page);
+  for (const download of downloads) await emit(download.path, download.buffer);
+  page.downloads = downloads.map(({ path, label, format, variant, size }) => ({
+    path,
+    label,
+    format,
+    variant,
+    size,
+  }));
+}
 for (const page of pages) {
-  if (page.kind === 'template') {
-    const downloads = await generateDownloads(page);
-    for (const download of downloads) await emit(download.path, download.buffer);
-    page.downloads = downloads.map(({ path, label, format, size }) => ({
-      path,
-      label,
-      format,
-      size,
-    }));
-  }
   const content =
     page.kind === 'hub'
       ? hub(page, pages)
@@ -98,6 +102,14 @@ await emit(
 );
 for (const type of Object.keys(diagramLabels))
   await emit(`assets/diagrams/${type}.svg`, diagramSvg(type));
+for (const direction of ['quiet-oak', 'deep-olive'])
+  await emit(
+    `assets/diagrams/mood-board-${direction}.svg`,
+    await sceneSvg(
+      moodBoardScene(direction),
+      `${direction === 'quiet-oak' ? 'Quiet Oak' : 'Deep Olive'} - illustrative mood board`,
+    ),
+  );
 for (const drawing of project.drawings)
   await emit(`assets/downloads/${drawing.filename}`, drawingSvg(project, drawing.id));
 const csvCell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;

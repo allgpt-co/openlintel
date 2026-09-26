@@ -22,6 +22,8 @@ const mime = {
   '.woff2': 'font/woff2',
   '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  '.pdf': 'application/pdf',
   '.csv': 'text/csv; charset=utf-8',
   '.xml': 'application/xml',
   '.txt': 'text/plain; charset=utf-8',

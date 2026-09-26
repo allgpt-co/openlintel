@@ -1,5 +1,6 @@
 import { config, url, absolute, esc } from './config.mjs';
 import { renderGrowthChrome, renderGrowthFooterLinks } from './growth-pages.mjs';
+import { growthConfig } from './growth-config.mjs';
 export const arrow = '<span aria-hidden="true">↗</span>';
 export const mark =
   '<svg class="brand-mark" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M5 29V8h24v21M1 5h32M11 29V14h12v15" stroke="currentColor" stroke-width="1.6"/></svg>';
@@ -48,6 +49,7 @@ export function shell(page, content) {
       name: 'OpenLintel',
       url: absolute(),
       sameAs: [config.repo],
+      email: growthConfig.displayContactEmail,
       publishingPrinciples: absolute('editorial-policy/'),
     },
   ];

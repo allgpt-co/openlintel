@@ -109,3 +109,39 @@ test('Correct bytes with an incorrect MIME type cannot pass production checks', 
   assert.equal(result.status, 'failed');
   assert.ok(result.checks.some((c) => c.name === 'index.html: content type' && !c.pass));
 });
+
+test('Presentation and PDF downloads require their advertised MIME types and file signatures', async () => {
+  const { manifest, fetcher } = fixture();
+  const downloads = {
+    'assets/downloads/example.pptx': {
+      body: 'PK-fixture',
+      type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    },
+    'assets/downloads/example.pdf': { body: '%PDF-fixture', type: 'application/pdf' },
+  };
+  for (const [path, item] of Object.entries(downloads)) {
+    manifest.files.push(path);
+    manifest.fileHashes[path] = createHash('sha256').update(item.body).digest('hex');
+  }
+  const serve = (incorrect) => async (raw, options) => {
+    const item = downloads[new URL(raw).pathname.slice(1)];
+    return item
+      ? new Response(item.body, {
+          headers: { 'content-type': incorrect ? 'text/plain' : item.type },
+        })
+      : fetcher(raw, options);
+  };
+  const valid = await auditProduction(manifest, { fetcher: serve(false), hostVariants: false });
+  assert.equal(valid.status, 'passed');
+  assert.ok(
+    valid.checks.some((check) => check.name.endsWith('example.pdf: PDF header') && check.pass),
+  );
+  assert.ok(
+    valid.checks.some((check) => check.name.endsWith('example.pptx: Office archive') && check.pass),
+  );
+  const invalid = await auditProduction(manifest, { fetcher: serve(true), hostVariants: false });
+  for (const path of Object.keys(downloads))
+    assert.ok(
+      invalid.checks.some((check) => check.name === `${path}: content type` && !check.pass),
+    );
+});

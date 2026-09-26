@@ -1,0 +1,1276 @@
+{
+  "researchedAt": "2026-09-25",
+  "retrievedAt": "2026-09-26T04:51:50Z",
+  "retrievalWindowUtc": "2026-09-26 04:50 through 04:51:50",
+  "editorialTimezone": "America/Chicago",
+  "provider": "DataForSEO",
+  "market": "United States",
+  "language": "en",
+  "endpoints": [
+    "dataforseo_labs/google/keyword_overview",
+    "dataforseo_labs/google/domain_rank_overview",
+    "dataforseo_labs/google/bulk_keyword_difficulty",
+    "serp/google/organic/live/advanced"
+  ],
+  "notes": [
+    "This file is a normalized record of actual provider responses, not a fabricated raw API export.",
+    "Search volumes are provider estimates and overlapping demand, not site traffic, expected clicks or a revenue forecast.",
+    "Fresh retrieval does not mean each provider observation was refreshed. Preserve per-row updated dates and monthly series.",
+    "Bulk difficulty returned zero for all nine phrases with absent overview difficulty; those zeros are retained separately and are not proof of low competition.",
+    "Domain overview returned no records, not evidence of zero traffic or zero rankings.",
+    "SERP rank is a point-in-time US-English desktop observation. Formats and content recommendations are editorial assessments, separate from provider intent.",
+    "The September 14 historical snapshot remains unchanged. Later availability observations supersede its old DNS failure without rewriting it."
+  ],
+  "keywordOverview": {
+    "taskId": "09260450-1512-0607-0000-73ab025bca82",
+    "statusCode": 20000,
+    "requestedCount": 25,
+    "returnedCount": 22,
+    "omittedKeywords": [
+      "interior design client onboarding checklist",
+      "interior design change order template",
+      "interior design handover checklist"
+    ]
+  },
+  "keywords": [
+    {
+      "keyword": "ff&e schedule template",
+      "searchVolume": 50,
+      "difficulty": null,
+      "updated": "2026-09-13 23:30:37 +00:00",
+      "monthlySearches": {
+        "2026-08": 30,
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 50,
+        "2026-04": 70,
+        "2026-03": 50,
+        "2026-02": 40,
+        "2026-01": 50,
+        "2025-12": 40,
+        "2025-11": 70,
+        "2025-10": 70,
+        "2025-09": 50
+      },
+      "cpc": 3.71,
+      "providerIntent": {
+        "main_intent": "navigational",
+        "last_updated_time": "2026-04-29 13:39:14 +00:00"
+      }
+    },
+    {
+      "keyword": "ff&e specification",
+      "searchVolume": 50,
+      "difficulty": null,
+      "updated": "2026-09-12 16:08:05 +00:00",
+      "monthlySearches": {
+        "2026-08": 20,
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 30,
+        "2026-04": 40,
+        "2026-03": 70,
+        "2026-02": 30,
+        "2026-01": 40,
+        "2025-12": 40,
+        "2025-11": 40,
+        "2025-10": 40,
+        "2025-09": 140
+      },
+      "cpc": null,
+      "providerIntent": {
+        "main_intent": "informational",
+        "foreign_intent": ["navigational"],
+        "last_updated_time": "2026-04-27 18:00:00 +00:00"
+      }
+    },
+    {
+      "keyword": "finish schedule template",
+      "searchVolume": 70,
+      "difficulty": null,
+      "updated": "2026-09-16 20:57:39 +00:00",
+      "monthlySearches": {
+        "2026-08": 70,
+        "2026-07": 40,
+        "2026-06": 90,
+        "2026-05": 50,
+        "2026-04": 90,
+        "2026-03": 70,
+        "2026-02": 70,
+        "2026-01": 90,
+        "2025-12": 90,
+        "2025-11": 90,
+        "2025-10": 90,
+        "2025-09": 140
+      },
+      "cpc": 0.06,
+      "providerIntent": {
+        "main_intent": "informational",
+        "foreign_intent": ["transactional"],
+        "last_updated_time": "2026-04-29 18:32:37 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design budget template",
+      "searchVolume": 50,
+      "difficulty": 4,
+      "updated": "2026-09-17 01:26:22 +00:00",
+      "monthlySearches": {
+        "2026-08": 30,
+        "2026-07": 40,
+        "2026-06": 50,
+        "2026-05": 50,
+        "2026-04": 50,
+        "2026-03": 50,
+        "2026-02": 50,
+        "2026-01": 50,
+        "2025-12": 50,
+        "2025-11": 40,
+        "2025-10": 40,
+        "2025-09": 30
+      },
+      "cpc": 0.15,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 15:39:44 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design client onboarding",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-09-14 11:32:43 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-11": 10,
+        "2025-10": 10
+      },
+      "cpc": null,
+      "providerIntent": {
+        "main_intent": "navigational",
+        "last_updated_time": "2026-04-27 23:50:06 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design client questionnaire",
+      "searchVolume": 140,
+      "difficulty": null,
+      "updated": "2026-09-13 08:00:21 +00:00",
+      "monthlySearches": {
+        "2026-08": 90,
+        "2026-07": 110,
+        "2026-06": 140,
+        "2026-05": 140,
+        "2026-04": 140,
+        "2026-03": 170,
+        "2026-02": 140,
+        "2026-01": 170,
+        "2025-12": 110,
+        "2025-11": 110,
+        "2025-10": 140,
+        "2025-09": 140
+      },
+      "cpc": 5.18,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 04:40:57 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design installation checklist",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-09-15 17:28:56 +00:00",
+      "monthlySearches": {
+        "2026-08": 10,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10
+      },
+      "cpc": null,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 17:07:45 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design mood board examples",
+      "searchVolume": 320,
+      "difficulty": 8,
+      "updated": "2026-09-15 00:47:48 +00:00",
+      "monthlySearches": {
+        "2026-08": 260,
+        "2026-07": 210,
+        "2026-06": 210,
+        "2026-05": 390,
+        "2026-04": 390,
+        "2026-03": 320,
+        "2026-02": 320,
+        "2026-01": 320,
+        "2025-12": 320,
+        "2025-11": 260,
+        "2025-10": 390,
+        "2025-09": 480
+      },
+      "cpc": 1.02,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 05:28:45 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design presentation templates",
+      "searchVolume": 140,
+      "difficulty": null,
+      "updated": "2026-09-15 07:05:42 +00:00",
+      "monthlySearches": {
+        "2026-08": 110,
+        "2026-07": 90,
+        "2026-06": 90,
+        "2026-05": 140,
+        "2026-04": 140,
+        "2026-03": 140,
+        "2026-02": 170,
+        "2026-01": 140,
+        "2025-12": 90,
+        "2025-11": 110,
+        "2025-10": 210,
+        "2025-09": 210
+      },
+      "cpc": 3.73,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-27 23:05:10 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design procurement",
+      "searchVolume": 70,
+      "difficulty": 31,
+      "updated": "2026-09-13 23:46:48 +00:00",
+      "monthlySearches": {
+        "2026-08": 50,
+        "2026-07": 50,
+        "2026-06": 90,
+        "2026-05": 70,
+        "2026-04": 70,
+        "2026-03": 90,
+        "2026-02": 90,
+        "2026-01": 70,
+        "2025-12": 40,
+        "2025-11": 40,
+        "2025-10": 70,
+        "2025-09": 210
+      },
+      "cpc": 10.52,
+      "providerIntent": {
+        "main_intent": "commercial",
+        "foreign_intent": ["navigational", "informational"],
+        "last_updated_time": "2026-04-28 13:44:57 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design procurement process",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-09-16 22:10:53 +00:00",
+      "monthlySearches": {
+        "2026-08": 10,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 10
+      },
+      "cpc": null,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-27 23:53:39 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design procurement software",
+      "searchVolume": 30,
+      "difficulty": 10,
+      "updated": "2026-09-17 22:21:46 +00:00",
+      "monthlySearches": {
+        "2026-08": 40,
+        "2026-07": 20,
+        "2026-06": 30,
+        "2026-05": 30,
+        "2026-04": 50,
+        "2026-03": 50,
+        "2026-02": 10,
+        "2026-01": 40,
+        "2025-12": 30,
+        "2025-11": 10,
+        "2025-10": 40,
+        "2025-09": 20
+      },
+      "cpc": 70.03,
+      "providerIntent": {
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-29 15:18:23 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design project management",
+      "searchVolume": 480,
+      "difficulty": null,
+      "updated": "2026-09-16 15:54:25 +00:00",
+      "monthlySearches": {
+        "2026-08": 390,
+        "2026-07": 480,
+        "2026-06": 480,
+        "2026-05": 590,
+        "2026-04": 480,
+        "2026-03": 590,
+        "2026-02": 480,
+        "2026-01": 590,
+        "2025-12": 390,
+        "2025-11": 390,
+        "2025-10": 590,
+        "2025-09": 720
+      },
+      "cpc": 9.96,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 01:47:48 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design project management software",
+      "searchVolume": 170,
+      "difficulty": 29,
+      "updated": "2026-09-16 17:21:46 +00:00",
+      "monthlySearches": {
+        "2026-08": 170,
+        "2026-07": 170,
+        "2026-06": 110,
+        "2026-05": 170,
+        "2026-04": 210,
+        "2026-03": 170,
+        "2026-02": 140,
+        "2026-01": 140,
+        "2025-12": 90,
+        "2025-11": 90,
+        "2025-10": 170,
+        "2025-09": 590
+      },
+      "cpc": 42.6,
+      "providerIntent": {
+        "main_intent": "commercial",
+        "last_updated_time": "2026-04-28 20:12:56 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design project tracker",
+      "searchVolume": null,
+      "difficulty": null,
+      "updated": "2026-06-14 15:15:55 +00:00",
+      "monthlySearches": null,
+      "cpc": null,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 13:44:57 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design proposal template",
+      "searchVolume": 210,
+      "difficulty": null,
+      "updated": "2026-09-13 21:02:44 +00:00",
+      "monthlySearches": {
+        "2026-08": 90,
+        "2026-07": 140,
+        "2026-06": 140,
+        "2026-05": 140,
+        "2026-04": 140,
+        "2026-03": 170,
+        "2026-02": 170,
+        "2026-01": 140,
+        "2025-12": 170,
+        "2025-11": 260,
+        "2025-10": 320,
+        "2025-09": 480
+      },
+      "cpc": 4.23,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 12:15:28 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design purchase order template",
+      "searchVolume": 20,
+      "difficulty": null,
+      "updated": "2026-09-13 19:25:50 +00:00",
+      "monthlySearches": {
+        "2026-08": 10,
+        "2026-07": 20,
+        "2026-06": 20,
+        "2026-05": 20,
+        "2026-04": 30,
+        "2026-03": 50,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 20,
+        "2025-11": 20,
+        "2025-10": 20,
+        "2025-09": 30
+      },
+      "cpc": 0.01,
+      "providerIntent": {
+        "main_intent": "informational",
+        "foreign_intent": ["transactional"],
+        "last_updated_time": "2026-04-28 10:06:57 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design questionnaire template",
+      "searchVolume": 30,
+      "difficulty": null,
+      "updated": "2026-09-14 04:54:23 +00:00",
+      "monthlySearches": {
+        "2026-08": 30,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 30,
+        "2026-04": 50,
+        "2026-03": 70,
+        "2026-02": 10,
+        "2026-01": 20,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 40
+      },
+      "cpc": 0.12,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 01:47:48 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design scope of work template",
+      "searchVolume": 30,
+      "difficulty": null,
+      "updated": "2026-09-12 13:52:03 +00:00",
+      "monthlySearches": {
+        "2026-08": 20,
+        "2026-07": 40,
+        "2026-06": 30,
+        "2026-05": 40,
+        "2026-04": 40,
+        "2026-03": 30,
+        "2026-02": 20,
+        "2026-01": 30,
+        "2025-12": 30,
+        "2025-11": 30,
+        "2025-10": 20,
+        "2025-09": 20
+      },
+      "cpc": 0.1,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 16:47:13 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design spec sheet template",
+      "searchVolume": 70,
+      "difficulty": null,
+      "updated": "2026-09-14 01:30:56 +00:00",
+      "monthlySearches": {
+        "2026-08": 40,
+        "2026-07": 70,
+        "2026-06": 70,
+        "2026-05": 50,
+        "2026-04": 70,
+        "2026-03": 110,
+        "2026-02": 90,
+        "2026-01": 70,
+        "2025-12": 50,
+        "2025-11": 70,
+        "2025-10": 140,
+        "2025-09": 70
+      },
+      "cpc": 2.26,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-28 05:56:39 +00:00"
+      }
+    },
+    {
+      "keyword": "interior design workflow",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-09-14 09:55:22 +00:00",
+      "monthlySearches": {
+        "2026-08": 10,
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 20,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-02": 10,
+        "2026-01": 10,
+        "2025-12": 10,
+        "2025-11": 10,
+        "2025-10": 10,
+        "2025-09": 30
+      },
+      "cpc": 6.59,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 17:18:46 +00:00"
+      }
+    },
+    {
+      "keyword": "residential interior design process",
+      "searchVolume": 10,
+      "difficulty": null,
+      "updated": "2026-09-13 08:38:28 +00:00",
+      "monthlySearches": {
+        "2026-07": 10,
+        "2026-06": 10,
+        "2026-05": 10,
+        "2026-04": 10,
+        "2026-03": 10,
+        "2026-01": 10,
+        "2025-10": 10,
+        "2025-09": 10
+      },
+      "cpc": null,
+      "providerIntent": {
+        "main_intent": "informational",
+        "last_updated_time": "2026-04-29 22:51:39 +00:00"
+      }
+    }
+  ],
+  "domainOverview": {
+    "taskId": "09260450-1512-0388-0000-e6e24814a5b3",
+    "statusCode": 20000,
+    "target": "openlintel.com",
+    "totalCount": null,
+    "items": [],
+    "interpretation": "No provider ranking records returned; first-party GSC and GA4 are required to establish site outcomes."
+  },
+  "bulkDifficulty": {
+    "id": "09260451-1512-0392-0000-ec030937e1dd",
+    "status_code": 20000,
+    "status_message": "Ok.",
+    "total_count": 9,
+    "items": [
+      {
+        "keyword": "ff&e schedule template",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design client questionnaire",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design presentation templates",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design project management",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design proposal template",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design purchase order template",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design scope of work template",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "interior design spec sheet template",
+        "keyword_difficulty": 0
+      },
+      {
+        "keyword": "finish schedule template",
+        "keyword_difficulty": 0
+      }
+    ]
+  },
+  "serps": [
+    {
+      "keyword": "interior design spec sheet template",
+      "taskId": "09260450-1512-0139-0000-30492e44bd80",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["images", "organic", "related_searches"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Interior Design Spec Sheet (FF&E) Free Template + Guide",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-spec-sheet-with-template"
+        },
+        {
+          "rank": 2,
+          "title": "Free Template: Interior Design Spec Sheet & Guide",
+          "url": "https://www.pinterest.com/pin/free-template-interior-design-spec-sheet-guide-in-2024--381961612166354217/"
+        },
+        {
+          "rank": 3,
+          "title": "Interior Design Specification Templates",
+          "url": "https://programa.design/blog/interior-design-specification-templates"
+        },
+        {
+          "rank": 4,
+          "title": "DesignSpec",
+          "url": "https://designspec.com/"
+        },
+        {
+          "rank": 5,
+          "title": "Interior Design Spec Sheet Template: Structure, Cut ...",
+          "url": "https://thesheet.co/blog/the-essential-guide-to-structuring-interior-design-spec-sheets"
+        },
+        {
+          "rank": 6,
+          "title": "How to Create Interior Design Spec Sheets & Avoid Mistakes",
+          "url": "https://blog.designfiles.co/interior-design-spec-sheet/"
+        },
+        {
+          "rank": 7,
+          "title": "Specification Sheet | Myrtle House - Elizabeth Burns Design",
+          "url": "http://www.elizabethburnsdesign.com/blog/2014/8/19/specification-sheet-myrtle-house"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Specification Sheets",
+          "url": "https://www.etsy.com/listing/1277838326/interior-design-specification-sheets"
+        },
+        {
+          "rank": 9,
+          "title": "Interior Design Specification Template",
+          "url": "https://www.pinterest.com/ideas/interior-design-specification-template/922165488546/"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design spec sheet template word",
+        "Interior design spec sheet template pdf",
+        "Interior design spec sheet template excel",
+        "Interior design spec sheet template free",
+        "Interior Design specifications pdf",
+        "Free interior design spec sheet template Excel",
+        "Furniture spec sheet Template",
+        "Interior design selection sheet template"
+      ]
+    },
+    {
+      "keyword": "interior design presentation templates",
+      "taskId": "09260450-1512-0139-0000-95069637759d",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["organic", "images", "related_searches"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Interior Design Presentation Templates",
+          "url": "https://sonderpathstudio.com/collections/interior-design-presentation-templates?srsltid=AU7gw4V_UoIXCOqq0TUo-P1Bo6_DeJ3wdr9ySYFUEuUaZtjCICmNFalv"
+        },
+        {
+          "rank": 2,
+          "title": "Design Presentation Templates for Interior Designers",
+          "url": "https://www.idco.studio/design-presentations?srsltid=AU7gw4Uqt9GUBTV-1U5uEzJeOkNM3qh_X1ht27zurKqMI71qAdKXHczC"
+        },
+        {
+          "rank": 3,
+          "title": "Interior Design Presentation Templates",
+          "url": "https://www.pinterest.com/ideas/interior-design-presentation-templates/950327054299/"
+        },
+        {
+          "rank": 4,
+          "title": "Architecture presentation templates - Canva",
+          "url": "https://www.canva.com/presentations/templates/architecture/"
+        },
+        {
+          "rank": 5,
+          "title": "How to make a great interior design presentation?",
+          "url": "https://www.rayon.design/blog/how-to-make-a-great-interior-design-presentation"
+        },
+        {
+          "rank": 6,
+          "title": "Free Interior Design Presentation Templates | Adobe Express",
+          "url": "https://www.adobe.com/express/templates/presentation/design/interior"
+        },
+        {
+          "rank": 7,
+          "title": "Interior design presentation Images - Free Download on ...",
+          "url": "https://www.magnific.com/free-photos-vectors/interior-design-presentation"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Google Slides & PPT Templates",
+          "url": "https://slidesgo.com/interior-design"
+        },
+        {
+          "rank": 9,
+          "title": "How to Make the Perfect Interior Design Presentation",
+          "url": "https://www.youtube.com/watch?v=4rdkWS0bkNA"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design presentation templates free",
+        "Interior design presentation templates ppt",
+        "Interior design presentation templates pdf",
+        "Interior design presentation templates powerpoint",
+        "Interior design presentation Board templates",
+        "Interior design Presentation PDF",
+        "Interior design presentation example",
+        "Interior design presentation template Canva"
+      ]
+    },
+    {
+      "keyword": "interior design purchase order template",
+      "taskId": "09260450-1512-0139-0000-7189ebaf5a01",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "images",
+        "organic",
+        "people_also_ask",
+        "ai_overview",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Interior Design Purchase Order Guide + Template",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-purchase-order-with-template"
+        },
+        {
+          "rank": 2,
+          "title": "Interior Design Purchase Order Template",
+          "url": "https://www.pinterest.com/ideas/interior-design-purchase-order-template/928354535546/"
+        },
+        {
+          "rank": 3,
+          "title": "Interior Design Purchase Order Template",
+          "url": "https://www.visme.co/templates/invoices/interior-design-purchase-order-templates-1425286570/"
+        },
+        {
+          "rank": 4,
+          "title": "Interior Design Purchase Order Template Guide 2026",
+          "url": "https://programa.design/blog/interior-design-purchase-order-template-guide"
+        },
+        {
+          "rank": 5,
+          "title": "Purchase Orders for Interior Designers: Best Practices Guide",
+          "url": "https://procurist.io/blog/purchase-order-best-practices"
+        },
+        {
+          "rank": 6,
+          "title": "Interior Designer Purchase Order Template: Vendor & ...",
+          "url": "https://www.etsy.com/listing/4298413116/interior-designer-purchase-order"
+        },
+        {
+          "rank": 7,
+          "title": "Interior Design Purchase Order - Template | PDF - DocShare",
+          "url": "https://docshare.wps.com/template/interior-design-purchase-order-template/339262/"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Purchase Order Template | PDF",
+          "url": "https://www.scribd.com/document/989357689/Interior-Design-Purchase-Order-Template-TemplateLab-com"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design purchase order template excel",
+        "Interior design purchase order template free"
+      ]
+    },
+    {
+      "keyword": "interior design project management",
+      "taskId": "09260450-1512-0139-0000-8494d210bc25",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "ai_overview",
+        "organic",
+        "people_also_ask",
+        "local_pack",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Interior Design Project Management: The Ultimate Guide ...",
+          "url": "https://devignierdesign.com/interior-design-project-management/"
+        },
+        {
+          "rank": 2,
+          "title": "Programa: Interior Design Project Management Software",
+          "url": "https://programa.design/"
+        },
+        {
+          "rank": 3,
+          "title": "A Guide to Interior Design Project Management",
+          "url": "https://punchlist.com/article/interior-design-project-management/"
+        },
+        {
+          "rank": 4,
+          "title": "What project management software are you using for your ...",
+          "url": "https://www.reddit.com/r/interiordesignsindia/comments/1lg3i5w/what_project_management_software_are_you_using/"
+        },
+        {
+          "rank": 5,
+          "title": "Studio Designer: Leading Platform for the Interior Design ...",
+          "url": "https://www.studiodesigner.com/"
+        },
+        {
+          "rank": 6,
+          "title": "Best Interior Design Project Management Software for 2026",
+          "url": "https://monday.com/blog/project-management/project-management-software-for-interior-designers/"
+        },
+        {
+          "rank": 7,
+          "title": "Why Interior Design Project Management Matters",
+          "url": "https://www.gunterandco.com/blog-posts/why-project-management-and-design-teams-need-to-work-together-to-deliver-exceptional-designs"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Project Management: A Complete Guide for ...",
+          "url": "https://interiordesignershub.co.uk/blog/project-manage-like-a-pro/"
+        },
+        {
+          "rank": 9,
+          "title": "6 Best Interior Design Project Management Software for 2026",
+          "url": "https://plaky.com/blog/interior-design-project-management-software/"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design project management jobs",
+        "Interior design project management course",
+        "Interior design project management salary",
+        "Interior design project management pdf",
+        "Interior design project management software",
+        "Interior design project management template",
+        "Interior design project management job description",
+        "Best interior design project management software"
+      ]
+    },
+    {
+      "keyword": "finish schedule template",
+      "taskId": "09260450-1512-0139-0000-f4181774d22d",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "images",
+        "organic",
+        "ai_overview",
+        "people_also_ask",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Interior Design FF&E Schedule Template, Furniture ... - Etsy",
+          "url": "https://www.etsy.com/ca/listing/1784459748/interior-design-ffe-schedule-template"
+        },
+        {
+          "rank": 2,
+          "title": "Interior Design FF&E Schedule Template",
+          "url": "https://in.pinterest.com/pin/interior-design-ffe-schedule-template--893120169849468481/"
+        },
+        {
+          "rank": 3,
+          "title": "Revit Finishing Schedule Template | PDF | Interior Design",
+          "url": "https://www.scribd.com/document/795157464/ARCH-VILLA-Finishing-Schedules"
+        },
+        {
+          "rank": 4,
+          "title": "Interior Design, Renovation Template | Finishes and Fixtures",
+          "url": "https://www.etsy.com/sg-en/listing/4329986936/finishes-schedule-template-ffe-schedule"
+        },
+        {
+          "rank": 5,
+          "title": "Design Project Budget & Schedule Tracker",
+          "url": "https://www.pinterest.com/pin/ffe-schedule-budget-tracker--1007680485377224610/"
+        },
+        {
+          "rank": 6,
+          "title": "Finishes Schedule Template | Furniture Board - Etsy",
+          "url": "https://www.etsy.com/dk-en/listing/4329984139/ffe-schedule-template-finishes-schedule"
+        },
+        {
+          "rank": 7,
+          "title": "Interior Design Project Schedule Template in Word, Pages, ...",
+          "url": "https://in.pinterest.com/pin/interior-design-project-schedule-template-in-word-pages-google-docs-pdf-download--630222541638299063/"
+        },
+        {
+          "rank": 8,
+          "title": "Client Finishes and Fixtures Schedule, FF&E ...",
+          "url": "https://www.etsy.com/uk/listing/4325824403/client-finishes-and-fixtures-schedule"
+        }
+      ],
+      "relatedSearches": [
+        "Finish schedule template pdf",
+        "Finish schedule template word",
+        "Finish schedule template free"
+      ]
+    },
+    {
+      "keyword": "interior design mood board examples",
+      "taskId": "09260450-1512-0139-0000-3ffc21dddbce",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["images", "organic", "people_also_ask", "related_searches"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "How To Make An Interior Design Mood Board (3 ...",
+          "url": "https://www.greenhousestudio.co/home-garden/how-to-create-mood-board-interior-design"
+        },
+        {
+          "rank": 2,
+          "title": "45 Interior Design Mood Boards ideas",
+          "url": "https://uk.pinterest.com/sketchuphub/interior-design-mood-boards/"
+        },
+        {
+          "rank": 3,
+          "title": "Art of the Mood Board: Visual Storytelling ...",
+          "url": "https://www.theinteriordesigninstitute.com/us/en/blog-the-art-of-the-mood-board-crafting-visual-narratives-that-captivate-your-clients"
+        },
+        {
+          "rank": 4,
+          "title": "Interior Design Moodboard - Template & Example",
+          "url": "https://milanote.com/templates/interior-design/interior-design-moodboard"
+        },
+        {
+          "rank": 5,
+          "title": "7 Interior Design Mood Board Ideas: Luxury Concepts & ...",
+          "url": "https://www.rockymountainhardware.com/interior-design-mood-board-ideas/"
+        },
+        {
+          "rank": 6,
+          "title": "INTERIOR DESIGN How To Create a Mood Board Step by ...",
+          "url": "https://www.youtube.com/watch?v=EJRwAxdQyLM"
+        },
+        {
+          "rank": 7,
+          "title": "Mood Board Examples & Inspiration",
+          "url": "https://stylesourcebook.com.au/boards"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Mood Board Images",
+          "url": "https://stock.adobe.com/search?k=interior+design+mood+board"
+        },
+        {
+          "rank": 9,
+          "title": "How to make an interior design mood board",
+          "url": "https://galathome.com/2019/08/16/how-to-make-an-interior-design-mood-board/"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design mood board examples pdf",
+        "Interior design mood board examples free",
+        "Interior design mood board examples ppt",
+        "Interior design mood board free",
+        "Interior design mood board examples free download",
+        "Interior design mood board template free download",
+        "How to create a mood board for interior design",
+        "Interior design mood board creator"
+      ]
+    },
+    {
+      "keyword": "interior design client questionnaire",
+      "taskId": "09260451-1512-0139-0000-3dbe984ba73a",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["organic", "ai_overview", "images", "related_searches"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "CLIENT QUESTIONNAIRE 1 - PROPERTY INFORMATION",
+          "url": "https://ambiencehomedesign.com/questionnaire-eng.pdf"
+        },
+        {
+          "rank": 2,
+          "title": "Interior Design Questionnaire for Clients + PDF ...",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-write-client-questionnaire-with-template"
+        },
+        {
+          "rank": 3,
+          "title": "what questions do you have on your client intake form?",
+          "url": "https://www.reddit.com/r/InteriorDesign/comments/x8y76m/interior_designers_what_questions_do_you_have_on/"
+        },
+        {
+          "rank": 4,
+          "title": "Client Design Questionnaire",
+          "url": "https://www.tylarkins.com/design-questionnaire"
+        },
+        {
+          "rank": 5,
+          "title": "Interior Design Questionnaire — Top 25 Questions to Ask ...",
+          "url": "https://medium.com/@orient.gg/interior-design-questionnaire-top-25-questions-to-ask-new-clients-286395bc8c89"
+        },
+        {
+          "rank": 6,
+          "title": "Interior design questionnaire: 30 insightful questions to ask",
+          "url": "https://contentsnare.com/form-templates/interior-design-questionnaire/"
+        },
+        {
+          "rank": 7,
+          "title": "Questions to ask your interior design clients BEFORE you ...",
+          "url": "https://thelittledesigncorner.com/blogs/news/questions-for-clients?srsltid=AU7gw4X2VkKYgm8fr_D6vX5ti5S0a7-jDK9vOk1ITxoCMaGHFkwj3JF4"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Client Questionnaire Templates",
+          "url": "https://it.pinterest.com/maisiainteriordesign/interior-design-client-questionnaire-templates/"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design client questionnaire template",
+        "Interior design client questionnaire pdf",
+        "Interior design questionnaire for clients pdf free download",
+        "Interior design client questionnaire free download",
+        "Interior design client questionnaire pdf free",
+        "Interior design client questionnaire free",
+        "Questions to ask an interior designer as a student",
+        "Interior design consultation template"
+      ]
+    },
+    {
+      "keyword": "interior design proposal template",
+      "taskId": "09260451-1512-0139-0000-632c5d9325f2",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": [
+        "images",
+        "organic",
+        "ai_overview",
+        "people_also_ask",
+        "related_searches"
+      ],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Design Proposal Templates for Interior Designers",
+          "url": "https://www.idco.studio/design-proposals?srsltid=AU7gw4VR2gHFtS0rvAwxaQZ_ye5-tfGOVSL5BgxhfSSKHs_rLcuBzUHk"
+        },
+        {
+          "rank": 2,
+          "title": "Free Interior Design Proposal Template That Wins Clients",
+          "url": "https://betterproposals.io/proposal-templates/interior-design-proposal-template"
+        },
+        {
+          "rank": 3,
+          "title": "Fee Proposal Templates for Interior Designers",
+          "url": "https://sonderpathstudio.com/collections/interior-design-proposals?srsltid=AU7gw4UJZmHpiC3bCIR-QScpdrAcJx3U-bOdmkWW6XxInTFe4MJVncbN"
+        },
+        {
+          "rank": 4,
+          "title": "Project Proposal Template for Interior Designers",
+          "url": "https://www.etsy.com/listing/1671769042/interior-design-proposal-template"
+        },
+        {
+          "rank": 5,
+          "title": "How to Set Up Your Interior Design Proposal Package",
+          "url": "https://www.youtube.com/watch?v=FSg98iprbGQ"
+        },
+        {
+          "rank": 6,
+          "title": "Interior design proposal template pdf Images",
+          "url": "https://www.magnific.com/free-photos-vectors/interior-design-proposal-template-pdf"
+        },
+        {
+          "rank": 7,
+          "title": "Free Template: Interior Design Proposal & Guide",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-proposal-with-template"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Proposal Template & Investment Guide",
+          "url": "https://bloombyrosebud.com/products/interior-design-proposal-investment-guide-for-interior-designers-canva-ready-what-to-expect-digital-templates-modern-close-more-clients?srsltid=AU7gw4VFEqGBQhrA6QXgdgbZNkI_jVqw2qwDMLfRVA-8RLp8HrmV6x_P"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design proposal template pdf",
+        "Interior design proposal template word",
+        "Interior design proposal template free",
+        "Interior design proposal sample PDF free download",
+        "Interior design proposal for client",
+        "Interior design proposal template Canva",
+        "Interior design Proposal Template Word free download",
+        "Interior design fee proposal template"
+      ]
+    },
+    {
+      "keyword": "interior design budget template",
+      "taskId": "09260451-1512-0139-0000-668d130f4f44",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["images", "organic", "people_also_ask", "related_searches"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "Interior Design Budget Sheet Template",
+          "url": "https://www.etsy.com/listing/1607116271/interior-design-budget-sheet-template"
+        },
+        {
+          "rank": 2,
+          "title": "How to Prepare an Interior Design Budget [With Template]",
+          "url": "https://clutch.co/resources/interior-design-budget"
+        },
+        {
+          "rank": 3,
+          "title": "Interior Design Project Budget Calculator",
+          "url": "https://shop.designersoasis.com/products/interior-design-project-budget-calculator?srsltid=AU7gw4UqF1LHQStX9gEpK-sY8fw5rC1_9LgOY4z71TIaYtdQbMTuUQPO"
+        },
+        {
+          "rank": 4,
+          "title": "Free Template: How to Make an Interior Design Budget",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-budget-with-template"
+        },
+        {
+          "rank": 5,
+          "title": "Free Interior Design Budget Plan Template to Edit Online",
+          "url": "https://www.template.net/edit-online/373573/interior-design-budget-plan"
+        },
+        {
+          "rank": 6,
+          "title": "Free and customizable budget templates",
+          "url": "https://www.canva.com/templates/s/budget/"
+        },
+        {
+          "rank": 7,
+          "title": "Interior Design Budget Template: Essential Questions ...",
+          "url": "https://logistis.design/blog/interior-design-budget-template/"
+        },
+        {
+          "rank": 8,
+          "title": "Interior Design Budget Sheet",
+          "url": "https://www.pinterest.com/ideas/interior-design-budget-sheet/898319620092/"
+        },
+        {
+          "rank": 9,
+          "title": "Free Construction Budget Templates - Smartsheet",
+          "url": "https://www.smartsheet.com/content/construction-budget-templates?srsltid=AU7gw4VuKFcAn25R8U9BJgEeAcgNX0P1YhKk-4QwAMOjjMAGZq4p50KC"
+        }
+      ],
+      "relatedSearches": [
+        "Interior design budget template google sheets",
+        "Interior design budget template excel",
+        "Interior design budget template free",
+        "Interior design budget template pdf",
+        "Interior design budget template free download",
+        "Furniture budget template excel",
+        "NGO budget template Excel",
+        "Manpower budget template Excel"
+      ]
+    },
+    {
+      "keyword": "ff&e schedule template",
+      "taskId": "09260451-1512-0139-0000-0cf0e679c51b",
+      "statusCode": 20000,
+      "searchEngine": "google",
+      "device": "desktop",
+      "requestedDepth": 10,
+      "features": ["images", "organic", "people_also_ask", "related_searches"],
+      "organic": [
+        {
+          "rank": 1,
+          "title": "FF&E Schedule Templates for Interior Designers",
+          "url": "https://sonderpathstudio.com/collections/ff-e-templates?srsltid=AU7gw4UKbramaDqbVR3E1P-YbabcadgY4cG-Ge_gD_MoNAXFKiA0oEuC"
+        },
+        {
+          "rank": 2,
+          "title": "FF&E Schedules: The Complete Guide for Interior Designers",
+          "url": "https://procurist.io/resources/ffe-schedules"
+        },
+        {
+          "rank": 3,
+          "title": "Fixtures and Finishes (FF&E) Schedule Template",
+          "url": "https://thelittledesigncorner.com/products/the-fixtures-and-finishes-ff-e-schedule-template?srsltid=AU7gw4U8pWtRSp2tlunFVdCyJErB5FD0PMyBgQwCgfUp_aK9Nm7pSN5p"
+        },
+        {
+          "rank": 4,
+          "title": "Minimal Interior Design FF&E Schedule Template",
+          "url": "https://www.pinterest.com/pin/2181499816956180/"
+        },
+        {
+          "rank": 5,
+          "title": "How to Create the Perfect FF&E Schedule",
+          "url": "https://www.youtube.com/watch?v=4d1xlEuenpc"
+        },
+        {
+          "rank": 6,
+          "title": "FF&E Schedule Template: Interior Design Project Toolkit ...",
+          "url": "https://www.etsy.com/listing/1881393780/ffe-schedule-template-interior-design"
+        },
+        {
+          "rank": 7,
+          "title": "Interior Design Spec Sheet (FF&E) Free Template + Guide",
+          "url": "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-spec-sheet-with-template"
+        },
+        {
+          "rank": 8,
+          "title": "FF&E Schedule Template for Interior Designers",
+          "url": "https://programa.design/blog/ffe-schedule-template-guide"
+        },
+        {
+          "rank": 9,
+          "title": "FF&E Schedule (Word, Excel)",
+          "url": "https://www.mastt.com/resources/ffe-schedule"
+        }
+      ],
+      "relatedSearches": [
+        "Ff&e schedule template word",
+        "FF&E Schedule template Excel",
+        "Ff&e schedule template pdf",
+        "Ff&e schedule template free download",
+        "FF&E Schedule Template Canva",
+        "Ff&e schedule template powerpoint",
+        "FF&E Schedule template Excel free download",
+        "FF&E schedule meaning"
+      ]
+    }
+  ]
+}

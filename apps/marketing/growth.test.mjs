@@ -26,6 +26,8 @@ test('integrations default off, without exposing unverified public identifiers',
   assert.equal(settings.analyticsEnabled, false);
   assert.equal(settings.formEndpoint, '');
   assert.equal(settings.measurementId, '');
+  assert.equal(settings.contactEmail, '');
+  assert.equal(settings.displayContactEmail, 'rahul@quickintell.com');
   const body = renderGrowthPage(find('pilot'), settings);
   assert.match(body, /Requests are not open yet/);
   assert.doesNotMatch(body, /<form\b|formspree\.io/);
@@ -34,6 +36,14 @@ test('integrations default off, without exposing unverified public identifiers',
     /testform|G-TEST|googletagmanager\.com/,
   );
   assert.match(renderGrowthPage(find('privacy'), settings), /Google Analytics is not enabled/);
+  const about = renderGrowthPage(find('about'), settings);
+  assert.match(about, /mailto:rahul@quickintell.com/);
+  assert.doesNotMatch(about, /private contact channel has not yet been published/);
+  assert.match(
+    renderGrowthPage(find('product-status'), settings),
+    /Experimental hosted application/,
+  );
+  assert.match(renderGrowthPage(find('product-status'), settings), /app\.openlintel\.com/);
 });
 
 test('each required release prerequisite is enforced independently', () => {

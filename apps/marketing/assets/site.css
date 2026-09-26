@@ -2792,6 +2792,9 @@ tbody td:last-child {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
 }
+.board-pair.assembled-boards {
+  grid-template-columns: 1fr;
+}
 .annotated-board img {
   width: 100%;
   height: auto;

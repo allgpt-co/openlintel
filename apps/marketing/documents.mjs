@@ -276,7 +276,11 @@ async function document(definition, example) {
       ...options,
     });
   const children = [
-    p(definition.title, { heading: HeadingLevel.TITLE }),
+    p(definition.title, {
+      heading: HeadingLevel.TITLE,
+      // Explicit proportional spacing prevents wrapped titles overlapping in LibreOffice.
+      spacing: { after: 100, line: 280, lineRule: 'auto' },
+    }),
     p(example ? 'Worked example • Pending review' : 'Blank editable template', {
       heading: HeadingLevel.SUBTITLE,
     }),

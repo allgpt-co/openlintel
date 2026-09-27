@@ -1,5 +1,7 @@
 /** Already published contact; displaying it does not attest to integration readiness. */
 export const publicContactEmail = 'rahul@quickintell.com';
+// Owner-supplied public booking page; never use a TidyCal dashboard URL here.
+export const publicBookingUrl = 'https://tidycal.com/team/openlintel/openlintel-demo';
 
 /** Public build-time integration settings; never put credentials in these variables. */
 export function loadGrowthConfig(env = process.env) {
@@ -18,6 +20,16 @@ export function loadGrowthConfig(env = process.env) {
   const formId = (env.MARKETING_FORMSPREE_ID || '').trim();
   const measurementId = (env.MARKETING_GA4_ID || '').trim();
   const contactEmail = (env.MARKETING_CONTACT_EMAIL || '').trim();
+  const bookingUrl = (env.MARKETING_BOOKING_URL ?? publicBookingUrl).trim();
+  if (
+    bookingUrl &&
+    !/^https:\/\/tidycal\.com\/(?:team\/)?(?!dashboard\/|login\/|settings\/)[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*\/?$/.test(
+      bookingUrl,
+    )
+  )
+    throw new Error(
+      'MARKETING_BOOKING_URL must be a public HTTPS TidyCal booking-type URL without query parameters.',
+    );
   if (formId && !/^[a-zA-Z0-9]{8,32}$/.test(formId))
     throw new Error(
       'MARKETING_FORMSPREE_ID must be a public Formspree form ID, not a URL or secret.',
@@ -45,6 +57,7 @@ export function loadGrowthConfig(env = process.env) {
     analyticsEnabled,
     contactEmail,
     displayContactEmail: contactEmail || publicContactEmail,
+    bookingUrl,
     // Omit unverified integration identifiers entirely from generated pages.
     formEndpoint: pilotEnabled ? `https://formspree.io/f/${formId}` : '',
     measurementId: analyticsEnabled ? measurementId : '',
@@ -53,4 +66,8 @@ export function loadGrowthConfig(env = process.env) {
 export const growthConfig = loadGrowthConfig();
 
 export const pilotCtaLabel = (settings = growthConfig) =>
-  settings.pilotEnabled ? 'Request a discovery conversation' : 'Check discovery availability';
+  settings.bookingUrl
+    ? 'Book an OpenLintel demo'
+    : settings.pilotEnabled
+      ? 'Request a discovery conversation'
+      : 'Check discovery availability';

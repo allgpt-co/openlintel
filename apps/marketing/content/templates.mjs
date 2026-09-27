@@ -41,7 +41,7 @@ export function templateDefinitions(project) {
         field(
           'What works today?',
           'Identify existing qualities worth keeping before discussing replacements.',
-          project.constraints.join('; '),
+          'The sample brief retains the oak floor, window, and entrance positions. What currently works for the household still needs confirmation.',
         ),
         field(
           'What is difficult today?',
@@ -113,7 +113,7 @@ export function templateDefinitions(project) {
         field(
           'Retained conditions',
           'State fixed conditions and what requires condition checks.',
-          project.constraints.join('; '),
+          'Retain the existing oak floor, window, and entrance. Their condition and dimensions still need verification.',
         ),
         field(
           'Design direction',

@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "reviewerType": "ai",
+  "reviewerName": "OpenAI Codex",
+  "scope": "Read all 32 authored resources, checked worked examples and internal consistency, and compared cited sources with their limited stated purpose. Recorded final generated download hashes.",
+  "limitations": [
+    "No independent practitioner review or professional credentials.",
+    "No project-specific engineering, legal, regulatory, purchasing or installation approval.",
+    "Hash recording does not by itself prove compatibility in every native editor; consult the separate artifact QA evidence.",
+    "No invented clients, testimonials, owners, permissions or business outcomes."
+  ],
+  "resources": [
+    {
+      "id": "client-questionnaire",
+      "path": "templates/interior-design-client-questionnaire/",
+      "editorialRevision": "sha256:5532c9bee56d111fc9d73a7bb6d099d1f85d38444bcac6c2e4bc81dafc594d6c",
+      "reviewedAt": "2026-09-27",
+      "outcome": "corrected",
+      "finding": "Corrected the What works today example, which had mixed a desired future functional goal into present conditions. Retained elements are now stated separately and current household experience remains unconfirmed. Checked eight discovery fields, private data handling and unresolved needs.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-client-questionnaire-blank.docx",
+          "sha256": "a7a0d82778b69d15a83ace9f86d61eaab1a4b6bd0e0694eb889b6d3b7978e121"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-client-questionnaire-example.docx",
+          "sha256": "17b225f6b64cd40a298d313a45a85f6fc6233e905cb344baed20ec0d566dcaae"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-client-questionnaire-blank.pdf",
+          "sha256": "d644510e9d9bfb5922291e9d2373516fd54026c78d8c90c5460a3382920c13c9"
+        }
+      ]
+    },
+    {
+      "id": "design-brief",
+      "path": "templates/interior-design-brief/",
+      "editorialRevision": "sha256:d8de572df2a4b6a15071fca870ab3a20384fa430f602e4bf1a60142666b3aafe",
+      "reviewedAt": "2026-09-27",
+      "outcome": "corrected",
+      "finding": "Corrected Retained conditions: the example had repeated a functional goal from the general constraints list. It now names only the existing floor, window and entrance, with verification still required. Functional priorities remain a separate field.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-brief-blank.docx",
+          "sha256": "715eefe56a59f1ea99240724df576a65e795d117de21b828de49d60ba33662d7"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-brief-example.docx",
+          "sha256": "ce2571a2396d523452a0da41465eb809195988b667e38409c05ae0299c7ea483"
+        }
+      ]
+    },
+    {
+      "id": "proposal",
+      "path": "templates/interior-design-proposal/",
+      "editorialRevision": "sha256:ab889cd3f92498b9ae9f146e28bf2704452cba062ddef8670a0766481a7109ec",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked scope, phases, fees and approval language. No invented fee, delivery date, client approval or executable contract is supplied; the proposal remains an educational outline.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-proposal-blank.docx",
+          "sha256": "52e4722066647bfc8809d539bd530bf54ab98dab58988d4b4873f168b5c158b2"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-proposal-example.docx",
+          "sha256": "f19b8d865f701a88ea80cd8e9b25545ed3a4065e8420ce7b897295fba6f117ec"
+        }
+      ]
+    },
+    {
+      "id": "scope-of-work",
+      "path": "templates/interior-design-scope-of-work/",
+      "editorialRevision": "sha256:6b043f4582dcc358f64a23719619e49bf6439312fbbec8f868e3d572d30da99b",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked deliverables against exclusions and responsibility interfaces. Unappointed parties remain unassigned, and the sample does not imply construction-ready output or legal authority.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-scope-of-work-blank.docx",
+          "sha256": "a189c7dcd33aba744ed6e0fadb33dc4de9c018304f71df281973b99fde74ee51"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-scope-of-work-example.docx",
+          "sha256": "c0b9c5d3786c2194bcd6d20662c48040943e80a5a5362e987d3381c291d3bde0"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "path": "templates/interior-design-budget/",
+      "editorialRevision": "sha256:7a35736cb4b84d02b7ed7b3e7e5c1f213d791bd6b1216208e7c254ae6f84e21a",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Recomputed worked figures: 1300 and 550, known subtotal 1850, allowance 2000 and remainder 150 USD. FIN-02 remains unresolved. Blank additional costs contributing zero do not establish completeness or a final quote.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-budget.xlsx",
+          "sha256": "57ee6aea05edef8d61930ab4afe74fb070d8f18016e9ad8c813cef150a191c0d"
+        }
+      ]
+    },
+    {
+      "id": "spec-sheet",
+      "path": "templates/interior-design-spec-sheet/",
+      "editorialRevision": "sha256:191902d1a4682c7bf1c21694f9439305630826729cc2094aa8f30cb62a0dbb40",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked stable F-01/J-01 identifiers, product-source fields and missing model/dimension evidence. Nominal joinery values do not become fabrication data. Houzz supports field structure only; its classification and commercial claims are not adopted wholesale.",
+      "sourcesChecked": [
+        "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-spec-sheet-with-template"
+      ],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-spec-sheet.xlsx",
+          "sha256": "3baafe90f1053f09345cdc8c1d736adcc68be8084d7b4395b7d12b7a0e5e68b4"
+        }
+      ]
+    },
+    {
+      "id": "ffe-schedule",
+      "path": "templates/ffe-schedule/",
+      "editorialRevision": "sha256:d25ff8e971b6b8d467f402ea1bc9dbdc41eba8f84ef2babaaa0f4c2b006e6aff",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked one sofa, one chair and one rug against the sample references. Built-in joinery and retained flooring are explicitly outside this library's FF&E convention; selected and ordered remain distinct.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/ffe-schedule.xlsx",
+          "sha256": "830c12f88f4a9286b1599e20ea223f9e5463f0915c0ccfb20ac5b4af70534f2f"
+        }
+      ]
+    },
+    {
+      "id": "finish-schedule",
+      "path": "templates/finish-schedule/",
+      "editorialRevision": "sha256:825301bec29fb8e417b26ecef9f4de76cf3dce458e0ff2bb3f594f581c3812b2",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked FIN-01/FIN-02 surface assignments. The 20 square metre nominal floor footprint is not wall area or a purchase quantity; product coverage, waste and wall area remain unresolved.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/finish-schedule.xlsx",
+          "sha256": "9c028fce537c2485f15d1fc53691f8dc8db9140ade7660396464371cffec01a5"
+        }
+      ]
+    },
+    {
+      "id": "room-data",
+      "path": "templates/room-data-sheet/",
+      "editorialRevision": "sha256:5d7852ed7887df242e8b4c266ea94fcdbdcdd57e6b5236a503fe5ef7c40dc567",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked 5000 by 4000 by 2800 mm nominal values, units, source labels and opening unknowns. The room record does not imply a completed site survey or substitute estimated dimensions.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/room-data-sheet.xlsx",
+          "sha256": "23563fd44a25775969f13c62c5a2962e4c82f4f73f25c25771805f97f4e108ce"
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "path": "templates/interior-design-project-timeline/",
+      "editorialRevision": "sha256:ba7ed643a227ca0ee6604a62116a83a947e077349a01b294eb4782dd04b2f3a8",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked phase dependencies, review decisions and owner/date fields. No invented start, finish, supplier commitment or completed project state is introduced; this is a manual planning workbook.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-project-timeline.xlsx",
+          "sha256": "55b4f4a123286600701b753c2c169aa4bae344d876bf6c9ef8291211f249975b"
+        }
+      ]
+    },
+    {
+      "id": "site-survey",
+      "path": "templates/interior-design-site-survey-checklist/",
+      "editorialRevision": "sha256:5477751c5ed2b01146d0aba013e6bc809a93d3ef9a89d98c4508765a61a92c5c",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked access, permission, units, reference points, photo register and inaccessible conditions. No real visit or concealed-service assessment is represented. Leica supports the limited diagonal-check explanation, not a safety or accuracy guarantee.",
+      "sourcesChecked": [
+        "https://shop.leica-geosystems.com/measurement-tools/disto/blog/video/speed-precision-smart-room-diagonals"
+      ],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx",
+          "sha256": "ff3ec8a7a966ad4fda60768afbdf5e6120471bae9d1b7bca70803104d2e3de0f"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-site-survey-checklist-example.docx",
+          "sha256": "4b47d306e3c38e4211d3b458cf550fe8932c1a6080734ffb6173e73ef2b64ead"
+        }
+      ]
+    },
+    {
+      "id": "presentation",
+      "path": "templates/interior-design-presentation/",
+      "editorialRevision": "sha256:ff5ff9c5044dffe15d43046cae6c621431cdef5bc09b44513fc9897fe86c99d2",
+      "reviewedAt": "2026-09-27",
+      "outcome": "corrected",
+      "finding": "Corrected stale DOCX-only wording to describe the actual PPTX blank/example decks, PDF preview and DOCX storyboard. Checked the requested concept decision remains separate from product, purchase and construction approval. Native LibreOffice rendering exposed overlapping lines in the DOCX title; corrected proportional title spacing in the shared DOCX generator.",
+      "sourcesChecked": [],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-blank.docx",
+          "sha256": "6c377bd3771ad93228e2fa82546af55113bfc62bbb1b2764da9ae5b8d4fbcd3f"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-example.docx",
+          "sha256": "1827014d516fcec60d3ce0724c6073fb208c56790633a801d4cdb718237773d8"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-blank.pptx",
+          "sha256": "6cf4f48ae93cd27390380892b031788fffb5cd58c2bec315fc2e58b9c215190e"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-example.pptx",
+          "sha256": "ac93658c71cddf3fb75ee0e236a07b5a59649735d563de3d4e1418644141a4e5"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-presentation-preview.pdf",
+          "sha256": "e1a5e5684005aa3f9ed2945cdce46bd97d813074d80745a606d1deaaaa376234"
+        }
+      ]
+    },
+    {
+      "id": "mood-board",
+      "path": "resources/interior-design-mood-board-examples/",
+      "editorialRevision": "sha256:b36a05333f09de7b9c93dd1ee8f35d8ec574ce021affaf64b41e07e655a752da",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked Quiet Oak versus Deep Olive, original illustration labels and selected direction. Digital atmosphere references do not establish supplier colors, physical samples, product selection or client approval.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "material-board",
+      "path": "resources/interior-design-material-board/",
+      "editorialRevision": "sha256:0380e73fef5734f4b2d9cac1ea86ace028212f15bb0d6bf8d39ead613536089d",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked distinction between visual material direction, identified product, physical sample and technical review. FIN-02 wall area remains unknown; no color-accuracy or product-performance claims are supplied.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "concept-board",
+      "path": "resources/interior-design-concept-board/",
+      "editorialRevision": "sha256:06111a4e11babdcdc687ca87196413b4a24e9286d24140764f95474e4354bb03",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked the connection between functional priorities and the organizing design idea. The guide distinguishes concept, mood and material boards as working conventions and does not claim site or layout certification.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "space-planning",
+      "path": "resources/interior-design-space-planning/",
+      "editorialRevision": "sha256:5c7d6575579f17c30c7062d91e9a474e4cf33a66fe94d90e1eb5234a1f28f7c9",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked the nominal room envelope, activity-first sequence and movement/operation questions. No universal clearance rule, code determination or verified furniture envelope is asserted.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "measure-room",
+      "path": "resources/how-to-measure-a-room/",
+      "editorialRevision": "sha256:fd2e132d3e13ada217677ca8c8c4f4e31b0f0ca20c04ff897a00b4a1210ade39",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked units, source transcription, inaccessible readings and conflict handling. Recomputed 5000 mm as approximately 16.40 ft and 5 by 4 m as 20 square metres. Leica supports geometric checks, not a claim that this sample was surveyed.",
+      "sourcesChecked": [
+        "https://shop.leica-geosystems.com/measurement-tools/disto/blog/video/speed-precision-smart-room-diagonals"
+      ],
+      "artifacts": []
+    },
+    {
+      "id": "design-process",
+      "path": "resources/interior-design-process/",
+      "editorialRevision": "sha256:9a063fe8e6d860294add5fa6e404914ea18398b76386aadb00822cc55c8ce40b",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked inputs, outputs and review transitions across discovery, concept, development and handoff. AIA's architectural service phases are cited as context; the guide explicitly leaves interior engagement scope adaptable.",
+      "sourcesChecked": [
+        "https://www.aia.org/resource-center/defining-the-architects-basic-services"
+      ],
+      "artifacts": []
+    },
+    {
+      "id": "procurement",
+      "path": "resources/interior-design-procurement/",
+      "editorialRevision": "sha256:4acbbb3c8e7b84a4b20d8ec1ef00b64bfe7977169c8768b32eb3bf3b457c382d",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked quote, selection, purchasing authority, substitution and receipt as distinct records. F-01 lacks a model and supplier and stays not ordered. No payment, tax, warranty or contract terms are invented.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "elevation-guide",
+      "path": "resources/interior-elevation-drawings/",
+      "editorialRevision": "sha256:ba5311f4843959299f51ad4680c3b10ac31951fdbd5a3e6f880a80dd1feca034",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked WR-01/WR-02/J-01 relationships and three nominal 800 mm modules totaling 2400 mm, with a 675 mm base. Missing depth, fixings, tolerances and site verification remain open; the image must not be scaled.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "rcp-guide",
+      "path": "resources/reflected-ceiling-plan/",
+      "editorialRevision": "sha256:7f2622e3055bd38d6c2fd555493491a268afbf5c60ea0d232ca397e5dc221981",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked reflected-view wording against Bricsys documentation. The notional ceiling figure is a teaching addition, not WR-03 or an original project issue; symbols and 2800 mm height do not establish an installation design.",
+      "sourcesChecked": [
+        "https://help.bricsys.com/en-us/document/bricscad-bim/design-documentation/define-reflected-ceiling-plan"
+      ],
+      "artifacts": []
+    },
+    {
+      "id": "ffe-guide",
+      "path": "resources/ffe-in-interior-design/",
+      "editorialRevision": "sha256:b2b1aac703fe750d6d48ac1429bef09529085078fad185e72ac56388a1937e0d",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked acronym, local classification boundary and schedule/specification/purchasing distinctions. F-01 remains one proposed item with unknown model and supplier; no universal accounting or legal definition is asserted.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "project-management",
+      "path": "resources/interior-design-project-management/",
+      "editorialRevision": "sha256:b15ee1217e52931effdc6ee3784621d46d45abaa9010859ae4737c24489443a3",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked unresolved F-01 decisions, ownership and revision examples. Selected Quiet Oak, pending drawings and not-ordered furniture are compatible states; no real owner, deadline or approval is invented.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "drawing-checklist",
+      "path": "resources/interior-design-drawing-checklist/",
+      "editorialRevision": "sha256:3bd431acc6a4625456231d01bfc4c7b2dfad82a6735d5eae4d43069bf9a7d3e4",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked the original two-drawing issue and exclusion of the RCP teaching diagram. References, dimension provenance and open specialist inputs stay visible; editorial consistency is explicitly separate from technical certification.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "concept-vs-documents",
+      "path": "resources/ai-concept-images-vs-design-documentation/",
+      "editorialRevision": "sha256:3dffc816d8aeb61387bbaeec50387b91b0f746837969c126666cab353eba68d9",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked the evidence table against FIN-01/FIN-02/F-01/J-01. AI images, separately authored nominal drawings and verified measurement remain distinct; downloads do not demonstrate a live application export.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "brief-to-schedules",
+      "path": "resources/brief-to-coordinated-schedules/",
+      "editorialRevision": "sha256:6841f9c7033bd198b3d20102b061615335fe4a5397dbaf06038993cc00daec71",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked functional requirement to item/drawing/specification trace. One sofa, floor footprint and unresolved wall area retain distinct units and authority; the workflow is manual and does not claim automatic product synchronization.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "specification-change",
+      "path": "resources/interior-design-specification-change/",
+      "editorialRevision": "sha256:9036fe1d77e1785b3a7023007c63655002da9168279437170836a994c0aa0a02",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked F-01 baseline versus candidate, affected-document review, three approval types and preserved history. The exercise does not create an actual R1 issue, selected replacement or purchasing approval.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "handoff-package",
+      "path": "resources/interior-design-handoff-package/",
+      "editorialRevision": "sha256:d87deea334357ce68f76b6bf2a9ad6742af1460128366dcd5413d9c2be3244d6",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked the issue index against the actual sample brief, WR-01, WR-02 and partial schedule. The RCP and budget teaching additions remain outside that issue; unknown owners and future evidence are kept open.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "approval-states",
+      "path": "resources/interior-design-approval-states/",
+      "editorialRevision": "sha256:13fa051983cc373d2895f9a995863ea541b40ba2a9391abc4f25c6e3d014c308",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked selection, technical review and purchasing authority as separate decisions tied to a revision. Quiet Oak does not upgrade R0 drawings or authorize ordering; no fabricated reviewer, date or legal responsibility is assigned.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "software-evaluation",
+      "path": "resources/evaluating-ai-interior-design-software/",
+      "editorialRevision": "sha256:696225ace82a857a278727c3a55629219df686c5d59ce22f8e31f0a7c5ba1ed6",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked reproducible fictional-project acceptance questions, export inspection and data-handling questions. The worksheet has no vendor scores, unsupported savings or claims of demonstrated OpenLintel production capability.",
+      "sourcesChecked": [],
+      "artifacts": []
+    },
+    {
+      "id": "purchase-order",
+      "path": "templates/interior-design-purchase-order/",
+      "editorialRevision": "sha256:d1d5f3f1c266d854ef4d462759023ddb96ec81ea2b9472e5d665b7d851302c97",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked all 24 fields and the F-01 example. Currency, price, tax, dates, supplier and authority stay unresolved; requested and confirmed delivery are separate. Houzz is used only as a format reference; its payment-credential collection and broad legal assertions are not adopted.",
+      "sourcesChecked": [
+        "https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-purchase-order-with-template"
+      ],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/interior-design-purchase-order.xlsx",
+          "sha256": "f986d7000afa3b25ea27d75bb8797c4c77696e3669d44cbf5737936260975ad9"
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-purchase-order-preview.pdf",
+          "sha256": "b2ac00e499a9f15d72747c53d4866fe7dac5543286280ed7bfaafbe81d0f529d"
+        }
+      ]
+    },
+    {
+      "id": "plumbing-fixture-schedule",
+      "path": "templates/plumbing-fixture-schedule/",
+      "editorialRevision": "sha256:e3bc822ae90c1781fce84e65985536f8fe0ef122367258a0ca56c336ade4ef8b",
+      "reviewedAt": "2026-09-27",
+      "outcome": "checked",
+      "finding": "Checked all 18 fields and both PF-01/PF-02 examples. B-01 is independent of The Window Room; product sources, drawings and professional responsibility remain absent. Source pages support field/category examples only, not installation or regulatory suitability. Housecall's unrelated pest-inspection copy is outside the cited field scope.",
+      "sourcesChecked": [
+        "https://www.housecallpro.com/plumbing/templates-calculators/plumbing-fixtures-schedule-template/",
+        "https://www.chiefarchitect.com/support/article/KB-00929/creating-a-plumbing-hvac-or-appliance-schedule.html"
+      ],
+      "artifacts": [
+        {
+          "path": "assets/downloads/templates/plumbing-fixture-schedule.xlsx",
+          "sha256": "c568c75ece9abff9fff5d2d6791991a84186c759ade95061b33f204f9e3fa119"
+        },
+        {
+          "path": "assets/downloads/templates/plumbing-fixture-schedule-preview.pdf",
+          "sha256": "0197eada12bfa9688c88b0b652f8f18a84501b525ac16f1d838f271df3386fc3"
+        }
+      ]
+    }
+  ]
+}

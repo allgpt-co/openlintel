@@ -390,9 +390,9 @@ document.addEventListener('click', (event) => {
     });
   }
   if (
-    settings.pilotEnabled &&
-    target.origin === location.origin &&
-    target.pathname === `${settings.basePath}pilot/`
+    (settings.pilotEnabled || settings.bookingUrl) &&
+    ((target.origin === location.origin && target.pathname === `${settings.basePath}pilot/`) ||
+      (anchor.hasAttribute('data-pilot-booking') && target.href === settings.bookingUrl))
   )
     measure('pilot_cta_click', {
       source_page_id: safeId(anchor.dataset.sourcePageId) || settings.pageId,

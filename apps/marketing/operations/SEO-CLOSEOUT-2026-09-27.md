@@ -2,6 +2,8 @@
 
 The two-resource educational SEO release is public and merged. The complete operating plan is still open: professional review, production account acceptance and future observation periods require real evidence. This record supersedes earlier descriptions of the two resources as unpublished private candidates.
 
+The later [booking and AI editorial update](BOOKING-EDITORIAL-2026-09-27.md) records the corrected public TidyCal URL and completed checks of all 32 resources. It supersedes the Formspree-only intake dependency below: direct booking is available independently, with calendar delivery/coverage still requiring operator acceptance. Professional review remains separate.
+
 ## Completed and verified
 
 - [PR #25](https://github.com/allgpt-co/openlintel/pull/25) implements bounded programmatic resources, bundle validation, release controls, cohort reporting and publication history.

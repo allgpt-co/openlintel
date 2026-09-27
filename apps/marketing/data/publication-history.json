@@ -548,10 +548,13 @@
       "cohortId": "selection-procurement-01",
       "intentKey": "purchase-order",
       "originKind": "programmatic",
-      "state": "candidate",
-      "firstVerifiedLiveAt": null,
-      "liveCommit": null,
-      "evidence": null
+      "state": "published",
+      "firstVerifiedLiveAt": "2026-09-27T05:35:03Z",
+      "liveCommit": "20e0577d5cd7b3d53d49e147e4f6640d7a68f6ba",
+      "evidence": {
+        "auditHash": "sha256:05d65d566c0b985487e392a362b6e8af8dd4e8807861ef07c7afec02b04e653d",
+        "url": "https://openlintel.com/templates/interior-design-purchase-order/"
+      }
     },
     {
       "id": "plumbing-fixture-schedule",
@@ -560,10 +563,13 @@
       "cohortId": "selection-procurement-01",
       "intentKey": "plumbing-fixture-schedule",
       "originKind": "programmatic",
-      "state": "candidate",
-      "firstVerifiedLiveAt": null,
-      "liveCommit": null,
-      "evidence": null
+      "state": "published",
+      "firstVerifiedLiveAt": "2026-09-27T05:35:03Z",
+      "liveCommit": "20e0577d5cd7b3d53d49e147e4f6640d7a68f6ba",
+      "evidence": {
+        "auditHash": "sha256:05d65d566c0b985487e392a362b6e8af8dd4e8807861ef07c7afec02b04e653d",
+        "url": "https://openlintel.com/templates/plumbing-fixture-schedule/"
+      }
     }
   ]
 }

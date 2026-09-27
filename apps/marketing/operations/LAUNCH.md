@@ -24,7 +24,13 @@ DNS/HTTPS below is a recovery checklist, not pending configuration work. Verify 
 
 Reference: [GitHub custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
 
-## 2. Managed pilot intake
+## 2. Demo booking and optional form intake
+
+The primary booking route is the owner-supplied public calendar: https://tidycal.com/team/openlintel/openlintel-demo. Navigation, footer, resource and discovery CTAs use this exact link. Do not publish the TidyCal dashboard URL. An unset `MARKETING_BOOKING_URL` uses the approved URL; an explicit empty string disables booking links. No calendar embed or visitor data is forwarded.
+
+The calendar owner should verify availability, time zone, conferencing, confirmations, reminders, cancellation/rescheduling and response coverage. Record actual booking receipts in the private register, using a provider-qualified ID such as `tidycal:<booking-id>` and the actual receipt time. A booking is not attendance or a qualified lead. The plain link supplies no observed organic evidence; preserve unknown attribution unless supported separately. See the [measurement contract](MEASUREMENT.md).
+
+### Optional Formspree route
 
 The source implements a native HTML Formspree POST, with progressively enhanced feedback. Production form acceptance must not depend on the product app, client authentication, or GA4 consent.
 
@@ -49,7 +55,7 @@ export MARKETING_PRIVACY_REVIEWED=1
 export MARKETING_PILOT_ENABLED=1
 ```
 
-An unconfigured build intentionally shows availability information rather than a broken or simulated form. Setting readiness flags is an attestation that the operational checks were actually completed, not a substitute for them. Never put Formspree API keys in static HTML or this repository.
+An unconfigured Formspree integration displays no form. The independently configured public calendar remains available. If both booking and form intake are disabled, the site shows closed-intake availability information. Setting readiness flags is an attestation that the operational checks were actually completed, not a substitute for them. Never put Formspree API keys in static HTML or this repository.
 
 ## 3. Search Console and GA4
 

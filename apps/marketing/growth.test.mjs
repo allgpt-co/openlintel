@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { loadGrowthConfig } from './growth-config.mjs';
+import { loadGrowthConfig, publicBookingUrl } from './growth-config.mjs';
 import { growthPages, renderGrowthPage, renderGrowthChrome } from './growth-pages.mjs';
 
 const ready = {
+  MARKETING_BOOKING_URL: '',
   MARKETING_PILOT_ENABLED: '1',
   MARKETING_FORMSPREE_ID: 'testform',
   MARKETING_FORMSPREE_VERIFIED: '1',
@@ -29,7 +30,9 @@ test('integrations default off, without exposing unverified public identifiers',
   assert.equal(settings.contactEmail, '');
   assert.equal(settings.displayContactEmail, 'rahul@quickintell.com');
   const body = renderGrowthPage(find('pilot'), settings);
-  assert.match(body, /Requests are not open yet/);
+  assert.equal(settings.bookingUrl, publicBookingUrl);
+  assert.match(body, /Choose a time to talk/);
+  assert.doesNotMatch(body, /Requests are not open yet/);
   assert.doesNotMatch(body, /<form\b|formspree\.io/);
   assert.doesNotMatch(
     renderGrowthChrome(find('pilot'), settings),
@@ -44,6 +47,34 @@ test('integrations default off, without exposing unverified public identifiers',
     /Experimental hosted application/,
   );
   assert.match(renderGrowthPage(find('product-status'), settings), /app\.openlintel\.com/);
+});
+
+test('public booking is a plain exact link without forwarded visitor data or an embedded calendar', () => {
+  const settings = loadGrowthConfig({});
+  const html = renderGrowthPage(find('pilot'), settings);
+  assert.ok(
+    html.includes(`href="${publicBookingUrl}" rel="noreferrer" referrerpolicy="no-referrer"`),
+  );
+  assert.doesNotMatch(html, /<iframe|<form\b|dashboard\/teams|embed\.tidycal/);
+  assert.match(renderGrowthPage(find('privacy'), settings), /Demo bookings on TidyCal/);
+  assert.match(renderGrowthPage(find('pilot-thanks'), settings), /cannot confirm a booking/);
+  const disabled = loadGrowthConfig({ MARKETING_BOOKING_URL: '' });
+  assert.match(renderGrowthPage(find('pilot'), disabled), /Requests are not open yet/);
+});
+
+test('booking configuration rejects dashboard links and non-public or decorated URLs', () => {
+  for (const value of [
+    'https://tidycal.com/dashboard/teams/12563/booking-types',
+    'https://tidycal.com/dashboard/bookings',
+    'https://tidycal.com/login/example',
+    'http://tidycal.com/team/openlintel/openlintel-demo',
+    'https://tidycal.com.evil.test/team/openlintel/openlintel-demo',
+    'https://person@tidycal.com/team/openlintel/openlintel-demo',
+    `${publicBookingUrl}?email=private@example.test`,
+    `${publicBookingUrl}#secret`,
+    'https://tidycal.com/team/openlintel/%2e%2e',
+  ])
+    assert.throws(() => loadGrowthConfig({ MARKETING_BOOKING_URL: value }), /public HTTPS TidyCal/);
 });
 
 test('each required release prerequisite is enforced independently', () => {

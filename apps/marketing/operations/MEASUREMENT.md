@@ -19,6 +19,10 @@ The 90-day first-known window begins only after consent. Never backfill pre-cons
 
 ## Manual intake reconciliation
 
+For the direct TidyCal route, reconcile actual bookings from the provider's private booking records. Preserve the durable provider booking ID as `tidycal:<booking-id>` in `lead_id` and the actual receipt timestamp in `received_at`; keep appointment time separate in the existing scheduling fields. Copy only data actually provided, leave missing qualification fields unresolved, deduplicate studios across providers, and record cancellation/rescheduling in private notes. A verified appointment can be marked scheduled; qualification and completed conversation require their own evidence. No provider record or appointment is created by the website's outbound click.
+
+The plain calendar link does not transfer the site's attribution JSON, query parameters or identifiers. For these receipts, keep `source_evidence` and observed attribution unknown unless independently documented evidence is available. A self-reported search source belongs in the self-report fields and must not become observed organic credit. If optional Formspree is later enabled, prefix its IDs with `formspree:` when entering new receipts so provider identities cannot collide; retain existing historical IDs and reconcile carefully.
+
 Keep the register private and access-limited; the checked-in CSV is a blank schema, not a live lead store. Copy only accepted, non-spam Formspree submissions, deduplicating by the provider submission ID as `lead_id`. The provider receipt timestamp becomes `received_at`; do not infer a receipt from a thanks-page visit. Assign an owner and `new` status after verifying receipt.
 
 Assign a stable private `studio_id` after manual identity review. Several contacts at one practice share that ID; personal email domains, matching names, or matching websites are not sufficient automatic identity evidence. Preserve source receipts when merging duplicate studio identities and document the decision privately. The working Sheet and CSV have 30 columns: the original 28 stay in place, followed by `studio_id` in column 29 (AC) and `pilot_decision_at` in column 30 (AD). CSV import is by header, not column position. Record the actual timezone-bearing `pilot_decision_at` for period-specific decisions; do not infer it from a later edit.
@@ -46,7 +50,7 @@ Treat contact/free-text fields as untrusted. In a spreadsheet, paste/import them
 | `resource_download` | Initiated known resource download; ID/format/variant | File opening, use, or a qualified lead |
 | `sample_project_start` | Opened sample | Completed workflow or trial activation |
 | `sample_chapter_view` | Active known chapter | Full reading or project completion |
-| `pilot_cta_click` | Selected pilot invitation | Valid form submission |
+| `pilot_cta_click` | Selected discovery invitation or public booking link | Accepted form, confirmed booking or attendance |
 | `pilot_form_start` | Began form interaction | Qualification |
 | `generate_lead` | AJAX intake acceptance with analytics consent | Validated lead, booking, attendance or revenue |
 | `repository_click` | Selected repository/setup/contribution link | Installation or active use |

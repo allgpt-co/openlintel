@@ -410,7 +410,7 @@ const guidance = {
     section: example(
       'Ask for one decision at the right level',
       [
-        'This download is a DOCX presentation storyboard: editable text fields and image-placement prompts, not a finished slide deck, PPTX, PDF, or Canva file. Its purpose is to settle the sequence and decision request before layout work in your chosen presentation tool.',
+        'The download bundle includes blank and worked-example PPTX slide decks, a PDF preview, and a DOCX storyboard. Use the storyboard to settle the sequence and decision request, then adapt the editable slides. The worked example is an illustrative teaching presentation, not a completed client issue or a Canva template.',
         'Write the decision request first, then remove slides that do not support it. Keep the source and status beside every image. After the meeting, transfer the actual decision and unresolved questions to your project record; the fact that a board was shown is not approval.',
       ],
       ['Storyboard moment', 'Useful question', 'Not settled by that answer'],
@@ -451,6 +451,8 @@ export function enrichTemplate(item) {
       ? 'US-first examples use USD teaching figures, not current market prices. Use one currency; keep tax, delivery, installation, and other cost assumptions explicit. Do not infer a tax rate from this example.'
       : 'The worked example keeps its original nominal metric dimensions. For a US project, choose and label a primary imperial or metric convention, distinguish item counts from areas, and document any display conversion and rounding. Never relabel metric values as imperial or treat conversion as site verification.',
     pilot: entry.pilot,
-    modified: '2026-09-26',
+    modified: ['client-questionnaire', 'design-brief', 'presentation'].includes(item.id)
+      ? '2026-09-27'
+      : '2026-09-26',
   };
 }

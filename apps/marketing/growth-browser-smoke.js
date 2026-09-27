@@ -65,6 +65,14 @@ async (page) => {
   );
   await pause();
   check(requests.length === 0, 'Fresh visitor must make no external requests');
+  const bookingColors = await page.locator('#demo-booking .button').evaluate((link) => {
+    const style = getComputedStyle(link);
+    return { foreground: style.color, background: style.backgroundColor };
+  });
+  check(
+    bookingColors.foreground !== bookingColors.background,
+    'Booking button text is visible against its background',
+  );
   check(
     await page.evaluate(
       () =>
@@ -151,6 +159,25 @@ async (page) => {
     'Accepted consent produces page event',
   );
   check(!events.some((e) => e[1] === 'generate_lead'), 'Direct thanks visit is not a lead');
+  // Keep navigation local: this checks our outbound event, never books an appointment.
+  const booking = page.locator('[data-pilot-booking]').first();
+  check(
+    (await booking.getAttribute('href')) === 'https://tidycal.com/team/openlintel/openlintel-demo',
+    'Public booking URL is exact',
+  );
+  await booking.evaluate((link) =>
+    link.addEventListener('click', (event) => event.preventDefault(), { once: true }),
+  );
+  await booking.click();
+  await pause(200);
+  check(
+    events.filter((event) => event[1] === 'pilot_cta_click').length === 1,
+    'Consented booking click records one invitation event',
+  );
+  check(
+    !events.some((event) => event[1] === 'generate_lead'),
+    'Booking click is never a confirmed lead',
+  );
   await page.goto(
     `${base}pilot/?email=private-person@example.test&utm_medium=cpc&utm_campaign=private-person@example.test`,
   );

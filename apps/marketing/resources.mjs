@@ -4,8 +4,10 @@ import { picture, caption } from './components.mjs';
 import { clusters } from './registry.mjs';
 import { displayRows } from './documents.mjs';
 import { scheduleRecords } from './schedule-assets.mjs';
+import { bookingLink } from './growth-pages.mjs';
 import { growthConfig, pilotCtaLabel } from './growth-config.mjs';
 import { verifiedReview } from './editorial-review.mjs';
+import { aiEditorialReview } from './ai-editorial-review.mjs';
 
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`;
 const paragraphs = (items) => items.map((text) => `<p>${esc(text)}</p>`).join('');
@@ -19,6 +21,12 @@ function reviewCredit(page) {
   if (!review)
     return '<p>Authored by OpenLintel with AI assistance. Examples are illustrative and have not received independent professional review. Adapt the structure to your practice and verify project-specific information. No legal agreement, regulatory compliance, or construction readiness is represented.</p>';
   return `<p>Authored by OpenLintel with AI assistance. Illustrative educational material <span data-reviewed-revision="${esc(review.reviewedRevision)}">reviewed by ${esc(review.reviewerName)}</span>, ${esc(review.reviewerRole)}, on <time datetime="${esc(review.reviewedAt)}">${editorialDate(review.reviewedAt)}</time>, for the revision dated ${editorialDate(page.modified)}.</p><p>Review scope: ${esc(review.scope)}. Reference check completed ${editorialDate(review.sourcesCheckedAt)}. This credit is published with the reviewer’s permission and covers only the identified resource revision. It does not verify a client project, legal agreement, regulatory compliance, or construction readiness.</p>`;
+}
+function aiReviewCredit(page) {
+  const review = aiEditorialReview(page);
+  return review
+    ? `<p data-ai-reviewed-revision="${esc(review.editorialRevision)}">AI-assisted editorial check by OpenAI Codex: <time datetime="${esc(review.reviewedAt)}">${editorialDate(review.reviewedAt)}</time>. Checked clarity, examples, and internal consistency. This is not independent professional review or project approval.</p>`
+    : '';
 }
 export function editorialDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value || ''))
@@ -199,9 +207,9 @@ export function resourcePage(page, registry, project, settings = growthConfig) {
     <header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Downloads: ${formatLabel(page)}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('about/')}">OpenLintel</a> · Updated <time datetime="${esc(page.modified)}">${editorialDate(page.modified)}</time> · Educational resource</p>${template ? '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>' : ''}</header>${reviewNotice}
     <div class="article-layout"><aside class="article-toc"><nav aria-label="On this page"><p class="eyebrow">On this page</p><ol>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.title)}</a></li>`).join('')}${template ? '' : '<li><a href="#checklist">Review checklist</a></li>'}</ol></nav></aside>
     <article class="resource-body">${article}
-      <section class="article-sources"><h2>About this resource</h2>${reviewCredit(page)}<p><a href="${url('editorial-policy/')}">Authorship, review boundaries, sources, and corrections</a></p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section>
+      <section class="article-sources"><h2>About this resource</h2>${aiReviewCredit(page)}${reviewCredit(page)}<p><a href="${url('editorial-policy/')}">Authorship, review boundaries, sources, and corrections</a></p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section>
       ${page.exampleBridge ? `<section class="sample-bridge"><h2>${esc(page.exampleBridge.title)}</h2><p>${esc(page.exampleBridge.description)}</p><a class="text-link" href="${url(page.exampleBridge.path)}">${esc(page.exampleBridge.label)}</a></section>` : `<section class="sample-bridge"><h2>See the information connect</h2><p>Follow the corresponding chapter of The Window Room: one illustrative brief, one selected direction, and coordinated sample references.</p><a class="text-link" data-sample-link data-source-page-id="${esc(page.id)}" href="${url(`sample-project/#${page.sample}`)}">Explore the sample ${page.sample === 'handoff' ? 'handoff' : page.sample}</a></section>`}
-      <section class="sample-bridge"><h2>Discuss your studio’s workflow</h2><p>${esc(settings.pilotEnabled ? page.pilot || 'Discuss documentation and coordination challenges in a discovery conversation. OpenLintel is in active development.' : 'Discovery requests are not open yet. Check current availability and what a future conversation could cover. Every resource remains available without signing up.')}</p><a class="text-link" data-pilot-cta data-source-page-id="${esc(page.id)}" href="${url('pilot/')}">${pilotCtaLabel(settings)}</a></section>
+      <section class="sample-bridge"><h2>Discuss your studio’s workflow</h2><p>${esc(settings.bookingUrl ? 'Book an OpenLintel demo and discuss a documentation or coordination question from your practice. OpenLintel is in active development.' : settings.pilotEnabled ? page.pilot || 'Discuss documentation and coordination challenges in a discovery conversation. OpenLintel is in active development.' : 'Discovery requests are not open yet. Check current availability and what a future conversation could cover. Every resource remains available without signing up.')}</p>${settings.bookingUrl ? bookingLink(settings, 'text-link') : `<a class="text-link" data-pilot-cta data-source-page-id="${esc(page.id)}" href="${url('pilot/')}">${pilotCtaLabel(settings)}</a>`}</section>
     </article></div>
     <section class="related-resources"><h2>The next useful step</h2><div class="resource-grid">${[
       ...new Set([...page.related, ...(page.programmaticRelated || [])]),

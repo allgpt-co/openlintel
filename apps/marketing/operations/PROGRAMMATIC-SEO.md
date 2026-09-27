@@ -15,6 +15,8 @@ Both use family `selection-procurement` and cohort `selection-procurement-01`, w
 
 The operating capacity is **2–4 practitioner review hours per week**. Review the existing first six templates, then these two bundles in sequence. Engineering checks do not consume or replace that review allocation. Public educational availability does not complete this work. The business outcome remains distinct qualified studios completing conversations with observed organic-source evidence; downloads and search visibility are diagnostic measures.
 
+AI editorial checks of all 32 resources, including both cohort pages, are complete on September 27. See [the findings and booking update](BOOKING-EDITORIAL-2026-09-27.md). This does not satisfy independent practitioner approval. Direct demo scheduling now uses the owner-supplied public TidyCal link; its operational acceptance is still separate.
+
 ## Evidence and authored inputs
 
 `data/pseo-research-2026-09-26.json` records 45 US English seed phrases, 30 returned keyword records and six observed SERPs. Of the returned records, 24 have numeric volume and six have null volume; 15 requested phrases were omitted by the provider. Preserve those distinctions. The purchase-order and plumbing-fixture terms have modest estimated volume, and adjacent lighting terms have mixed intent. These overlapping estimates are neither expected traffic nor additive market size.

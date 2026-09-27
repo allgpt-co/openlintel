@@ -139,12 +139,12 @@ test('Resource rendering preserves ungated downloads, data attributes, source da
       assert.match(html, /<th scope="row">/);
       assert.match(html, /tabindex="0" role="region"/);
     }
-    const pilotPosition = html.indexOf('data-pilot-cta');
+    const pilotPosition = html.indexOf('data-pilot-booking');
     assert.ok(
       pilotPosition > html.indexOf('class="article-sources"'),
       'Pilot CTA follows educational value and disclosure',
     );
-    assert.ok(html.includes(`data-pilot-cta data-source-page-id="${page.id}"`));
+    assert.ok(html.includes('href="https://tidycal.com/team/openlintel/openlintel-demo"'));
     assert.doesNotMatch(html, /<form/);
     if (page.kind === 'template') {
       const downloadTags = [...html.matchAll(/<a [^>]*data-resource-download[^>]*>/g)].map(
@@ -231,7 +231,12 @@ test('Mixed download formats retain each file’s format and variant, and closed
     variant: 'blank',
     size: 2048,
   });
-  const html = resourcePage(page, registry, project, loadGrowthConfig({}));
+  const html = resourcePage(
+    page,
+    registry,
+    project,
+    loadGrowthConfig({ MARKETING_BOOKING_URL: '' }),
+  );
   assert.match(html, /data-resource-format="pdf" data-resource-variant="blank"/);
   assert.match(html, /Check discovery availability/);
   assert.match(html, /Discovery requests are not open yet/);

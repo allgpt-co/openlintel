@@ -21,6 +21,7 @@ import {
   verifyProgrammaticRenderedContent,
 } from './programmatic-review.mjs';
 import { assertPublicationIdentities } from './publication-history.mjs';
+import { assertAiEditorialReviews, assertAiReviewedDownloads } from './ai-editorial-review.mjs';
 
 const source = dirname(fileURLToPath(import.meta.url));
 export const output = resolve(process.env.MARKETING_OUT_DIR || join(source, '../../docs'));
@@ -35,6 +36,7 @@ try {
       entry,
     ]),
   );
+  assertAiEditorialReviews(pages);
   const written = [];
   const fileHashes = {};
   let previousManifest;
@@ -78,6 +80,7 @@ try {
   for (const page of pages.filter((entry) => entry.kind === 'template')) {
     const downloads = await generateDownloads(page);
     if (page.programmatic) verifyProgrammaticArtifacts(verified.get(page.id), downloads);
+    assertAiReviewedDownloads(page, downloads);
     for (const download of downloads) await emit(download.path, download.buffer);
     page.downloads = downloads.map(({ path, label, format, variant, size }) => ({
       path,

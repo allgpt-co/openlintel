@@ -212,10 +212,28 @@ for (const base of ['/', '/openlintel/']) {
           assert.ok(manifest.files.includes(download.path));
         }
       }
-      assert.ok(
-        !manifest.files.some((path) => path.includes('interior-design-purchase-order')),
-        'Unreviewed purchase-order draft is never published',
-      );
+      const educational = manifest.pages.filter((page) => page.programmatic);
+      assert.equal(educational.length, 2);
+      assert.equal(manifest.pages.length, 47);
+      assert.equal(manifest.pages.filter((page) => page.indexable).length, 45);
+      assert.equal(manifest.pages.flatMap((page) => page.downloads || []).length, 26);
+      for (const page of educational) {
+        assert.equal(page.releaseMode, 'educational-pending-review');
+        // Both base paths must retain the same frozen content bundle.
+        assert.equal(
+          page.contentBundleHash,
+          registry.find((entry) => entry.id === page.id).contentBundleHash,
+        );
+        assert.match(page.contentBundleHash, /^sha256:[a-f0-9]{64}$/);
+        assert.equal(page.approvedBundleHash, undefined);
+        assert.deepEqual(
+          page.downloads.map((download) => download.format),
+          ['XLSX', 'PDF'],
+        );
+        const html = await readFile(join(output, page.path, 'index.html'), 'utf8');
+        assert.match(html, /Educational template · Pending professional review/);
+        assert.doesNotMatch(html, /PRIVATE DRAFT|PRIVATE CANDIDATE|Reviewed by/);
+      }
       const csv = await readFile(
         join(output, 'assets/downloads/window-room-materials.csv'),
         'utf8',
@@ -246,7 +264,7 @@ for (const base of ['/', '/openlintel/']) {
 test('Registry includes growth and editorial resources and rejects invalid publication metadata', () => {
   assert.equal(registry.filter((p) => p.kind === 'hub').length, 2);
   assert.equal(registry.filter((p) => p.kind === 'guide').length, 18);
-  assert.equal(registry.filter((p) => p.kind === 'template').length, 12);
+  assert.equal(registry.filter((p) => p.kind === 'template').length, 14);
   assert.equal(registry.filter((p) => p.kind === 'growth').length, 6);
   assert.equal(registry.find((p) => p.id === 'summary').indexable, false);
   assert.equal(registry.find((p) => p.id === 'pilot-thanks').indexable, false);
@@ -320,6 +338,7 @@ test('All Office documents parse, match their definitions, and build reproducibl
           book.worksheets.map((s) => s.name),
           ['Instructions', 'Blank Template', 'Worked Example'],
         );
+        if (definition.recordLayout) continue; // Record fields and blank inputs have dedicated schedule-assets coverage.
         const blank = book.getWorksheet('Blank Template');
         const example = book.getWorksheet('Worked Example');
         assert.equal(blank.getCell('A6').value, null);

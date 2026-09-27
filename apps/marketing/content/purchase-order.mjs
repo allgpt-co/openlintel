@@ -1,4 +1,4 @@
-// Private editorial candidate. Publication is controlled by the pSEO review gates.
+// Authored educational resource; publication and review status come from the catalog.
 export function purchaseOrderDraft() {
   const fields = [
     [
@@ -103,7 +103,7 @@ export function purchaseOrderDraft() {
     ],
   ];
   const values = {
-    record: 'PO-EX-01 - private planning exercise; not issued',
+    record: 'PO-EX-01 - illustrative planning exercise; not issued',
     item: 'F-01',
     description: 'Linen two-seat sofa concept from The Window Room',
     supplier: 'Unresolved; no supplier appointed',
@@ -134,13 +134,13 @@ export function purchaseOrderDraft() {
     path: 'templates/interior-design-purchase-order/',
     title: 'Interior design purchase order planning template',
     description:
-      'Private draft workbook and PDF preview connecting selections, quotes, delivery dates and purchasing authority. Pending practitioner review.',
+      'Educational workbook and PDF preview connecting selections, quotes, delivery dates and purchasing authority. Pending practitioner review.',
     kind: 'template',
     cluster: 'handoff',
     format: 'xlsx',
     status: 'draft',
     indexable: false,
-    modified: '2026-09-26',
+    modified: '2026-09-27',
     wave: 4,
     recordLayout: true,
     publicationGates: [
@@ -150,7 +150,7 @@ export function purchaseOrderDraft() {
     ],
     intro:
       'Carry a stable selection reference into a separate purchasing record, with commercial facts and authority visible.',
-    use: 'Private draft planning structure. It does not issue an order, establish authority, provide contract terms or represent an OpenLintel procurement capability. Complete and review the record in your own system before any purchasing action. Leave unknown costs and dates blank and explain the missing evidence.',
+    use: 'Educational planning structure, pending practitioner review. It does not issue an order, establish authority, provide contract terms or represent an OpenLintel procurement capability. Complete and review the record in your own system before any purchasing action. Leave unknown costs and dates blank and explain the missing evidence.',
     workbookDescription:
       'One workbook with Instructions, Blank Template and Worked Example sheets. Each sheet uses readable field/value record blocks. Duplicate Blank Template for each item; keep issued orders in your authorized ordering system. The PDF previews the same illustrative data.',
     exampleNotice:
@@ -158,7 +158,7 @@ export function purchaseOrderDraft() {
     exampleProvenance:
       'Authored by OpenLintel with AI assistance on 2026-09-26. F-01 comes from the published fictional Window Room concept. Purchasing records are original teaching additions; no real client or supplier information is used.',
     unitsNote:
-      'State quantity and purchasing unit separately. Blank monetary values and dates are unresolved. This draft makes no currency, tax-rate, product-price or delivery-time assumption.',
+      'State quantity and purchasing unit separately. Blank monetary values and dates are unresolved. This template makes no currency, tax-rate, product-price or delivery-time assumption.',
     columns: fields.map(([key, label, help]) => ({
       key,
       label,
@@ -192,8 +192,7 @@ export function purchaseOrderDraft() {
     related: ['procurement', 'ffe-schedule', 'spec-sheet', 'approval-states'],
     sources: [
       {
-        title:
-          'Houzz Pro: purchase-order fields and workflow (reference only; this draft is not a contract)',
+        title: 'Houzz Pro: purchase-order fields and workflow (format reference)',
         url: 'https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-purchase-order-with-template',
       },
     ],

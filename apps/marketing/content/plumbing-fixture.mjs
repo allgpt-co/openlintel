@@ -1,4 +1,4 @@
-// Original private residential example, independent of The Window Room.
+// Original educational residential example, independent of The Window Room.
 export function plumbingFixtureDraft() {
   const fields = [
     [
@@ -122,13 +122,13 @@ export function plumbingFixtureDraft() {
     path: 'templates/plumbing-fixture-schedule/',
     title: 'Residential plumbing fixture schedule template',
     description:
-      'Private draft workbook and PDF preview for residential fixture selections, product sources, coordination questions and review responsibility.',
+      'Educational workbook and PDF preview for residential fixture selections, product sources, coordination questions and review responsibility. Pending practitioner review.',
     kind: 'template',
     cluster: 'coordinate',
     format: 'xlsx',
     status: 'draft',
     indexable: false,
-    modified: '2026-09-26',
+    modified: '2026-09-27',
     wave: 4,
     recordLayout: true,
     publicationGates: [
@@ -138,7 +138,7 @@ export function plumbingFixtureDraft() {
     ],
     intro:
       'Connect each residential fixture to its room, product evidence, related items and unresolved coordination checks.',
-    use: 'Private draft selection and coordination record. It does not calculate fixture demand, size services, establish code compliance or provide installation instructions. Keep product-source facts and project review separate. Use the blank record with the appointed project professionals before purchasing or installation.',
+    use: 'Educational selection and coordination record, pending practitioner review. It does not calculate fixture demand, size services, establish code compliance or provide installation instructions. Keep product-source facts and project review separate. Use the blank record with the appointed project professionals before purchasing or installation.',
     workbookDescription:
       'One workbook with Instructions, Blank Template and Worked Example sheets. Field/value blocks keep the fixture record readable. Duplicate Blank Template for additional fixtures; retain shared references. The PDF previews both original illustrative records.',
     exampleNotice:

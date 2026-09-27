@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { URL } from 'node:url';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { posix } from 'node:path';
@@ -137,13 +138,18 @@ test('Office resources use US Letter while preserving unresolved costs and formu
   }
 });
 
-test('purchase-order draft stays outside all public routes until its evidence gates are met', async () => {
+test('purchase-order source is a draft while explicit educational publication preserves pending review and blank inputs', async () => {
   const draft = purchaseOrderDraft();
   assert.equal(draft.status, 'draft');
   assert.equal(draft.indexable, false);
   assert.equal(draft.publicationGates.length, 3);
-  assert.ok(!createRegistry(project).some((page) => page.id === draft.id));
-  assert.ok(!publishedPages(createRegistry(project)).some((page) => page.path === draft.path));
+  const publicPage = publishedPages(createRegistry(project)).find((page) => page.id === draft.id);
+  assert.equal(publicPage.path, draft.path);
+  assert.equal(publicPage.releaseMode, 'educational-pending-review');
+  assert.equal(publicPage.status, 'published');
+  assert.equal(publicPage.indexable, true);
+  assert.equal(publicPage.review, undefined);
+  assert.equal(publicPage.approvedBundleHash, undefined);
   const [download] = await generateDownloads(draft);
   const book = new ExcelJS.Workbook();
   await book.xlsx.load(download.buffer);

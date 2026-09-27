@@ -124,6 +124,28 @@ export function validateProgrammaticCandidates(candidates, existing = []) {
 }
 
 export function assertProgrammaticRelease(page, legacyPages = []) {
+  // Public educational availability does not attest to practitioner review or
+  // operational readiness. Keep its frozen content distinct from an approval.
+  if (page.releaseMode === 'educational-pending-review') {
+    if (
+      !page.programmatic ||
+      !PROGRAMMATIC_COHORTS[page.cohortId]?.includes(page.id) ||
+      page.provenance?.classification !== 'illustrative' ||
+      !hashPattern.test(page.contentBundleHash || '') ||
+      page.approvedBundleHash !== undefined ||
+      page.review !== undefined ||
+      page.releaseEvidence !== undefined
+    )
+      throw new Error(
+        `Educational publication requires an exact content bundle without review claims: ${page.id}`,
+      );
+    return page;
+  }
+  if (
+    (page.releaseMode !== undefined && page.releaseMode !== 'reviewed') ||
+    page.contentBundleHash !== undefined
+  )
+    throw new Error(`Invalid or mixed programmatic release mode: ${page.id}`);
   if (
     !page.programmatic ||
     !hashPattern.test(page.approvedBundleHash || '') ||
@@ -179,14 +201,29 @@ export function approvedProgrammaticPages(
     if (!candidate || seen.has(release.id))
       throw new Error(`Unknown or duplicate programmatic release: ${release.id}`);
     seen.add(release.id);
-    // Release records can approve an existing candidate, never override its authored fields.
+    if (
+      release.releaseMode === 'educational-pending-review' &&
+      ['approvedBundleHash', 'review', 'evidence', 'releaseEvidence'].some(
+        (key) => release[key] !== undefined,
+      )
+    )
+      throw new Error(
+        `Educational publication cannot claim review approval or verified gates: ${release.id}`,
+      );
+    // Release records select an existing authored resource, never replace its content.
     const page = {
       ...candidate,
       status: 'published',
       indexable: true,
-      approvedBundleHash: release.approvedBundleHash,
-      review: release.review,
-      releaseEvidence: release.evidence,
+      ...(release.releaseMode !== undefined ? { releaseMode: release.releaseMode } : {}),
+      ...(release.contentBundleHash !== undefined
+        ? { contentBundleHash: release.contentBundleHash }
+        : {}),
+      ...(release.approvedBundleHash !== undefined
+        ? { approvedBundleHash: release.approvedBundleHash }
+        : {}),
+      ...(release.review !== undefined ? { review: release.review } : {}),
+      ...(release.evidence !== undefined ? { releaseEvidence: release.evidence } : {}),
     };
     return assertProgrammaticRelease(page, legacyPages);
   });

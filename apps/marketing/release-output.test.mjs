@@ -121,6 +121,32 @@ test('Validated root and subpath promotion preserves unrelated files and safely 
     });
 });
 
+test('Educational manifest releases carry exact content identity without reviewed approval metadata', () => {
+  const manifest = fixture({ programmatic: true }).manifest;
+  const page = manifest.pages[2];
+  delete page.approvedBundleHash;
+  Object.assign(page, {
+    releaseMode: 'educational-pending-review',
+    contentBundleHash: `sha256:${'b'.repeat(64)}`,
+  });
+  assert.ok(validateOwnershipManifest(manifest));
+  assert.equal(validateAuditManifest(manifest), manifest);
+  for (const change of [
+    { releaseMode: 'unknown-mode' },
+    { releaseMode: undefined },
+    { contentBundleHash: undefined },
+    { contentBundleHash: 'not-a-hash' },
+    { approvedBundleHash: `sha256:${'a'.repeat(64)}` },
+  ]) {
+    const changed = {
+      ...manifest,
+      pages: manifest.pages.map((entry, index) => (index === 2 ? { ...entry, ...change } : entry)),
+    };
+    assert.equal(validateOwnershipManifest(changed), false);
+    assert.throws(() => validateAuditManifest(changed), /Invalid page/);
+  }
+});
+
 test('Broken generation cannot change the existing public output', async () => {
   await withDirectories(async ({ staging, output }) => {
     const current = fixture();

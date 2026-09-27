@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { URL } from 'node:url';
 import assert from 'node:assert/strict';
 import ExcelJS from 'exceljs';
 import JSZip from 'jszip';
@@ -71,7 +72,8 @@ for (const factory of [purchaseOrderDraft, plumbingFixtureDraft]) {
     assert.equal((pdf.match(/\/Type \/Page\b/g) || []).length, pages);
     assert.match(pdf, /Unresolved \/ not entered/);
     assert.match(pdf, /Reference notes/);
-    assert.match(pdf, /PRIVATE DRAFT/);
+    assert.ok(pdf.includes('EDUCATIONAL RESOURCE - REVIEW PENDING'));
+    assert.doesNotMatch(pdf, /PRIVATE DRAFT/);
   });
 }
 
@@ -128,4 +130,18 @@ test('draft previews show independent provenance, actual record layout and relat
     /Twenty editable rows|Follow the corresponding chapter of The Window Room/,
   );
   assert.doesNotMatch(html, /Worked example spreadsheet; scroll horizontally/);
+  const educational = resourcePage(
+    { ...page, releaseMode: 'educational-pending-review' },
+    registry,
+    project,
+  );
+  const notice = educational.indexOf('aria-label="Review status"');
+  assert.ok(notice > educational.indexOf('</header>'));
+  assert.ok(notice < educational.indexOf('class="article-layout"'));
+  assert.match(educational, /Educational template · Pending professional review/);
+  assert.doesNotMatch(html, /aria-label="Review status"/);
+  assert.doesNotMatch(
+    resourcePage({ ...page, releaseMode: 'reviewed' }, registry, project),
+    /aria-label="Review status"/,
+  );
 });

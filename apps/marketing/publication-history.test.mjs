@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { URL } from 'node:url';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
@@ -15,8 +16,16 @@ const initial = JSON.parse(
   await readFile(new URL('./data/publication-history.json', import.meta.url), 'utf8'),
 );
 const clone = (value) => JSON.parse(JSON.stringify(value));
+const fixtureInitial = clone(initial);
+for (const entry of fixtureInitial.entries.filter((item) => item.originKind === 'programmatic'))
+  Object.assign(entry, {
+    state: 'candidate',
+    firstVerifiedLiveAt: null,
+    liveCommit: null,
+    evidence: null,
+  });
 function liveHistory() {
-  const result = clone(initial);
+  const result = clone(fixtureInitial);
   const entry = result.entries.find((item) => item.id === 'purchase-order');
   Object.assign(entry, {
     state: 'published',
@@ -30,32 +39,42 @@ function liveHistory() {
   return result;
 }
 
-test('History records all current identities and candidates without inventing first-live evidence', async () => {
+test('History preserves all identities and unknown legacy dates; attribution follows actual verified lifecycle state', async () => {
   const project = JSON.parse(
     await readFile(new URL('./data/project.json', import.meta.url), 'utf8'),
   );
   const records = publicationHistory();
   assert.equal(records.length, 47);
   assert.ok(
-    records.every(
-      (entry) =>
-        entry.firstVerifiedLiveAt === null && entry.liveCommit === null && entry.evidence === null,
-    ),
+    records
+      .filter((entry) => entry.originKind === 'legacy')
+      .every(
+        (entry) =>
+          entry.firstVerifiedLiveAt === null &&
+          entry.liveCommit === null &&
+          entry.evidence === null,
+      ),
   );
-  assert.equal(records.filter((entry) => entry.state === 'candidate').length, 2);
-  assertPublicationIdentities([...createRegistry(project), ...programmaticCandidates()]);
+  assert.doesNotThrow(() => validatePublicationHistory(initial));
+  assertPublicationIdentities(createRegistry(project));
   const changed = { ...createRegistry(project)[0], path: 'moved/' };
   assert.throws(() => assertPublicationIdentities([changed]), /differs/);
   records[0].path = 'mutated/';
   assert.notEqual(publicationHistory()[0].path, 'mutated/');
-  assert.equal(historicalLandingIds().size, 45);
+  assert.deepEqual(
+    historicalLandingIds(),
+    new Set(records.filter((entry) => entry.state !== 'candidate').map((entry) => entry.landingId)),
+  );
   assert.ok(historicalLandingIds().has('how-it-works'));
-  assert.ok(!historicalLandingIds().has('purchase-order'));
+  assert.equal(
+    historicalLandingIds().has('purchase-order'),
+    records.find((entry) => entry.id === 'purchase-order').state !== 'candidate',
+  );
 });
 
 test('A verified first live event is allowed once; identities and prior live evidence cannot be rewritten', () => {
   const live = liveHistory();
-  assert.doesNotThrow(() => validatePublicationHistory(live, { previous: initial }));
+  assert.doesNotThrow(() => validatePublicationHistory(live, { previous: fixtureInitial }));
   for (const key of ['id', 'path', 'familyId', 'cohortId', 'intentKey', 'originKind']) {
     const changed = clone(live);
     const entry = changed.entries.find((item) => item.id === 'purchase-order');
@@ -115,7 +134,7 @@ test('Unknown dates, incomplete evidence, impossible timestamps and reassigned p
   const duplicate = clone(initial);
   duplicate.entries[1].path = duplicate.entries[0].path;
   assert.throws(() => validatePublicationHistory(duplicate), /identity/);
-  const falseLive = clone(initial);
+  const falseLive = clone(fixtureInitial);
   falseLive.entries.find((item) => item.id === 'purchase-order').state = 'published';
   assert.throws(() => validatePublicationHistory(falseLive), /verified live evidence/);
 });
@@ -154,7 +173,7 @@ test('Historical URL mapping isolates host, protocol, port and base path while p
   );
   assert.equal(
     historicalPageForUrl('https://openlintel.com/templates/interior-design-purchase-order/').state,
-    'candidate',
+    initial.entries.find((entry) => entry.id === 'purchase-order').state,
   );
 });
 
@@ -173,16 +192,35 @@ test('Retiring a live page requires matching registry removal while approved fir
     /must remain public or be retired/,
   );
   assert.doesNotThrow(() => assertPublicationIdentities(removed, history));
+  const legacy = pages.filter((page) => !page.programmatic);
   const candidate = { ...programmaticCandidates()[0], status: 'published' };
   assert.throws(
-    () => assertPublicationIdentities([...pages, candidate], initial),
+    () => assertPublicationIdentities([...legacy, candidate], fixtureInitial),
     /release approval/,
   );
   candidate.approvedBundleHash = `sha256:${'a'.repeat(64)}`;
-  assert.doesNotThrow(() => assertPublicationIdentities([...pages, candidate], initial));
+  assert.doesNotThrow(() => assertPublicationIdentities([...legacy, candidate], fixtureInitial));
+  const educational = {
+    ...programmaticCandidates()[0],
+    status: 'published',
+    releaseMode: 'educational-pending-review',
+    contentBundleHash: `sha256:${'b'.repeat(64)}`,
+  };
+  assert.doesNotThrow(() => assertPublicationIdentities([...legacy, educational], fixtureInitial));
+  assert.throws(
+    () =>
+      assertPublicationIdentities(
+        [...legacy, { ...educational, contentBundleHash: undefined }],
+        fixtureInitial,
+      ),
+    /release approval/,
+  );
   const live = liveHistory();
-  assert.throws(() => assertPublicationIdentities(pages, live), /must remain public or be retired/);
-  assert.doesNotThrow(() => assertPublicationIdentities([...pages, candidate], live));
+  assert.throws(
+    () => assertPublicationIdentities(legacy, live),
+    /must remain public or be retired/,
+  );
+  assert.doesNotThrow(() => assertPublicationIdentities([...legacy, candidate], live));
 });
 
 test('Live evidence must identify the exact production resource URL without alternate ports or preview prefixes', () => {

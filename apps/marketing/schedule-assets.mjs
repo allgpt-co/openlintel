@@ -48,7 +48,7 @@ export async function createScheduleWorkbook(definition) {
   book.created = fixedDate;
   book.modified = date(definition);
   book.title = definition.title;
-  book.subject = 'Private draft for practitioner review';
+  book.subject = 'Educational planning resource; practitioner review pending';
   function sheet(name) {
     const result = book.addWorksheet(name);
     result.columns = [{ width: 29 }, { width: 64 }];
@@ -60,7 +60,8 @@ export async function createScheduleWorkbook(definition) {
       fitToHeight: 0,
       margins: { left: 0.5, right: 0.5, top: 0.45, bottom: 0.45, header: 0.15, footer: 0.2 },
     };
-    result.headerFooter.oddFooter = '&LOpenLintel | Private draft - pending review &RPage &P';
+    result.headerFooter.oddFooter =
+      '&LOpenLintel | Educational resource - review pending &RPage &P';
     return result;
   }
   function merged(target, value, height, dark = false) {
@@ -89,7 +90,7 @@ export async function createScheduleWorkbook(definition) {
     merged(target, heading, 30, true);
   }
   const instructions = sheet('Instructions');
-  pageStart(instructions, 'Using this private draft');
+  pageStart(instructions, 'Using this educational template');
   let height = 134;
   const notes = [
     ['Intended use', definition.use],
@@ -183,7 +184,7 @@ export function createSchedulePdf(definition) {
   pdf.setProperties({
     title: definition.title,
     author: 'OpenLintel',
-    subject: 'Private draft worked-example preview',
+    subject: 'Educational worked-example preview; practitioner review pending',
   });
   pdf.setCreationDate(`D:${definition.modified.replaceAll('-', '')}000000+00'00'`);
   pdf.setFileId(
@@ -216,7 +217,7 @@ export function createSchedulePdf(definition) {
     pdf.setTextColor(145, 79, 56);
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(10);
-    pdf.text('OPENLINTEL / PRIVATE DRAFT - PENDING REVIEW', 36, 34);
+    pdf.text('OPENLINTEL / EDUCATIONAL RESOURCE - REVIEW PENDING', 36, 34);
     pdf.setTextColor(37, 39, 34);
     const title = lines(definition.title, 540, 21);
     pdf.text(title, 36, 67);

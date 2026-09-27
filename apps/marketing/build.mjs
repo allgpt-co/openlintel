@@ -194,6 +194,8 @@ try {
         intentKey,
         programmatic,
         approvedBundleHash,
+        releaseMode,
+        contentBundleHash,
       }) => ({
         id,
         path,
@@ -206,7 +208,9 @@ try {
         familyId,
         cohortId,
         intentKey,
-        ...(programmatic ? { programmatic: true, approvedBundleHash } : {}),
+        ...(programmatic
+          ? { programmatic: true, approvedBundleHash, releaseMode, contentBundleHash }
+          : {}),
       }),
     ),
     files: [...written].sort(),

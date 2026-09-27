@@ -74,7 +74,7 @@
       "kind": "hub",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-26",
+      "modified": "2026-09-27",
       "familyId": "legacy",
       "cohortId": "legacy",
       "intentKey": "resources"
@@ -85,7 +85,7 @@
       "kind": "hub",
       "wave": 1,
       "indexable": true,
-      "modified": "2026-09-26",
+      "modified": "2026-09-27",
       "familyId": "legacy",
       "cohortId": "legacy",
       "intentKey": "templates"
@@ -656,6 +656,66 @@
       "familyId": "legacy",
       "cohortId": "legacy",
       "intentKey": "software-evaluation"
+    },
+    {
+      "id": "purchase-order",
+      "path": "templates/interior-design-purchase-order/",
+      "kind": "template",
+      "wave": 4,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/interior-design-purchase-order.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "variant": "workbook",
+          "size": 18886
+        },
+        {
+          "path": "assets/downloads/templates/interior-design-purchase-order-preview.pdf",
+          "label": "Download worked-example PDF preview",
+          "format": "PDF",
+          "variant": "preview",
+          "size": 14150
+        }
+      ],
+      "indexable": true,
+      "modified": "2026-09-27",
+      "familyId": "selection-procurement",
+      "cohortId": "selection-procurement-01",
+      "intentKey": "purchase-order",
+      "programmatic": true,
+      "releaseMode": "educational-pending-review",
+      "contentBundleHash": "sha256:66f8231beda3e2b75b9034c7abdf88e8d6b8b73f0c87855c9694334033945a0a"
+    },
+    {
+      "id": "plumbing-fixture-schedule",
+      "path": "templates/plumbing-fixture-schedule/",
+      "kind": "template",
+      "wave": 4,
+      "downloads": [
+        {
+          "path": "assets/downloads/templates/plumbing-fixture-schedule.xlsx",
+          "label": "Download editable workbook",
+          "format": "XLSX",
+          "variant": "workbook",
+          "size": 18603
+        },
+        {
+          "path": "assets/downloads/templates/plumbing-fixture-schedule-preview.pdf",
+          "label": "Download worked-example PDF preview",
+          "format": "PDF",
+          "variant": "preview",
+          "size": 18809
+        }
+      ],
+      "indexable": true,
+      "modified": "2026-09-27",
+      "familyId": "selection-procurement",
+      "cohortId": "selection-procurement-01",
+      "intentKey": "plumbing-fixture-schedule",
+      "programmatic": true,
+      "releaseMode": "educational-pending-review",
+      "contentBundleHash": "sha256:3481cdda826670aa948cd0067c34d427c8a8e65da1efaa3e3316dc821dff4afe"
     }
   ],
   "files": [
@@ -687,11 +747,15 @@
     "assets/downloads/templates/interior-design-project-timeline.xlsx",
     "assets/downloads/templates/interior-design-proposal-blank.docx",
     "assets/downloads/templates/interior-design-proposal-example.docx",
+    "assets/downloads/templates/interior-design-purchase-order-preview.pdf",
+    "assets/downloads/templates/interior-design-purchase-order.xlsx",
     "assets/downloads/templates/interior-design-scope-of-work-blank.docx",
     "assets/downloads/templates/interior-design-scope-of-work-example.docx",
     "assets/downloads/templates/interior-design-site-survey-checklist-blank.docx",
     "assets/downloads/templates/interior-design-site-survey-checklist-example.docx",
     "assets/downloads/templates/interior-design-spec-sheet.xlsx",
+    "assets/downloads/templates/plumbing-fixture-schedule-preview.pdf",
+    "assets/downloads/templates/plumbing-fixture-schedule.xlsx",
     "assets/downloads/templates/room-data-sheet.xlsx",
     "assets/downloads/window-room-elevation.svg",
     "assets/downloads/window-room-materials.csv",
@@ -774,9 +838,11 @@
     "templates/interior-design-presentation/index.html",
     "templates/interior-design-project-timeline/index.html",
     "templates/interior-design-proposal/index.html",
+    "templates/interior-design-purchase-order/index.html",
     "templates/interior-design-scope-of-work/index.html",
     "templates/interior-design-site-survey-checklist/index.html",
     "templates/interior-design-spec-sheet/index.html",
+    "templates/plumbing-fixture-schedule/index.html",
     "templates/room-data-sheet/index.html"
   ],
   "fileHashes": {
@@ -838,6 +904,10 @@
     "assets/downloads/templates/interior-design-presentation-blank.pptx": "7b4d29aeaad9fccef38363de860bbd7eaa0fe3f04988fa91ec73331f4c1d7547",
     "assets/downloads/templates/interior-design-presentation-example.pptx": "35a148d1dffae1fffc94d1b0ae9dbef00476127e0135dc3082890a980fc497cf",
     "assets/downloads/templates/interior-design-presentation-preview.pdf": "d8da9e560bf0d744f2e13f3b1d1733022c5f7e5ad69cc92bcce2191116168f25",
+    "assets/downloads/templates/interior-design-purchase-order.xlsx": "f986d7000afa3b25ea27d75bb8797c4c77696e3669d44cbf5737936260975ad9",
+    "assets/downloads/templates/interior-design-purchase-order-preview.pdf": "b2ac00e499a9f15d72747c53d4866fe7dac5543286280ed7bfaafbe81d0f529d",
+    "assets/downloads/templates/plumbing-fixture-schedule.xlsx": "c568c75ece9abff9fff5d2d6791991a84186c759ade95061b33f204f9e3fa119",
+    "assets/downloads/templates/plumbing-fixture-schedule-preview.pdf": "0197eada12bfa9688c88b0b652f8f18a84501b525ac16f1d838f271df3386fc3",
     "index.html": "8094b63397036066b263a1010fa2fce407dd85c75d33426683af4e9d073bad2e",
     "how-it-works/index.html": "9360b97a9825d709e8a6943094b62f3cca440f5848aaae6db3cb1ca0707f7d31",
     "sample-project/index.html": "5f4907edcaab74a7b6ae8844d6a1457f93f599a912f8f944446f82b5e6fb8276",
@@ -845,8 +915,8 @@
     "for-architects/index.html": "ce4eac231f1427cf375162c3699afa978fd9b8d1a6fcbe96392ff79d462f928a",
     "open-source/index.html": "1491c09e44dc4259488cadeadef3c7c24adc62950479dc6ed25dcbfdca6e8e8a",
     "sample-project/summary/index.html": "e10b995f9344ba559cf3c269eeeacfb06823e92593a645ffde2109643cc13096",
-    "resources/index.html": "a165e8eee6c16e228c79ee40c5aa03b50279ca50d0dbe425f940d4e6812a3c80",
-    "templates/index.html": "523ed5195e77012e80f29edeb01bc413bfcd49a7cfd9d74ce63737faae8ea442",
+    "resources/index.html": "5be59cec79a07e5a970e7b91d2ea2447d59b46668261f491127dc86a7c3b3f5c",
+    "templates/index.html": "c8f999ff2c599881198d5e3860fc37508275af92969fe7af4379e4c01dc88990",
     "pilot/index.html": "5ceb8be3c5b0c15ad15467b378e46ab3ca16a89a84eacef3074a7081369c90c4",
     "product-status/index.html": "3ef2297f3088c7e2ff754eb2b3d9a32cab0a70056f4577f38a8f8354780193bc",
     "about/index.html": "a7585f5ac6ab374d804528b49847e1f6738607f93e4b7b19b8af218a7a433c7c",
@@ -858,9 +928,9 @@
     "templates/interior-design-proposal/index.html": "650ab588e1b3ae0df086a00e12b7fe86f5cad1624671fc3b5cb16ee5313feb32",
     "templates/interior-design-scope-of-work/index.html": "e87a47d942fa5829f36677ccb7630d465c23925b12dd2a7da138e4b51752d8bc",
     "templates/interior-design-budget/index.html": "409edcd9b52bb8e83a5319fa6169b59728aeb29d0fd4df2f81decf9762039cc5",
-    "templates/interior-design-spec-sheet/index.html": "a07aa9d5a5b8dff2a046608296d7e9f4270f4ac0b1dd390fb757927b85c053e3",
+    "templates/interior-design-spec-sheet/index.html": "a2e6ace179b755e6ae8d671093bbe0ff6f03a4ae84afdf9f123a7b7f71ac4e64",
     "templates/ffe-schedule/index.html": "8b2e967e45ab6424f27af974a83268c180402f3ceaa3fdac63202c1d75603023",
-    "templates/finish-schedule/index.html": "a57f01b6b0ead6f8dbc21e2ffa6dffd6c15d675449d7b54a82d31879a1d6d6fd",
+    "templates/finish-schedule/index.html": "8e793495337b61c829dc8acf50e58a0ec2bf2fe94eddb34ded53a9df147696b3",
     "templates/room-data-sheet/index.html": "c88271a70f340d21283dcedf2304d866b6184c8b32170fbd6c167bc6971a5386",
     "templates/interior-design-project-timeline/index.html": "d0f2d95f526334b25a6cffbf619d69e361ef9c2c62b9ff1062a0c7cea30084ea",
     "templates/interior-design-site-survey-checklist/index.html": "bbb4bc12b77e521284e4e8d58cd02733b8ffb5178c2092555fb4f3570d15f2e7",
@@ -871,7 +941,7 @@
     "resources/interior-design-space-planning/index.html": "b3eacf5826d2625d29b5b1c7d111536c723f32cf6df5e58da7675f93cc317431",
     "resources/how-to-measure-a-room/index.html": "be07fd809911e03934987558058fa1e2e353cd22011c384f1c51d39106d4df82",
     "resources/interior-design-process/index.html": "e81b58f19f4e1445d7a8b2f37ea1ec8c78aeaa04cd314162e3bb30eb45119c8d",
-    "resources/interior-design-procurement/index.html": "358fa7b7da09a67bd56db834a8ab3a73ec01992c6c4b18f1fa455a13a90cb05f",
+    "resources/interior-design-procurement/index.html": "5ec2f00fc11b33d7c19cc81b4c75344fa75f91f2da0eeeeef9b6362b61400dcb",
     "resources/interior-elevation-drawings/index.html": "dbc7c3dbcacfd48b3fd03997efb0bde672a95ec957fa18564598190fdea98fa0",
     "resources/reflected-ceiling-plan/index.html": "b1a0150246edeb7172f61f50f9e099db33d46e02f0dff94cfad65b14a9fb2963",
     "resources/ffe-in-interior-design/index.html": "e065136c08e2894569582e43681d933579393777ff8403a91e8b2ecd602f04ec",
@@ -883,6 +953,8 @@
     "resources/interior-design-handoff-package/index.html": "0414faca68feb8450d4884bd58ac3c4c8c86b968f562a5c30b1a753421fa23c9",
     "resources/interior-design-approval-states/index.html": "50ac98e740c6d109093381a8e56108818d7b1ead6de459327d8422566345d273",
     "resources/evaluating-ai-interior-design-software/index.html": "7fe6a46b5ea84a8a331d92c28c5dc191056d82829e18e6a02b774894bdee3fc9",
+    "templates/interior-design-purchase-order/index.html": "a277c97f42dfce6e69edd4b06eb5fcf19c80bb58cadbd1c08aebcdc05eb063ba",
+    "templates/plumbing-fixture-schedule/index.html": "666a8cf5ec205e3ad7f24a3e8b5b97d780ca1b9d87fe9df20afe2f77134f88d1",
     "404.html": "c43dcbf8fe2d4b2fee53e15f92c3f5d5faa7e810990599d16e00fe8253bd4ed2",
     "assets/diagrams/measure.svg": "8ff5c601c99990b38fbc6211752e748b92a4d95beb18d449e9e35623faf77f76",
     "assets/diagrams/process.svg": "65d8cb173be50eeae495f409cb4ba3c3a3090356f30102314566dfca475a6656",
@@ -896,7 +968,7 @@
     "assets/downloads/window-room-plan.svg": "b1689f27003acb3227fb1d00553b23409c02c123ba83ccf67e2487537d9fa4da",
     "assets/downloads/window-room-elevation.svg": "9a7c58e8c34386def6ce02ded35a65f577b40acdaedda60d682126fc1afc894c",
     "assets/downloads/window-room-materials.csv": "627e63425562751e5472eddbeaea199bb97426ebec27ead782c5950e30caddf4",
-    "sitemap.xml": "6508777380334a2592317e1891977b131fe2248c49584e0af11c80473dc41d00",
+    "sitemap.xml": "ab487797bda67f2835286cdaeee894f967aea389c75ed3e4e205423322b9e19c",
     "robots.txt": "b47719198685492f529aafe6fb8a7bcd72df29fd6840350729a6257155b0bb97",
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   }

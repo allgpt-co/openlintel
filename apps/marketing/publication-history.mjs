@@ -118,7 +118,12 @@ export function assertPublicationIdentities(pages, history = rawHistory) {
     if (
       isPublic(page) &&
       entry.state === 'candidate' &&
-      (!page.programmatic || !/^sha256:[a-f0-9]{64}$/.test(page.approvedBundleHash || ''))
+      (!page.programmatic ||
+        !/^sha256:[a-f0-9]{64}$/.test(
+          (page.releaseMode === 'educational-pending-review'
+            ? page.contentBundleHash
+            : page.approvedBundleHash) || '',
+        ))
     )
       throw new Error(`Candidate publication identity needs release approval: ${page.id}`);
   }

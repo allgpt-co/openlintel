@@ -39,3 +39,11 @@ jobs:
             await appendFile(process.env.GITHUB_STEP_SUMMARY, 'Production audit did not produce a result; inspect the job error.\n');
           }
           NODE
+      - name: Retain the public availability report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketing-production-availability-${{ github.run_id }}
+          path: output/seo/production-check.json
+          if-no-files-found: warn
+          retention-days: 30

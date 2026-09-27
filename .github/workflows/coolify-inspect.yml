@@ -1,0 +1,29 @@
+name: Inspect configured Coolify application
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check inspection boundaries before accessing credentials
+        run: python3 -m unittest discover -s infra/scripts/tests -p test_coolify_inspect.py
+      - name: Inspect existing target without deployment or raw configuration output
+        env:
+          COOLIFY_WEBHOOK_URL: ${{ vars.COOLIFY_WEBHOOK_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+        run: python3 infra/scripts/coolify-inspect.py
+      - name: Retain sanitized inspection result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coolify-inspection-${{ github.run_id }}
+          path: output/seo/coolify-inspection.json
+          if-no-files-found: warn
+          retention-days: 30

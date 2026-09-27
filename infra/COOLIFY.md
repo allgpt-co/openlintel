@@ -4,6 +4,8 @@ Keep GitHub Pages marketing at `openlintel.com` (`main/docs`). Deploy the authen
 
 Use the repository root and `docker-compose.production.yml` in a Git-backed Coolify Compose application. Do not deploy `docker-compose.yml`: it is for local development. The legacy ECR workflow is manual-only and does not deploy the complete stack.
 
+The manual **Inspect configured Coolify application** workflow tests the existing `COOLIFY_WEBHOOK_URL` target using the repository's `COOLIFY_API_TOKEN`. It calls only the application's read endpoint, rejects redirects, and retains a sanitized result containing HTTP status and expected repository/branch/Compose checks. It does not call the deployment webhook, read environment-variable endpoints, print raw provider configuration, or establish backup/preview/provider acceptance. An HTTP rejection leaves deployment blocked; correct the existing account/token/target configuration before continuing the release sequence.
+
 ## Configuration
 
 Create a standalone PostgreSQL 16 resource in Coolify, with a persistent volume, no public database port, scheduled daily backups and a tested restore. Put it on the network named by `DATABASE_NETWORK` (default `coolify`). Populate `DATABASE_URL` with its internal hostname and generated credentials. If an existing database is in use, back it up and preserve it; do not recreate or reset it. Existing databases not managed by Drizzle require a schema/baseline review before the migration service runs.

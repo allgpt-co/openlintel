@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { Buffer } from 'node:buffer';
+import { URL } from 'node:url';
 import assert from 'node:assert/strict';
 import { readFile, mkdtemp, rm, mkdir, symlink, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -28,7 +30,26 @@ import { generatePrivateReviewBundles } from './programmatic-review-cli.mjs';
 
 const project = JSON.parse(await readFile(new URL('./data/project.json', import.meta.url), 'utf8'));
 const registry = createRegistry(project);
+const legacyRegistry = registry
+  .filter((page) => !page.programmatic)
+  .map((page) => {
+    const copy = { ...page };
+    delete copy.programmaticRelated;
+    return copy;
+  });
 const clone = (value) => JSON.parse(JSON.stringify(value));
+const unreleasedHistory = () =>
+  publicationHistory().map((entry) =>
+    entry.originKind === 'programmatic'
+      ? {
+          ...entry,
+          state: 'candidate',
+          firstVerifiedLiveAt: null,
+          liveCommit: null,
+          evidence: null,
+        }
+      : entry,
+  );
 function reviewed(page, bundleHash) {
   return {
     state: 'verified',
@@ -43,7 +64,7 @@ function reviewed(page, bundleHash) {
   };
 }
 function approvalFixture(page, bundleHash) {
-  const legacy = registry.map((item) =>
+  const legacy = legacyRegistry.map((item) =>
     FIRST_SIX_REVIEW_IDS.includes(item.id) ? { ...item, review: reviewed(item) } : item,
   );
   const evidence = Object.fromEntries(
@@ -51,7 +72,7 @@ function approvalFixture(page, bundleHash) {
       gate,
       {
         state: 'verified',
-        verifiedAt: '2026-09-26T00:00:00Z',
+        verifiedAt: `${page.modified}T00:00:00Z`,
         evidenceHash: sha256(`TEST ONLY ${gate}`),
       },
     ]),
@@ -78,11 +99,12 @@ async function fixtureBundle(page, options = {}) {
   return createReviewBundle({ page, project, registry, fingerprintProvider, ...options });
 }
 
-test('Initial catalog remains private, reserves lighting without creating a page, and preserves all existing URLs', () => {
+test('Both authorized educational resources are public with review pending; lighting remains only a reservation', () => {
   const candidates = programmaticCandidates();
-  assert.equal(registry.length, 45);
-  assert.equal(registry.filter((page) => page.indexable).length, 43);
-  assert.equal(PROGRAMMATIC_RELEASE_ALLOWLIST.length, 0);
+  assert.equal(registry.length, 47);
+  assert.equal(registry.filter((page) => page.indexable).length, 45);
+  assert.equal(legacyRegistry.length, 45);
+  assert.equal(PROGRAMMATIC_RELEASE_ALLOWLIST.length, 2);
   assert.deepEqual(
     candidates.map((page) => page.id),
     ['purchase-order', 'plumbing-fixture-schedule'],
@@ -96,8 +118,21 @@ test('Initial catalog remains private, reserves lighting without creating a page
         page.cohortId === 'selection-procurement-01',
     ),
   );
-  assert.deepEqual(approvedProgrammaticPages(project, { legacyPages: registry }), []);
-  assert.ok(registry.every((page) => !page.programmatic && !page.programmaticRelated));
+  assert.deepEqual(
+    approvedProgrammaticPages(project, { legacyPages: legacyRegistry, allowlist: [] }),
+    [],
+  );
+  for (const page of registry.filter((item) => item.programmatic)) {
+    assert.equal(page.releaseMode, 'educational-pending-review');
+    assert.match(page.contentBundleHash, /^sha256:[a-f0-9]{64}$/);
+    for (const key of ['review', 'releaseEvidence', 'approvedBundleHash'])
+      assert.ok(!(key in page));
+  }
+  assert.ok(
+    registry
+      .find((page) => page.id === 'spec-sheet')
+      .programmaticRelated.includes('purchase-order'),
+  );
   assert.ok(
     PROGRAMMATIC_RESERVATIONS.some((item) => item.intentKey === 'lighting-fixture-schedule'),
   );
@@ -116,17 +151,20 @@ test('Candidate identity, intent ownership, provenance and data completeness fai
     { provenance: { ...page.provenance, sourceVersion: '2020-01-01' } },
     { provenance: { ...page.provenance, classification: 'real-client' } },
   ])
-    assert.throws(() => validateProgrammaticCandidates([{ ...page, ...change }], registry));
+    assert.throws(() => validateProgrammaticCandidates([{ ...page, ...change }], legacyRegistry));
   assert.throws(() => validateProgrammaticCandidates([page, page]), /duplicate/);
   assert.throws(
     () =>
-      approvedProgrammaticPages(project, { legacyPages: registry, allowlist: [{ id: page.id }] }),
+      approvedProgrammaticPages(project, {
+        legacyPages: legacyRegistry,
+        allowlist: [{ id: page.id }],
+      }),
     /approval/,
   );
   assert.throws(
     () =>
       approvedProgrammaticPages(project, {
-        legacyPages: registry,
+        legacyPages: legacyRegistry,
         allowlist: [{ id: 'lighting-fixture-schedule' }],
       }),
     /Unknown/,
@@ -143,11 +181,13 @@ test('Exact bundle approval, real evidence slots and all first-six current revis
       legacyPages: existing,
       allowlist: [entry, secondRelease],
     });
-  const [page] = select();
+  const selected = select();
+  const [page] = selected;
   assert.equal(page.status, 'published');
   assert.equal(page.indexable, true);
-  assert.doesNotThrow(() => validateRegistry([...legacy, page]));
-  assert.throws(() => select(release, registry), /first six/);
+  assert.doesNotThrow(() => validateRegistry([...legacy, ...selected]));
+  assert.throws(() => select(release, legacyRegistry), /first six/);
+  assert.throws(() => select({ ...release, releaseMode: 'unknown-mode' }));
   for (const gate of PROGRAMMATIC_GATES) {
     const changed = clone(release);
     changed.evidence[gate].state = 'pending';
@@ -206,10 +246,19 @@ test('The first release requires the complete registered cohort; verified histor
   );
   const legacyPages = fixtures[0].legacy;
   const allowlist = fixtures.map((fixture) => fixture.release);
-  assert.equal(approvedProgrammaticPages(project, { legacyPages, allowlist }).length, 2);
+  const initialHistory = unreleasedHistory();
+  assert.equal(
+    approvedProgrammaticPages(project, { legacyPages, allowlist, history: initialHistory }).length,
+    2,
+  );
   for (const release of allowlist)
     assert.throws(
-      () => approvedProgrammaticPages(project, { legacyPages, allowlist: [release] }),
+      () =>
+        approvedProgrammaticPages(project, {
+          legacyPages,
+          allowlist: [release],
+          history: initialHistory,
+        }),
       /Initial programmatic cohort/,
     );
   // Supplying only one candidate cannot silently redefine the registered cohort.
@@ -219,12 +268,13 @@ test('The first release requires the complete registered cohort; verified histor
         legacyPages,
         allowlist: [allowlist[0]],
         candidates: [candidates[0]],
+        history: initialHistory,
       }),
     /Initial programmatic cohort/,
   );
   assert.deepEqual(approvedProgrammaticPages(project, { legacyPages, allowlist: [] }), []);
   for (const state of ['published', 'retired']) {
-    const history = publicationHistory();
+    const history = unreleasedHistory();
     const prior = history.find((entry) => entry.id === candidates[1].id);
     Object.assign(prior, {
       state,
@@ -246,6 +296,70 @@ test('The first release requires the complete registered cohort; verified histor
       /verified live evidence/,
     );
   }
+});
+
+test('Educational publication verifies exact content without implying practitioner or operational approval', async () => {
+  const candidates = programmaticCandidates();
+  const bundles = await Promise.all(candidates.map((page) => fixtureBundle(page)));
+  const allowlist = candidates.map((page, index) => ({
+    id: page.id,
+    releaseMode: 'educational-pending-review',
+    contentBundleHash: bundles[index].bundleHash,
+  }));
+  const select = (entries = allowlist) =>
+    approvedProgrammaticPages(project, {
+      legacyPages: legacyRegistry,
+      allowlist: entries,
+      history: unreleasedHistory(),
+    });
+  const pages = select();
+  assert.doesNotThrow(() => validateRegistry([...legacyRegistry, ...pages]));
+  for (const page of pages)
+    for (const key of ['review', 'releaseEvidence', 'approvedBundleHash'])
+      assert.ok(!(key in page));
+  const growthSettings = { pilotEnabled: false, analyticsEnabled: false };
+  const verify = (entries = pages) =>
+    verifyProgrammaticPublication({
+      pages: [...legacyRegistry, ...entries],
+      project,
+      growthSettings,
+      bundleFactory: (input) => createReviewBundle({ ...input, fingerprintProvider }),
+    });
+  const verified = await verify();
+  assert.equal(verified.length, 2);
+  for (let index = 0; index < pages.length; index++) {
+    assert.equal(verifyProgrammaticArtifacts(verified[index], bundles[index].downloads), true);
+    assert.equal(verifyProgrammaticRenderedContent(verified[index], bundles[index].html), true);
+    const changed = bundles[index].downloads.map((file, fileIndex) => ({
+      ...file,
+      buffer: fileIndex
+        ? file.buffer
+        : Buffer.concat([file.buffer, Buffer.from('unreviewed change')]),
+    }));
+    assert.throws(() => verifyProgrammaticArtifacts(verified[index], changed), /differ/);
+  }
+  for (const extra of [
+    { releaseMode: 'unknown-mode' },
+    { releaseMode: undefined },
+    { contentBundleHash: undefined },
+    { contentBundleHash: 'not-a-hash' },
+    { approvedBundleHash: sha256('not an approval') },
+    { review: {} },
+    { evidence: {} },
+    { releaseEvidence: {} },
+  ])
+    assert.throws(() => select([{ ...allowlist[0], ...extra }, allowlist[1]]));
+  assert.throws(
+    () => select([{ ...allowlist[0], id: 'lighting-fixture-schedule' }, allowlist[1]]),
+    /Unknown/,
+  );
+  const stale = pages.map((page, index) =>
+    index ? page : { ...page, contentBundleHash: sha256('previous content') },
+  );
+  await assert.rejects(() => verify(stale), /changed|mismatch|publication blocked/);
+  const changed = clone(pages);
+  changed[0].rows[0][0] += ' altered after release';
+  await assert.rejects(() => verify(changed), /changed|mismatch|publication blocked/);
 });
 
 test('Bundles are deterministic across release bookkeeping but change with content, files, renderers and generators', async () => {
@@ -281,6 +395,14 @@ test('Bundles are deterministic across release bookkeeping but change with conte
     liveCommit: 'a'.repeat(40),
   };
   assert.equal((await fixtureBundle(released)).bundleHash, initial.bundleHash);
+  const educational = {
+    ...page,
+    status: 'published',
+    indexable: true,
+    releaseMode: 'educational-pending-review',
+    contentBundleHash: initial.bundleHash,
+  };
+  assert.equal((await fixtureBundle(educational)).bundleHash, initial.bundleHash);
   const content = clone(page);
   content.rows[0][0] += ' Changed';
   assert.notEqual((await fixtureBundle(content)).bundleHash, initial.bundleHash);
@@ -372,7 +494,7 @@ test('Private review output rejects public paths and symlink escapes, and writes
   }
 });
 
-test('Private CLI produces both candidate HTML/XLSX/PDF bundles with no public registry additions', async () => {
+test('Private CLI produces review copies without changing public selection or implying approval', async () => {
   const workspace = await mkdtemp(join(tmpdir(), 'ol-review-cli-'));
   try {
     const results = await generatePrivateReviewBundles({ workspaceRoot: workspace });
@@ -381,18 +503,22 @@ test('Private CLI produces both candidate HTML/XLSX/PDF bundles with no public r
       assert.equal(item.artifacts, 2);
       const html = await readFile(join(workspace, item.directory, 'index.html'), 'utf8');
       assert.match(html, /noindex,nofollow/);
-      assert.match(html, /PRIVATE CANDIDATE/);
+      assert.match(html, /PRIVATE REVIEW COPY · PRACTITIONER APPROVAL PENDING/);
       assert.match(html, /href="artifacts\/[^"]+\.xlsx"/);
       assert.match(html, /href="artifacts\/[^"]+\.pdf"/);
       const bundle = JSON.parse(
         await readFile(join(workspace, item.directory, 'bundle.json'), 'utf8'),
       );
-      assert.equal(bundle.publicationState, 'pending');
+      assert.equal(bundle.publicationState, 'selected-for-publication');
+      assert.equal(bundle.reviewState, 'pending');
+      assert.ok(bundle.reviewedReleaseRequirements.includes('candidate-exact-bundle-review'));
+      assert.ok(bundle.reviewedReleaseRequirements.includes('first-six-practitioner-reviews'));
+      assert.equal(bundle.requiredGates, undefined);
       assert.equal(bundle.bundleHash, item.bundleHash);
       assert.ok(bundle.dependencies.some((item) => item.path === 'pnpm-lock.yaml'));
       assert.ok(bundle.dependencies.some((item) => item.path.endsWith('schedule-assets.mjs')));
     }
-    assert.equal(publishedPages(createRegistry(project)).length, 45);
+    assert.equal(publishedPages(createRegistry(project)).length, 47);
   } finally {
     await rm(workspace, { recursive: true, force: true });
   }

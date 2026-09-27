@@ -12,13 +12,18 @@ const safePath = (path) =>
 export function validReleaseMetadata(page, schemaVersion) {
   if (schemaVersion === 2) return true;
   const key = (value) => typeof value === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
+  const hash = (value) => /^sha256:[a-f0-9]{64}$/.test(value || '');
+  const validBundle =
+    page.releaseMode === 'educational-pending-review'
+      ? hash(page.contentBundleHash) && page.approvedBundleHash === undefined
+      : (page.releaseMode === undefined || page.releaseMode === 'reviewed') &&
+        hash(page.approvedBundleHash) &&
+        page.contentBundleHash === undefined;
   return (
     ['familyId', 'cohortId', 'intentKey'].every((name) => key(page[name])) &&
     (page.programmatic === undefined || typeof page.programmatic === 'boolean') &&
     (!page.programmatic ||
-      (page.familyId !== 'legacy' &&
-        page.cohortId !== 'legacy' &&
-        /^sha256:[a-f0-9]{64}$/.test(page.approvedBundleHash || '')))
+      (page.familyId !== 'legacy' && page.cohortId !== 'legacy' && validBundle))
   );
 }
 

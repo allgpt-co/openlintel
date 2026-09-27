@@ -7,6 +7,7 @@ import { generateDownloads } from './documents.mjs';
 import { resourcePage } from './resources.mjs';
 import { editorialRevision } from './editorial-review.mjs';
 import { growthConfig } from './growth-config.mjs';
+import { config } from './config.mjs';
 import {
   PROGRAMMATIC_FAMILIES,
   validateProgrammaticCandidates,
@@ -37,6 +38,8 @@ const bookkeeping = new Set([
   'status',
   'indexable',
   'approvedBundleHash',
+  'releaseMode',
+  'contentBundleHash',
   'releaseEvidence',
   'publicationGates',
   'programmaticRelated',
@@ -56,7 +59,15 @@ function substantiveHtml(html) {
   )?.[1];
   if (!header || !body)
     throw new Error('Review renderer must expose the substantive resource header and body.');
-  return `${header}\n${body}`.replace(/\r\n/g, '\n');
+  // A preview mount point changes transport URLs, not the authored resource.
+  // Preserve complete target paths and external URLs while removing that prefix.
+  return `${header}\n${body}`
+    .replace(/\r\n/g, '\n')
+    .replace(/(\s(?:href|src|poster))="([^"]+)"/g, (match, attribute, value) =>
+      config.base !== '/' && value.startsWith(config.base)
+        ? `${attribute}="/${value.slice(config.base.length)}"`
+        : match,
+    );
 }
 async function fingerprintFile(path, workspaceRoot) {
   if (!/^(?:[a-zA-Z0-9_.-]+\/)*[a-zA-Z0-9_.-]+$/.test(path) || path.split('/').includes('..'))
@@ -177,7 +188,8 @@ export async function verifyProgrammaticPublication({
 }) {
   const result = [];
   for (const page of pages.filter((item) => item.programmatic)) {
-    if (!growthSettings.pilotEnabled || !growthSettings.analyticsEnabled)
+    const educational = page.releaseMode === 'educational-pending-review';
+    if (!educational && (!growthSettings.pilotEnabled || !growthSettings.analyticsEnabled))
       throw new Error(
         'Programmatic publication requires configured discovery intake and analytics.',
       );
@@ -187,11 +199,17 @@ export async function verifyProgrammaticPublication({
     );
     const bundle = await bundleFactory({ page, project, registry });
     if (
-      bundle.bundleHash !== page.approvedBundleHash ||
-      bundle.bundleHash !== page.review.reviewedBundleHash
+      bundle.bundleHash !== (educational ? page.contentBundleHash : page.approvedBundleHash) ||
+      (!educational && bundle.bundleHash !== page.review.reviewedBundleHash)
     )
       throw new Error(`Reviewed programmatic output changed; publication blocked: ${page.id}`);
-    result.push({ id: page.id, approvedBundleHash: bundle.bundleHash, manifest: bundle.manifest });
+    result.push({
+      id: page.id,
+      ...(educational
+        ? { contentBundleHash: bundle.bundleHash }
+        : { approvedBundleHash: bundle.bundleHash }),
+      manifest: bundle.manifest,
+    });
   }
   return result;
 }

@@ -1,4 +1,15 @@
 {
   "schemaVersion": 1,
-  "releases": []
+  "releases": [
+    {
+      "id": "purchase-order",
+      "releaseMode": "educational-pending-review",
+      "contentBundleHash": "sha256:66f8231beda3e2b75b9034c7abdf88e8d6b8b73f0c87855c9694334033945a0a"
+    },
+    {
+      "id": "plumbing-fixture-schedule",
+      "releaseMode": "educational-pending-review",
+      "contentBundleHash": "sha256:3481cdda826670aa948cd0067c34d427c8a8e65da1efaa3e3316dc821dff4afe"
+    }
+  ]
 }

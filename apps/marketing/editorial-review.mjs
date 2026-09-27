@@ -11,6 +11,8 @@ export function editorialRevision(page) {
         'status',
         'indexable',
         'approvedBundleHash',
+        'releaseMode',
+        'contentBundleHash',
         'releaseEvidence',
         'publicationGates',
         'programmaticRelated',

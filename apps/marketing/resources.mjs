@@ -62,7 +62,7 @@ export function hub(page, registry) {
     )
     .join(
       '',
-    )} ${templatesOnly ? walkthrough('template-workflow') : ''}<section class="resource-editorial"><h2>Adapt the structure. Verify the project.</h2><p>These are educational planning resources, not legal agreements, construction documents, or professional certification. Worked examples are clearly labeled teaching extensions of The Window Room. Replace them with your own verified information and obtain appropriate project review.</p><p>Guides are authored by OpenLintel with AI assistance. Each resource states its review status; a named review covers only the identified revision and scope. We cite external references where used; original examples are illustrative, not completed client work.</p><p><a href="${url('editorial-policy/')}">Read our editorial and review policy</a></p></section></div>`;
+    )} ${templatesOnly ? walkthrough('template-workflow') : ''}<section class="resource-editorial"><h2>Adapt the structure. Verify the project.</h2><p>These are educational planning resources, not legal agreements, construction documents, or professional certification. Each worked example identifies its origin: a teaching extension of The Window Room or a separate illustrative study. Replace them with your own verified information and obtain appropriate project review.</p><p>Guides are authored by OpenLintel with AI assistance. Each resource states its review status; a named review covers only the identified revision and scope. We cite external references where used; original examples are illustrative, not completed client work.</p><p><a href="${url('editorial-policy/')}">Read our editorial and review policy</a></p></section></div>`;
 }
 function visual(page, project) {
   if (page.visual === 'mood-boards')
@@ -176,6 +176,10 @@ function downloads(page) {
 }
 export function resourcePage(page, registry, project, settings = growthConfig) {
   const template = page.kind === 'template';
+  const reviewNotice =
+    page.releaseMode === 'educational-pending-review'
+      ? '<aside class="sample-notice" aria-label="Review status"><p><strong>Educational template · Pending professional review.</strong> Use this structure to organize information and open questions. Have the appropriate project professionals verify it before using it for purchasing, installation, or other project decisions.</p></aside>'
+      : '';
   const sections = template
     ? [
         { id: 'preview', title: 'Worked example & fields' },
@@ -192,7 +196,7 @@ export function resourcePage(page, registry, project, settings = growthConfig) {
        <section id="review"><h2>Review before use</h2>${list(page.mistakes)}${page.unitsNote ? `<h3>Units, source information, and US use</h3><p>${esc(page.unitsNote)}</p>` : ''}</section>${downloads(page)}`
     : `${visual(page, project)}${page.sections.map(authoredSection).join('')}<section id="checklist"><h2>Before you move on</h2>${list(page.checklist)}</section>`;
   return `<div class="wrap resource-page">${breadcrumbs(page)}
-    <header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Downloads: ${formatLabel(page)}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('about/')}">OpenLintel</a> · Updated <time datetime="${esc(page.modified)}">${editorialDate(page.modified)}</time> · Educational resource</p>${template ? '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>' : ''}</header>
+    <header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Downloads: ${formatLabel(page)}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('about/')}">OpenLintel</a> · Updated <time datetime="${esc(page.modified)}">${editorialDate(page.modified)}</time> · Educational resource</p>${template ? '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>' : ''}</header>${reviewNotice}
     <div class="article-layout"><aside class="article-toc"><nav aria-label="On this page"><p class="eyebrow">On this page</p><ol>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.title)}</a></li>`).join('')}${template ? '' : '<li><a href="#checklist">Review checklist</a></li>'}</ol></nav></aside>
     <article class="resource-body">${article}
       <section class="article-sources"><h2>About this resource</h2>${reviewCredit(page)}<p><a href="${url('editorial-policy/')}">Authorship, review boundaries, sources, and corrections</a></p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section>

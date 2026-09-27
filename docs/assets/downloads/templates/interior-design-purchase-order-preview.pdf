@@ -1,0 +1,880 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 2795
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.569 0.31 0.22 rg
+36. 758. Td
+(OPENLINTEL / EDUCATIONAL RESOURCE - REVIEW PENDING) Tj
+ET
+BT
+/F2 21 Tf
+24.1499999999999986 TL
+0.145 0.153 0.133 rg
+36. 725. Td
+(Interior design purchase order planning template) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 694. Td
+(Illustrative worked-example preview / same records as the editable workbook) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 662. Td
+(Example status) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 645. Td
+(Illustrative extension of The Window Room. PO-EX-01 is an invented teaching reference, not an issued purchase) Tj
+T* (order. No supplier, quote, approval or delivery commitment exists. Pending practitioner review.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 600. Td
+(Intended use) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 583. Td
+(Educational planning structure, pending practitioner review. It does not issue an order, establish authority, provide) Tj
+T* (contract terms or represent an OpenLintel procurement capability. Complete and review the record in your own) Tj
+T* (system before any purchasing action. Leave unknown costs and dates blank and explain the missing evidence.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 525. Td
+(Provenance) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 508. Td
+(Authored by OpenLintel with AI assistance on 2026-09-26. F-01 comes from the published fictional Window Room) Tj
+T* (concept. Purchasing records are original teaching additions; no real client or supplier information is used.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 463. Td
+(Units and missing information) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 446. Td
+(State quantity and purchasing unit separately. Blank monetary values and dates are unresolved. This template) Tj
+T* (makes no currency, tax-rate, product-price or delivery-time assumption.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 401. Td
+(Use the workbook) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 384. Td
+(The companion XLSX contains Instructions, Blank Template and Worked Example. Blank values in the example) Tj
+T* (remain unresolved; this PDF labels them explicitly. No product, supplier, quote, technical approval or purchasing) Tj
+T* (authority is invented.) Tj
+ET
+0.85 0.82 0.77 RG
+36. 50. m
+576. 50. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+36. 35. Td
+(Illustrative data. No order or installation approval. Revision 2026-09-27) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+558.5399999999999636 35. Td
+(1 / 5) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 2851
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.569 0.31 0.22 rg
+36. 758. Td
+(OPENLINTEL / EDUCATIONAL RESOURCE - REVIEW PENDING) Tj
+ET
+BT
+/F2 21 Tf
+24.1499999999999986 TL
+0.145 0.153 0.133 rg
+36. 725. Td
+(Interior design purchase order planning template) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 694. Td
+(Worked record 1 / Identity, product and quote) Tj
+ET
+0.96 0.95 0.91 rg
+36. 675. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 659. Td
+(Planning reference) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 659. Td
+(PO-EX-01 - illustrative planning exercise; not issued) Tj
+ET
+0.96 0.95 0.91 rg
+36. 629. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 613. Td
+(Item reference) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 613. Td
+(F-01) Tj
+ET
+0.96 0.95 0.91 rg
+36. 583. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 567. Td
+(Item description) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 567. Td
+(Linen two-seat sofa concept from The Window Room) Tj
+ET
+0.96 0.95 0.91 rg
+36. 537. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 521. Td
+(Supplier) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 521. Td
+(Unresolved; no supplier appointed) Tj
+ET
+0.96 0.95 0.91 rg
+36. 491. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 475. Td
+(Manufacturer / model) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 475. Td
+(Unresolved; no product selected) Tj
+ET
+0.96 0.95 0.91 rg
+36. 445. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 429. Td
+(Quote reference) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 429. Td
+(No supplier quote obtained) Tj
+ET
+0.96 0.95 0.91 rg
+36. 399. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 383. Td
+(Quote checked date) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 383. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 353. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 337. Td
+(Quantity) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 337. Td
+(1) Tj
+ET
+0.96 0.95 0.91 rg
+36. 307. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 291. Td
+(Purchasing unit) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 291. Td
+(item; verify purchasing unit) Tj
+ET
+0.85 0.82 0.77 RG
+36. 50. m
+576. 50. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+36. 35. Td
+(Illustrative data. No order or installation approval. Revision 2026-09-27) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+558.5399999999999636 35. Td
+(2 / 5) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 2595
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.569 0.31 0.22 rg
+36. 758. Td
+(OPENLINTEL / EDUCATIONAL RESOURCE - REVIEW PENDING) Tj
+ET
+BT
+/F2 21 Tf
+24.1499999999999986 TL
+0.145 0.153 0.133 rg
+36. 725. Td
+(Interior design purchase order planning template) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 694. Td
+(Worked record 1 / Commercial inputs and delivery) Tj
+ET
+0.96 0.95 0.91 rg
+36. 675. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 659. Td
+(Quoted unit price) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 659. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 629. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 613. Td
+(Currency) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 613. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 583. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 567. Td
+(Tax amount) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 567. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 537. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 521. Td
+(Freight / delivery cost) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 521. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 491. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 475. Td
+(Installation cost) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 475. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 445. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 429. Td
+(Receiving location) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 429. Td
+(Not established) Tj
+ET
+0.96 0.95 0.91 rg
+36. 399. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 383. Td
+(Requested delivery date) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 383. Td
+(Unresolved / not entered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 353. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 337. Td
+(Supplier-confirmed date) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 337. Td
+(Unresolved / not entered) Tj
+ET
+0.85 0.82 0.77 RG
+36. 50. m
+576. 50. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+36. 35. Td
+(Illustrative data. No order or installation approval. Revision 2026-09-27) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+558.5399999999999636 35. Td
+(3 / 5) Tj
+ET
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 2450
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.569 0.31 0.22 rg
+36. 758. Td
+(OPENLINTEL / EDUCATIONAL RESOURCE - REVIEW PENDING) Tj
+ET
+BT
+/F2 21 Tf
+24.1499999999999986 TL
+0.145 0.153 0.133 rg
+36. 725. Td
+(Interior design purchase order planning template) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 694. Td
+(Worked record 1 / Decisions, order and open work) Tj
+ET
+0.96 0.95 0.91 rg
+36. 675. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 659. Td
+(Design decision) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 659. Td
+(Illustrative concept only; pending review) Tj
+ET
+0.96 0.95 0.91 rg
+36. 629. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 613. Td
+(Purchasing authority) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 613. Td
+(Not established) Tj
+ET
+0.96 0.95 0.91 rg
+36. 583. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 567. Td
+(Order status) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 567. Td
+(Not ordered) Tj
+ET
+0.96 0.95 0.91 rg
+36. 537. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 521. Td
+(Order / acknowledgment) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 521. Td
+(No order or acknowledgment exists) Tj
+ET
+0.96 0.95 0.91 rg
+36. 491. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 475. Td
+(Revision) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 475. Td
+(R0 - teaching exercise) Tj
+ET
+0.96 0.95 0.91 rg
+36. 445. 540. -46. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 429. Td
+(Open checks) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 429. Td
+(Product, quote, purchasing unit, receiving plan and authority) Tj
+T* (unresolved.) Tj
+ET
+0.96 0.95 0.91 rg
+36. 396. 540. -43. re
+f
+BT
+/F2 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+44. 380. Td
+(Next action / owner) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+216. 380. Td
+(Obtain product and quote evidence; responsible person not appointed.) Tj
+ET
+0.85 0.82 0.77 RG
+36. 50. m
+576. 50. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+36. 35. Td
+(Illustrative data. No order or installation approval. Revision 2026-09-27) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+558.5399999999999636 35. Td
+(4 / 5) Tj
+ET
+endstream
+endobj
+11 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 12 0 R
+>>
+endobj
+12 0 obj
+<<
+/Length 1357
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 10 Tf
+11.5 TL
+0.569 0.31 0.22 rg
+36. 758. Td
+(OPENLINTEL / EDUCATIONAL RESOURCE - REVIEW PENDING) Tj
+ET
+BT
+/F2 21 Tf
+24.1499999999999986 TL
+0.145 0.153 0.133 rg
+36. 725. Td
+(Interior design purchase order planning template) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 694. Td
+(Reference notes) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 662. Td
+(How references were used) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 645. Td
+(These primary references informed field selection and schedule structure. The example records and wording are) Tj
+T* (original teaching material. References do not validate an actual product, project or approval.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.145 0.153 0.133 rg
+36. 600. Td
+(Houzz Pro: purchase-order fields and workflow \(format reference\)) Tj
+ET
+BT
+/F1 10.5 Tf
+12.0749999999999993 TL
+0.145 0.153 0.133 rg
+36. 583. Td
+(https://pro.houzz.com/pro-learn/blog/startup-guide-interior-design-how-to-make-purchase-order-with-template) Tj
+ET
+0.85 0.82 0.77 RG
+36. 50. m
+576. 50. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+36. 35. Td
+(Illustrative data. No order or installation approval. Revision 2026-09-27) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.145 0.153 0.133 rg
+558.5399999999999636 35. Td
+(5 / 5) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R 11 0 R ]
+/Count 5
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 13 0 R
+/F2 14 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+15 0 obj
+<<
+/Producer (jsPDF 4.2.1)
+/Title (Interior design purchase order planning template)
+/Subject (Educational worked-example preview; practitioner review pending)
+/Author (OpenLintel)
+/CreationDate (D:20260927000000+00'00')
+>>
+endobj
+16 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 17
+0000000000 65535 f 
+0000012853 00000 n 
+0000013192 00000 n 
+0000000015 00000 n 
+0000000120 00000 n 
+0000002967 00000 n 
+0000003072 00000 n 
+0000005975 00000 n 
+0000006080 00000 n 
+0000008727 00000 n 
+0000008833 00000 n 
+0000011336 00000 n 
+0000011443 00000 n 
+0000012935 00000 n 
+0000013061 00000 n 
+0000013308 00000 n 
+0000013548 00000 n 
+trailer
+<<
+/Size 17
+/Root 16 0 R
+/Info 15 0 R
+/ID [ <DE3EA8AA212576433B35AEAEE97A94EB> <DE3EA8AA212576433B35AEAEE97A94EB> ]
+>>
+startxref
+13652
+%%EOF

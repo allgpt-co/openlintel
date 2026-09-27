@@ -39,7 +39,7 @@ export const hubs = [
     status: 'published',
     indexable: true,
     wave: 1,
-    modified: '2026-09-26',
+    modified: '2026-09-27',
     title: 'Interior design resources for a connected workflow',
     description:
       'Practical interior design guides and editable templates, from the first client questionnaire to drawing review and project handoff.',
@@ -51,7 +51,7 @@ export const hubs = [
     status: 'published',
     indexable: true,
     wave: 1,
-    modified: '2026-09-26',
+    modified: '2026-09-27',
     title: 'Free interior design templates',
     description:
       'Download editable interior design questionnaires, briefs, proposals, schedules, and budget spreadsheets with blank templates and illustrative examples.',

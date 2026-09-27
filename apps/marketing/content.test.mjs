@@ -33,11 +33,26 @@ const withDownloads = (page) => ({
         })),
 });
 
-test('Existing 12 templates and 18 guides have original task-specific examples and compatible fields', () => {
-  assert.equal(templates.length, 12);
+test('All 14 templates and 18 guides have original task-specific examples and compatible fields', () => {
+  assert.equal(templates.length, 14);
   assert.equal(guides.length, 18);
   const titles = new Set();
   for (const page of [...templates, ...guides]) {
+    if (page.recordLayout) {
+      assert.ok(page.rows.length >= 1, `${page.id} includes an illustrative worked record`);
+      assert.ok(page.columns.every((field) => field.key && field.label && field.help));
+      assert.deepEqual(
+        page.recordSections.flatMap((section) => section.keys).sort(),
+        page.columns.map((field) => field.key).sort(),
+        `${page.id} groups every authored field exactly once`,
+      );
+      for (const row of page.rows) assert.equal(row.length, page.columns.length);
+      assert.ok(page.steps.length >= 3 && page.mistakes.length >= 3 && page.sources.length);
+      assert.ok(page.unitsNote);
+      assert.match(page.exampleProvenance, /Authored by OpenLintel/);
+      assert.match(page.exampleNotice, /Pending practitioner review/);
+      continue;
+    }
     assert.ok(
       page.sections.some((section) => section.table),
       `${page.id} includes a useful example`,
@@ -109,9 +124,21 @@ test('Resource rendering preserves ungated downloads, data attributes, source da
     assert.ok(html.includes(`href="${url('about/')}"`));
     assert.ok(html.includes(`href="${url('editorial-policy/')}"`));
     assert.match(html, /have not received independent professional review/);
-    assert.match(html, /<th scope="col">/);
-    assert.match(html, /<th scope="row">/);
-    assert.match(html, /tabindex="0" role="region"/);
+    if (page.recordLayout) {
+      assert.match(html, /Worked example preview · XLSX and PDF/);
+      for (const column of page.columns) assert.ok(html.includes(`<dt>${esc(column.label)}</dt>`));
+      for (const value of page.rows.flat())
+        assert.ok(
+          html.includes(
+            `<dd class="example-answer">${value === '' ? 'Unresolved / not entered' : esc(value)}</dd>`,
+          ),
+        );
+      assert.doesNotMatch(html, /Worked example spreadsheet; scroll horizontally/);
+    } else {
+      assert.match(html, /<th scope="col">/);
+      assert.match(html, /<th scope="row">/);
+      assert.match(html, /tabindex="0" role="region"/);
+    }
     const pilotPosition = html.indexOf('data-pilot-cta');
     assert.ok(
       pilotPosition > html.indexOf('class="article-sources"'),

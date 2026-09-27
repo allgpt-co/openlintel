@@ -21,7 +21,7 @@ export async function generatePrivateReviewBundles({
     const relativeArtifactHtml = bundle.html
       .replace(/href="[^" ]*\/assets\/downloads\/templates\/([^"/]+)"/g, 'href="artifacts/$1"')
       .replace(/href="(\/[^" ]*)"/g, (_, path) => `href="${config.origin}${path}"`);
-    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Private review: ${page.id}</title><link rel="icon" href="data:,"><style>*{box-sizing:border-box}body{overflow-wrap:anywhere;font:16px/1.55 system-ui;max-width:1100px;margin:2rem auto;padding:1rem}table{border-collapse:collapse}th,td{border:1px solid #aaa;padding:.5rem}a{color:#70402a}.table-scroll{overflow:auto}.download-actions{display:flex;flex-wrap:wrap;gap:1rem}dt{font-weight:700}section{margin:2rem 0}</style></head><body><p>PRIVATE CANDIDATE · NOT APPROVED OR RELEASED · ${bundle.bundleHash}</p>${relativeArtifactHtml}</body></html>`;
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Private review: ${page.id}</title><link rel="icon" href="data:,"><style>*{box-sizing:border-box}body{overflow-wrap:anywhere;font:16px/1.55 system-ui;max-width:1100px;margin:2rem auto;padding:1rem}table{border-collapse:collapse}th,td{border:1px solid #aaa;padding:.5rem}a{color:#70402a}.table-scroll{overflow:auto}.download-actions{display:flex;flex-wrap:wrap;gap:1rem}dt{font-weight:700}section{margin:2rem 0}</style></head><body><p>PRIVATE REVIEW COPY · PRACTITIONER APPROVAL PENDING · ${bundle.bundleHash}</p>${relativeArtifactHtml}</body></html>`;
     await writePrivateReviewFile(`${directory}/index.html`, html, workspaceRoot);
     for (const artifact of bundle.downloads)
       await writePrivateReviewFile(
@@ -35,8 +35,11 @@ export async function generatePrivateReviewBundles({
         {
           ...bundle.manifest,
           bundleHash: bundle.bundleHash,
-          publicationState: 'pending',
-          requiredGates: [
+          publicationState: registry.some((entry) => entry.id === page.id)
+            ? 'selected-for-publication'
+            : 'private-candidate',
+          reviewState: 'pending',
+          reviewedReleaseRequirements: [
             'first-six-practitioner-reviews',
             'candidate-exact-bundle-review',
             'intent',

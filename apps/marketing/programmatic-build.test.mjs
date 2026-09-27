@@ -1,4 +1,5 @@
 import test from 'node:test';
+import process from 'node:process';
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -22,7 +23,7 @@ const project=JSON.parse(await readFile('./apps/marketing/data/project.json','ut
 const registry=createRegistry(project), releases=[];
 for(const page of programmaticCandidates()) {
   const bundle=await createReviewBundle({page,project,registry});
-  const evidence=Object.fromEntries(PROGRAMMATIC_GATES.map(gate=>[gate,{state:'verified',verifiedAt:'2026-09-26T00:00:00Z',evidenceHash:sha256('TEST ONLY '+gate)}]));
+  const evidence=Object.fromEntries(PROGRAMMATIC_GATES.map(gate=>[gate,{state:'verified',verifiedAt:page.modified+'T00:00:00Z',evidenceHash:sha256('TEST ONLY '+gate)}]));
   evidence.artifactCompatibility.bundleHash=bundle.bundleHash;
   evidence.firstSixReviews=FIRST_SIX_REVIEW_IDS.map(id=>({id,reviewedRevision:editorialRevision(registry.find(p=>p.id===id))}));
   releases.push({id:page.id,approvedBundleHash:bundle.bundleHash,evidence,review:{state:'verified',reviewerName:'TEST ONLY reviewer',reviewerRole:'Disposable fixture',scope:'TEST ONLY: no real review',permissionToPublish:true,reviewedRevision:editorialRevision(page),reviewedBundleHash:bundle.bundleHash,reviewedAt:page.modified,sourcesCheckedAt:page.modified}});
@@ -40,6 +41,22 @@ test(
     try {
       await mkdir(join(temporary, 'apps'), { recursive: true });
       await cp(source, join(temporary, 'apps/marketing'), { recursive: true });
+      // Strict reviewed-mode fixtures are independent of the real educational release
+      // and its later production evidence. All test approvals stay in this copy.
+      await writeFile(
+        join(temporary, 'apps/marketing/data/programmatic-release.json'),
+        JSON.stringify({ schemaVersion: 1, releases: [] }),
+      );
+      const historyPath = join(temporary, 'apps/marketing/data/publication-history.json');
+      const history = JSON.parse(await readFile(historyPath, 'utf8'));
+      for (const entry of history.entries.filter((item) => item.originKind === 'programmatic'))
+        Object.assign(entry, {
+          state: 'candidate',
+          firstVerifiedLiveAt: null,
+          liveCommit: null,
+          evidence: null,
+        });
+      await writeFile(historyPath, JSON.stringify(history));
       await cp(join(repository, 'pnpm-lock.yaml'), join(temporary, 'pnpm-lock.yaml'));
       await symlink(join(repository, 'node_modules'), join(temporary, 'node_modules'));
       const registryFile = join(temporary, 'apps/marketing/registry.mjs');

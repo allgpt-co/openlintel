@@ -8,8 +8,11 @@ import { bookingLink } from './growth-pages.mjs';
 import { growthConfig, pilotCtaLabel } from './growth-config.mjs';
 import { verifiedReview } from './editorial-review.mjs';
 import { aiEditorialReview } from './ai-editorial-review.mjs';
+import { diagramLabels } from './diagram-labels.mjs';
+export { diagramLabels };
 
 const list = (items) => `<ul>${items.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>`;
+const olist = (items) => `<ol>${items.map((item) => `<li>${esc(item)}</li>`).join('')}</ol>`;
 const paragraphs = (items) => items.map((text) => `<p>${esc(text)}</p>`).join('');
 const formatLabel = (page) =>
   [...new Set((page.downloads || []).map((download) => download.format.toUpperCase()))].join(
@@ -25,7 +28,7 @@ function reviewCredit(page) {
 function aiReviewCredit(page) {
   const review = aiEditorialReview(page);
   return review
-    ? `<p data-ai-reviewed-revision="${esc(review.editorialRevision)}">AI-assisted editorial check by OpenAI Codex: <time datetime="${esc(review.reviewedAt)}">${editorialDate(review.reviewedAt)}</time>. Checked clarity, examples, and internal consistency. This is not independent professional review or project approval.</p>`
+    ? `<p data-ai-reviewed-revision="${esc(review.editorialRevision)}">AI-assisted editorial check by ${esc(review.reviewerName)}: <time datetime="${esc(review.reviewedAt)}">${editorialDate(review.reviewedAt)}</time>. Checked clarity, examples, and internal consistency. This is not independent professional review or project approval.</p>`
     : '';
 }
 export function editorialDate(value) {
@@ -46,7 +49,7 @@ function teachingTable(table) {
   return `<div class="table-scroll resource-table" tabindex="0" role="region" aria-label="${esc(table.caption)}; scroll horizontally"><table><caption>${esc(table.caption)}</caption><thead><tr>${table.headers.map((header) => `<th scope="col">${esc(header)}</th>`).join('')}</tr></thead><tbody>${table.rows.map((row) => `<tr>${row.map((value, i) => (i === 0 ? `<th scope="row">${esc(value)}</th>` : `<td>${esc(value)}</td>`)).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 function authoredSection(section) {
-  return `<section id="${esc(section.id)}"><h2>${esc(section.title)}</h2>${paragraphs(section.paragraphs || [])}${section.items?.length ? list(section.items) : ''}${teachingTable(section.table)}${section.links?.length ? `<ul>${section.links.map((link) => `<li><a href="${url(link.href)}">${esc(link.label)}</a></li>`).join('')}</ul>` : ''}</section>`;
+  return `<section id="${esc(section.id)}"><h2>${esc(section.title)}</h2>${paragraphs(section.paragraphs || [])}${section.items?.length ? (section.ordered ? olist(section.items) : list(section.items)) : ''}${teachingTable(section.table)}${section.links?.length ? `<ul>${section.links.map((link) => `<li><a href="${url(link.href)}">${esc(link.label)}</a></li>`).join('')}</ul>` : ''}</section>`;
 }
 export function breadcrumbs(page) {
   const parent = page.kind === 'template' ? 'templates' : 'resources';
@@ -83,20 +86,6 @@ function visual(page, project) {
     return `<figure class="resource-figure"><img src="${url(`assets/downloads/window-room-${page.visual}.svg`)}" width="900" height="700" alt="${page.visual === 'plan' ? 'WR-01 furnished plan with F-01 seating, F-02 chair, J-01 storage, and nominal room dimensions' : 'WR-02 west-wall J-01 elevation with three nominal 800 mm modules'}; illustrative and pending review">${caption(page.visual === 'plan' ? 'WR-01 / Read the relationships and references' : 'WR-02 / Read dimensions, then follow references', 'Illustrative drawing · Do not scale')}</figure>`;
   return `<figure class="resource-figure"><img src="${url(`assets/diagrams/${page.visual}.svg`)}" width="1000" height="620" alt="${esc(diagramLabels[page.visual])}">${caption('OpenLintel / Authored teaching diagram', 'Illustrative · Not a project deliverable')}</figure>`;
 }
-export const diagramLabels = {
-  measure:
-    'Nominal 5000 by 4000 mm room outline with diagonal-check reminders and a 20 m² floor-footprint calculation',
-  process:
-    'Design workflow: discovery, concept, development, and handoff, each with a review decision',
-  procurement:
-    'Procurement states: proposed selection, supplier confirmation, authorized order, and receipt; the sample is not ordered',
-  decisions:
-    'A decision record connecting the unresolved F-01 sofa model to dimensions, budget, timeline, and review ownership',
-  'drawing-index':
-    'Illustrative package index: WR-01 furnished plan and WR-02 joinery elevation, both revision R0 and pending review',
-  ffe: 'Three linked records: plan location F-01, FF&E schedule quantity one, and product specification with model still unresolved',
-  rcp: 'Notional reflected ceiling plan showing a room outline, an illustrative lighting symbol, an unresolved coordination zone, and an unverified 2800 mm ceiling height',
-};
 export function diagramSvg(type) {
   const label = diagramLabels[type];
   let body;
@@ -170,6 +159,12 @@ function templatePreview(page) {
     )
     .join('')}</tbody></table></div>`;
 }
+function headerDownload(page) {
+  const first = page.downloads?.[0];
+  if (!first)
+    return '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>';
+  return `<p class="download-actions header-download"><a class="button" data-resource-download data-resource-id="${esc(page.id)}" data-resource-format="${first.format.toLowerCase()}" data-resource-variant="${esc(first.variant || (first.format.toLowerCase() === 'xlsx' ? 'workbook' : 'blank'))}" href="${url(first.path)}" download>${esc(first.label)}</a> <a class="text-link" href="#download">All downloads</a></p><p class="micro">Free editable copy. No sign-up required. Preview the worked example below.</p>`;
+}
 function downloads(page) {
   const instructions =
     page.id === 'presentation'
@@ -204,7 +199,7 @@ export function resourcePage(page, registry, project, settings = growthConfig) {
        <section id="review"><h2>Review before use</h2>${list(page.mistakes)}${page.unitsNote ? `<h3>Units, source information, and US use</h3><p>${esc(page.unitsNote)}</p>` : ''}</section>${downloads(page)}`
     : `${visual(page, project)}${page.sections.map(authoredSection).join('')}<section id="checklist"><h2>Before you move on</h2>${list(page.checklist)}</section>`;
   return `<div class="wrap resource-page">${breadcrumbs(page)}
-    <header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Downloads: ${formatLabel(page)}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('about/')}">OpenLintel</a> · Updated <time datetime="${esc(page.modified)}">${editorialDate(page.modified)}</time> · Educational resource</p>${template ? '<p class="micro">Preview below, then download an editable copy. No sign-up required.</p>' : ''}</header>${reviewNotice}
+    <header class="article-header"><p class="eyebrow">${esc(clusters.find((c) => c.id === page.cluster).title)} / ${template ? `Downloads: ${formatLabel(page)}` : 'Practical guide'}</p><h1>${esc(page.title)}</h1><p class="lede">${esc(page.intro)}</p><p class="article-meta">By <a href="${url('about/')}">OpenLintel</a> · Updated <time datetime="${esc(page.modified)}">${editorialDate(page.modified)}</time> · Educational resource</p>${template ? headerDownload(page) : ''}</header>${reviewNotice}
     <div class="article-layout"><aside class="article-toc"><nav aria-label="On this page"><p class="eyebrow">On this page</p><ol>${sections.map((s) => `<li><a href="#${s.id}">${esc(s.title)}</a></li>`).join('')}${template ? '' : '<li><a href="#checklist">Review checklist</a></li>'}</ol></nav></aside>
     <article class="resource-body">${article}
       <section class="article-sources"><h2>About this resource</h2>${aiReviewCredit(page)}${reviewCredit(page)}<p><a href="${url('editorial-policy/')}">Authorship, review boundaries, sources, and corrections</a></p>${page.sources.length ? `<h3>References</h3><ul>${page.sources.map((s) => `<li><a href="${esc(s.url)}">${esc(s.title)}</a></li>`).join('')}</ul>` : ''}</section>

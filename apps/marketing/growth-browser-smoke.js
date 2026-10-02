@@ -232,7 +232,7 @@ async (page) => {
         );
       },
     });
-    await other.locator(`[data-resource-download][href$="/${filename}"]`).click();
+    await other.locator(`#download [data-resource-download][href$="/${filename}"]`).click();
     const [download] = await Promise.all([downloaded, measured]);
     check(!(await download.failure()), `Download succeeds: ${filename}`);
     check(download.suggestedFilename() === filename, `Download filename: ${filename}`);

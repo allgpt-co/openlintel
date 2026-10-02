@@ -10,10 +10,13 @@ export const aiEditorialReviews = JSON.parse(
 export function aiEditorialReview(page, records = aiEditorialReviews) {
   const entry = records.resources?.find((record) => record.id === page.id);
   const date = entry?.reviewedAt;
+  // Each record names the model that performed it; older records inherit the file-level name.
+  const reviewerName = entry?.reviewerName ?? records.reviewerName;
   if (
     records.schemaVersion !== 1 ||
     records.reviewerType !== 'ai' ||
-    records.reviewerName !== 'OpenAI Codex' ||
+    typeof reviewerName !== 'string' ||
+    !reviewerName.trim() ||
     !entry ||
     entry.path !== page.path ||
     entry.editorialRevision !== editorialRevision(page) ||
@@ -26,7 +29,7 @@ export function aiEditorialReview(page, records = aiEditorialReviews) {
     !['checked', 'corrected'].includes(entry.outcome)
   )
     return null;
-  return entry;
+  return { ...entry, reviewerName };
 }
 
 export function assertAiEditorialReviews(pages, records = aiEditorialReviews) {

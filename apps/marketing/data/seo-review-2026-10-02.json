@@ -1,0 +1,338 @@
+{
+  "reviewedAt": "2026-10-02",
+  "providers": [
+    "Google Search Console API (sc-domain:openlintel.com)",
+    "GA4 Data API (properties/556489311)",
+    "DataForSEO: keywords_data/google_ads/search_volume, dataforseo_labs bulk_keyword_difficulty, serp_competitors, ranked_keywords, backlinks/summary, backlinks/anchors, backlinks/referring_domains",
+    "Lighthouse 12 (mobile, simulated throttling)"
+  ],
+  "market": "United States",
+  "language": "en",
+  "notes": [
+    "Search volumes are Google Ads estimates; they overlap across phrasings and are not a traffic forecast.",
+    "Keyword difficulty of 0 means no provider record, not low competition. SERP occupants are the practical difficulty signal.",
+    "GSC and GA4 figures are 90-day totals to 2026-10-02. GA4 property was created 2026-09-29 and the deployed build had analyticsEnabled:false, so zero rows is a configuration state, not a traffic measurement.",
+    "Backlink counts describe automated spam; genuine referring domains were zero. No disavow filed.",
+    "Phase 1 changes were re-applied on top of commit f131965 after the first pass was found to be based on a stale local main (2cdc7b2)."
+  ],
+  "searchConsole": {
+    "days": 90,
+    "clicks": 1,
+    "impressions": 2,
+    "queries": ["openlintel"],
+    "pagesWithImpressions": ["https://openlintel.com/"],
+    "sitemapSubmitted": "2026-10-02",
+    "homepage": {
+      "coverage": "Submitted and indexed",
+      "lastCrawled": "2026-09-21",
+      "discoveredVia": "spam referrer"
+    },
+    "urlsUnknownToGoogle": 15,
+    "urlsChecked": 16
+  },
+  "ga4": {
+    "propertyId": "556489311",
+    "created": "2026-09-29",
+    "rows90d": 0,
+    "deployedConfig": {
+      "analyticsEnabled": false,
+      "pilotEnabled": false,
+      "measurementId": ""
+    }
+  },
+  "backlinks": {
+    "backlinks": 218,
+    "referringDomains": 216,
+    "spamScore": 53,
+    "genuineReferringDomains": 0,
+    "dominantAnchors": [
+      "Expert Backlink Building Services to Grow openlintel.com Website Rankings",
+      "High Quality Dofollow Backlinks ... PBN Network Service openlintel.com ..."
+    ]
+  },
+  "lighthouseMobile": {
+    "target": "https://openlintel.com live site, deployed commit f131965 (PR #29), Lighthouse 12 mobile simulated throttling, 2026-10-02",
+    "/": {
+      "performance": 0.98,
+      "lcpSeconds": 2.1,
+      "cls": 0.003
+    },
+    "/templates/ffe-schedule/": {
+      "performance": 1.0,
+      "lcpSeconds": 1.2,
+      "cls": 0
+    },
+    "/resources/reflected-ceiling-plan/": {
+      "performance": 1.0,
+      "lcpSeconds": 1.4,
+      "cls": 0
+    }
+  },
+  "keywords": [
+    {
+      "keyword": "reflected ceiling plan",
+      "searchVolume": 1900,
+      "difficulty": 0,
+      "page": "resources/reflected-ceiling-plan/"
+    },
+    {
+      "keyword": "how to measure a room",
+      "searchVolume": 1300,
+      "difficulty": 0,
+      "page": "resources/how-to-measure-a-room/"
+    },
+    {
+      "keyword": "interior design project management",
+      "searchVolume": 480,
+      "difficulty": 0,
+      "page": "resources/interior-design-project-management/"
+    },
+    {
+      "keyword": "interior design space planning",
+      "searchVolume": 390,
+      "difficulty": 0,
+      "page": "resources/interior-design-space-planning/"
+    },
+    {
+      "keyword": "ffe interior design",
+      "searchVolume": 320,
+      "difficulty": 0,
+      "page": "resources/ffe-in-interior-design/"
+    },
+    {
+      "keyword": "ff&e meaning",
+      "searchVolume": 4400,
+      "difficulty": null,
+      "page": "resources/ffe-in-interior-design/",
+      "note": "Definitional cluster: 'what is ff and e' 1900, 'what does ff&e stand for' 880, 'fixture and equipment' 9900 (broad)."
+    },
+    {
+      "keyword": "interior design templates",
+      "searchVolume": 320,
+      "difficulty": 0,
+      "page": "templates/"
+    },
+    {
+      "keyword": "mood board interior design examples",
+      "searchVolume": 320,
+      "difficulty": 8,
+      "page": "resources/interior-design-mood-board-examples/"
+    },
+    {
+      "keyword": "interior design process",
+      "searchVolume": 260,
+      "difficulty": 0,
+      "page": "resources/interior-design-process/"
+    },
+    {
+      "keyword": "interior elevation drawings",
+      "searchVolume": 260,
+      "difficulty": 0,
+      "page": "resources/interior-elevation-drawings/"
+    },
+    {
+      "keyword": "material board interior design",
+      "searchVolume": 260,
+      "difficulty": 1,
+      "page": "resources/interior-design-material-board/"
+    },
+    {
+      "keyword": "interior design proposal template",
+      "searchVolume": 210,
+      "difficulty": 0,
+      "page": "templates/interior-design-proposal/"
+    },
+    {
+      "keyword": "ai interior design software",
+      "searchVolume": 210,
+      "difficulty": 37,
+      "page": ""
+    },
+    {
+      "keyword": "interior design project management software",
+      "searchVolume": 170,
+      "difficulty": 29,
+      "page": ""
+    },
+    {
+      "keyword": "interior design client questionnaire",
+      "searchVolume": 140,
+      "difficulty": 0,
+      "page": "templates/interior-design-client-questionnaire/"
+    },
+    {
+      "keyword": "interior design presentation template",
+      "searchVolume": 140,
+      "difficulty": 0,
+      "page": "templates/interior-design-presentation/"
+    },
+    {
+      "keyword": "interior finish schedule",
+      "searchVolume": 110,
+      "difficulty": 0,
+      "page": "templates/finish-schedule/"
+    },
+    {
+      "keyword": "interior design drawings",
+      "searchVolume": 880,
+      "difficulty": null,
+      "page": "resources/interior-design-drawing-checklist/",
+      "note": "From competitor ranked-keyword data; not re-queried for difficulty."
+    },
+    {
+      "keyword": "chatgpt interior design",
+      "searchVolume": 1000,
+      "difficulty": null,
+      "page": "resources/ai-concept-images-vs-design-documentation/",
+      "note": "From competitor ranked-keyword data."
+    },
+    {
+      "keyword": "interior design spec sheet template",
+      "searchVolume": 70,
+      "difficulty": 0,
+      "page": "templates/interior-design-spec-sheet/"
+    },
+    {
+      "keyword": "interior design specification sheet",
+      "searchVolume": 70,
+      "difficulty": 2,
+      "page": "templates/interior-design-spec-sheet/"
+    },
+    {
+      "keyword": "finish schedule template",
+      "searchVolume": 70,
+      "difficulty": 0,
+      "page": "templates/finish-schedule/"
+    },
+    {
+      "keyword": "room data sheet",
+      "searchVolume": 70,
+      "difficulty": 0,
+      "page": "templates/room-data-sheet/"
+    },
+    {
+      "keyword": "interior design procurement",
+      "searchVolume": 70,
+      "difficulty": 31,
+      "page": "resources/interior-design-procurement/"
+    },
+    {
+      "keyword": "ff&e schedule template",
+      "searchVolume": 50,
+      "difficulty": 0,
+      "page": "templates/ffe-schedule/"
+    },
+    {
+      "keyword": "ffe schedule",
+      "searchVolume": 50,
+      "difficulty": 0,
+      "page": "templates/ffe-schedule/"
+    },
+    {
+      "keyword": "interior design budget template",
+      "searchVolume": 50,
+      "difficulty": 0,
+      "page": "templates/interior-design-budget/"
+    },
+    {
+      "keyword": "interior design scope of work template",
+      "searchVolume": 30,
+      "difficulty": 0,
+      "page": "templates/interior-design-scope-of-work/"
+    },
+    {
+      "keyword": "open source interior design software",
+      "searchVolume": 20,
+      "difficulty": 25,
+      "page": "open-source/"
+    },
+    {
+      "keyword": "interior design brief template",
+      "searchVolume": 10,
+      "difficulty": 0,
+      "page": "templates/interior-design-brief/"
+    },
+    {
+      "keyword": "room data sheet template",
+      "searchVolume": 10,
+      "difficulty": 0,
+      "page": "templates/room-data-sheet/"
+    },
+    {
+      "keyword": "interior design project timeline template",
+      "searchVolume": 10,
+      "difficulty": 0,
+      "page": "templates/interior-design-project-timeline/"
+    },
+    {
+      "keyword": "interior design site survey checklist",
+      "searchVolume": 10,
+      "difficulty": 0,
+      "page": "templates/interior-design-site-survey-checklist/"
+    }
+  ],
+  "serpCompetitors": {
+    "platforms": [
+      "pinterest.com",
+      "etsy.com",
+      "youtube.com",
+      "scribd.com",
+      "reddit.com",
+      "canva.com",
+      "behance.net"
+    ],
+    "niche": [
+      "pro.houzz.com",
+      "thelittledesigncorner.com",
+      "sonderpathstudio.com",
+      "programa.design",
+      "procurist.io",
+      "layer.team",
+      "mastt.com",
+      "idco.studio",
+      "blog.designfiles.co",
+      "dakotadesigncompany.com",
+      "lifeofanarchitect.com",
+      "existingconditions.com",
+      "vectorworks.net",
+      "archisoup.com"
+    ]
+  },
+  "gapCandidates": [
+    {
+      "cluster": "ff&e meaning / what does ff&e stand for / fixture and equipment",
+      "evidence": "procurist.io terminology cheat sheet ranks top 15 for 12 variants",
+      "status": "folded into ffe-in-interior-design terms + glossary sections 2026-10-02; separate glossary URL only if that page has not ranked by week 8"
+    },
+    {
+      "cluster": "interior design quotation / interior quote",
+      "searchVolume": 480,
+      "evidence": "programa.design blog ranks 6-8",
+      "status": "candidate"
+    },
+    {
+      "cluster": "ff&e budget",
+      "searchVolume": 110,
+      "evidence": "procurist.io ranks 2",
+      "status": "candidate"
+    },
+    {
+      "cluster": "ff&e procurement",
+      "searchVolume": 260,
+      "evidence": "programa.design ranks 2-3",
+      "status": "candidate; may expand interior-design-procurement instead"
+    },
+    {
+      "cluster": "interior design contract template",
+      "searchVolume": 390,
+      "evidence": "difficulty 1",
+      "status": "needs reviewer decision; roadmap keeps proposal/scope non-legal"
+    },
+    {
+      "cluster": "interior design software for professionals",
+      "searchVolume": 70,
+      "evidence": "difficulty 63; commercial",
+      "status": "gated by hands-on evaluation per evidence gates"
+    }
+  ]
+}

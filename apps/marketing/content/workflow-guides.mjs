@@ -17,7 +17,7 @@ const link = (href, label) => ({ href, label });
 export const workflowGuides = [
   {
     id: 'concept-vs-documents',
-    modified: '2026-09-15',
+    modified: '2026-10-02',
     slug: 'ai-concept-images-vs-design-documentation',
     title: 'AI concept images vs. dimensioned design documentation',
     cluster: 'design',
@@ -60,6 +60,20 @@ export const workflowGuides = [
             ],
           ],
         ),
+      ),
+      section(
+        'generators',
+        'Using ChatGPT and image generators for interior design concepts',
+        [
+          'Some studios use conversational AI and image generators to explore concepts: describing a room in a prompt, asking for variations in material or mood, or producing a quick visual for a client conversation. Used that way, the output is a sketch of intent. It can speed up a discussion of atmosphere and direction before any measured work begins.',
+          'What these tools cannot do is survey the room, confirm that a pictured product exists at a stated size, or produce a drawing whose dimensions mean anything until they are checked against a measured record. Treat a generated image or a model-written specification as a draft to verify, label it as AI-generated when you share it, and keep the measured plan, the item record, and the approval trail as the authority.',
+        ],
+        [
+          'Keep prompts and generated images with the concept record, not in the drawing set.',
+          'Give any item taken from an image a reference and an open specification.',
+          'Verify dimensions against the room data sheet before drawing.',
+          'Disclose AI-generated imagery to clients and collaborators.',
+        ],
       ),
       section('document', 'Dimensioned does not mean verified', [
         'A dimensioned drawing is more explicit than an image, but its reliability still depends on inputs, purpose, and review. Read its source, units, revision, and intended use. A precise number can describe nominal geometry just as precisely as it describes a measured condition.',
@@ -116,7 +130,7 @@ export const workflowGuides = [
       'The useful connection between documents is not a shared logo or filename. It is the ability to follow one requirement into a selection, its location, the relevant evidence, and the next unresolved decision.',
     visual: 'ffe',
     sample: 'materials',
-    related: ['design-brief', 'ffe-schedule', 'finish-schedule'],
+    related: ['design-brief', 'ffe-schedule', 'finish-schedule', 'ffe-guide'],
     pilot:
       'If brief decisions are repeatedly re-entered across drawings and schedules, discuss the record chain and where it breaks in a pilot discovery conversation.',
     sections: [
@@ -568,7 +582,13 @@ export const workflowGuides = [
       'Evaluate the job your studio needs done, not the number of features on a landing page. A small repeatable test can reveal more than a gallery of impressive room images.',
     visual: 'process',
     sample: 'handoff',
-    related: ['concept-vs-documents', 'brief-to-schedules', 'project-management'],
+    related: [
+      'concept-vs-documents',
+      'brief-to-schedules',
+      'project-management',
+      'scope-of-work',
+      'design-process',
+    ],
     pilot:
       'OpenLintel is in active development, not a guaranteed hosted trial. Bring your evaluation requirements to a pilot discovery conversation and compare them with the product’s verified status.',
     sections: [

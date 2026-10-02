@@ -208,7 +208,7 @@ export function templateDefinitions(project) {
         'Do not mix design fees with the furniture purchasing budget.',
         'Do not present this educational proposal outline as a legal contract.',
       ],
-      related: ['scope-of-work', 'budget', 'timeline'],
+      related: ['scope-of-work', 'budget', 'timeline', 'design-process'],
       sample: 'brief',
     },
     {
@@ -370,6 +370,7 @@ export function templateDefinitions(project) {
       id: 'spec-sheet',
       slug: 'interior-design-spec-sheet',
       title: 'Interior design spec sheet template',
+      seoTitle: 'Interior design spec sheet template (specification sheet, Excel)',
       cluster: 'coordinate',
       wave: 1,
       format: 'xlsx',
@@ -624,7 +625,7 @@ export function templateDefinitions(project) {
         'Do not mix requirements with verified performance results.',
         'Do not duplicate a fact in several registers without a clear source of truth.',
       ],
-      related: ['site-survey', 'design-brief', 'finish-schedule'],
+      related: ['site-survey', 'design-brief', 'finish-schedule', 'measure-room'],
       sample: 'brief',
     },
     {

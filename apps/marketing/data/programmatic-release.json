@@ -4,12 +4,12 @@
     {
       "id": "purchase-order",
       "releaseMode": "educational-pending-review",
-      "contentBundleHash": "sha256:14698fbd337384e0623cc25373e41e8c812e39dc7fdc52a738430621a51e3424"
+      "contentBundleHash": "sha256:7bd9b36c740d892baa5d97ebc573d88f4da892733f760a373ecbb6c6d2412876"
     },
     {
       "id": "plumbing-fixture-schedule",
       "releaseMode": "educational-pending-review",
-      "contentBundleHash": "sha256:26ff9b3e950ac47c280794f0f2b0bd3d46a334f515a9f9b0493e04c134d3c261"
+      "contentBundleHash": "sha256:d6c4ef54c830d709c0da411c0af3a1b1bc37b1c338796a7de97ea88f47aa9beb"
     }
   ]
 }

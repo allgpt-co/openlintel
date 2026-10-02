@@ -203,10 +203,18 @@ async (page) => {
     );
     if (record.kind === 'template') {
       check(
-        (await noJsPage.locator('[data-resource-download]').count()) === record.downloads.length,
+        (await noJsPage.locator('#download [data-resource-download]').count()) ===
+          record.downloads.length,
         'All artifact downloads available without JavaScript',
       );
-      const href = await noJsPage.locator('[data-resource-download]').first().getAttribute('href');
+      check(
+        (await noJsPage.locator('.header-download [data-resource-download]').count()) === 1,
+        'Header download control available without JavaScript',
+      );
+      const href = await noJsPage
+        .locator('#download [data-resource-download]')
+        .first()
+        .getAttribute('href');
       check(
         (await noJsPage.request.get(origin + href)).ok(),
         'Resource artifact available without JavaScript',
@@ -272,8 +280,14 @@ async (page) => {
   );
   for (const record of manifest.pages.filter((item) => item.kind === 'template')) {
     await page.goto(at(record.path));
+    const headerPending = page.waitForEvent('download');
+    await page.locator('.header-download [data-resource-download]').click();
+    check(
+      !(await (await headerPending).failure()),
+      `Header download control: ${record.downloads[0].path}`,
+    );
     for (const metadata of record.downloads) {
-      const anchor = page.locator(`[data-resource-download][href$="${metadata.path}"]`);
+      const anchor = page.locator(`#download [data-resource-download][href$="${metadata.path}"]`);
       const pending = page.waitForEvent('download');
       await anchor.click();
       const download = await pending;

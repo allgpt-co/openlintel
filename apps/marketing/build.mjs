@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config, absolute, esc } from './config.mjs';
-import { shell, pageIntro, button } from './components.mjs';
+import { shell, pageIntro, button, documentTitle } from './components.mjs';
 import { home, workflow, sample, audience, openSource, summary } from './pages.mjs';
 import { drawingSvg } from './drawings.mjs';
 import { createRegistry, publishedPages } from './registry.mjs';
@@ -175,6 +175,28 @@ try {
       .join('')}</urlset>\n`,
   );
   await emit('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${absolute('sitemap.xml')}\n`);
+  // llms.txt: a plain index of indexable pages for AI assistants and crawlers (https://llmstxt.org).
+  const llmsPages = pages.filter((page) => config.indexable && page.indexable);
+  const llmsSection = (title, items) =>
+    items.length
+      ? `\n## ${title}\n\n${items.map((page) => `- [${documentTitle(page)}](${absolute(page.path)}): ${page.description}`).join('\n')}\n`
+      : '';
+  await emit(
+    'llms.txt',
+    `# OpenLintel\n\n> ${pages.find((page) => page.path === '')?.description || 'Open-source, AI-assisted interior design workflows for residential design professionals.'}\n\nEducational guides and free editable templates for residential interior design studios, plus an illustrative sample project. Resources are drafted with AI assistance and have not received independent professional review; where a page shows an AI-assisted editorial check, that check is dated on the page. They are not legal, construction, or engineering documents.\n` +
+      llmsSection(
+        'Templates',
+        llmsPages.filter((page) => page.kind === 'template'),
+      ) +
+      llmsSection(
+        'Guides',
+        llmsPages.filter((page) => page.kind === 'guide'),
+      ) +
+      llmsSection(
+        'Site',
+        llmsPages.filter((page) => !['template', 'guide'].includes(page.kind)),
+      ),
+  );
   await emit('.nojekyll', '');
   const manifest = {
     generator: 'OpenLintel marketing',

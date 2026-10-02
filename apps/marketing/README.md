@@ -13,7 +13,7 @@ pnpm marketing:preview
 
 Preview at `http://localhost:4173`. Set `PORT` to use a different port. Install the workspace’s pinned dependencies first (`npx --yes pnpm@9.15.4 install --frozen-lockfile`). The static build uses Node plus pinned build-only Office document libraries; there are no browser framework dependencies or build-time network calls. If the global pnpm version differs, run `npx --yes pnpm@9.15.4 marketing:build`, or run `node apps/marketing/build.mjs` directly.
 
-The source renderer writes 47 registered HTML documents (six core pages, six pilot/trust/privacy pages, a printable summary, two resource hubs, eighteen guides, and fourteen template pages), including 45 indexable URLs, plus a custom `404.html`, shared assets, sample drawings, seven teaching diagrams, two assembled mood-board SVGs, and 26 template downloads (12 DOCX, eight XLSX, two PPTX, and four PDF files) into `docs/`. Generated output is checked in for GitHub Pages compatibility. Edit marketing source and rebuild; do not hand-edit generated pages.
+The source renderer writes 47 registered HTML documents (six core pages, six pilot/trust/privacy pages, a printable summary, two resource hubs, eighteen guides, and fourteen template pages), including 45 indexable URLs, plus a custom `404.html`, shared assets, sample drawings, seven teaching diagrams, two assembled mood-board SVGs, 26 template downloads (12 DOCX, eight XLSX, two PPTX, and four PDF files), `sitemap.xml`, `robots.txt`, and an `llms.txt` index of indexable pages into `docs/`. Generated output is checked in for GitHub Pages compatibility. Edit marketing source and rebuild; do not hand-edit generated pages.
 
 Existing `docs/CNAME`, `docs/architecture.md`, and `docs/development.md` are preserved. The renderer overwrites only its named output paths; it never cleans the output directory recursively. `docs/marketing-manifest.json` lists generated files. A versioned ownership manifest records file hashes. Removing a route prunes only unchanged files proven to belong to a prior versioned build; legacy manifests, modified artifacts, and unrelated files cannot authorize deletion. Route redirects remain a separately verified hosting operation.
 
@@ -43,6 +43,7 @@ The second configuration previews at `http://localhost:4173/openlintel/`. Use th
 - `components.mjs`: shared document shell, navigation, footer, image and table helpers.
 - `pages.mjs`: homepage, workflow, sample, audience, open-source, and summary content.
 - `drawings.mjs`: deterministic sample SVGs with review labels and references.
+- `diagram-labels.mjs`: alt text and schema captions for the teaching diagrams, shared by page rendering and the document head.
 - `data/project.json`: shared brief, dimensions, concepts, drawing references, and materials. The table, printable summary, and CSV are generated from this fixture.
 - `assets/site.css` and `assets/site.js`: responsive design and progressive enhancement.
 - `data/image-prompts.json`: exact prompts and generation provenance.

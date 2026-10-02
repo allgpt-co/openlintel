@@ -202,12 +202,12 @@ export const guides = [
       'Have movement, use, and operation been considered?',
       'Do product and drawing references agree across the package?',
     ],
-    related: ['measure-room', 'room-data', 'ffe-schedule'],
+    related: ['measure-room', 'room-data', 'ffe-schedule', 'concept-board'],
     sample: 'drawings',
   },
   {
     id: 'measure-room',
-    modified: '2026-09-15',
+    modified: '2026-10-02',
     slug: 'how-to-measure-a-room',
     title: 'How to measure a room for interior design',
     cluster: 'discover',
@@ -219,6 +219,32 @@ export const guides = [
     visual: 'measure',
     sources: [leica],
     sections: [
+      {
+        ...section(
+          'steps',
+          'How to measure a room in eight steps',
+          [
+            'Use this sequence as the checklist for the visit. Each step produces part of the record described in the sections that follow, and the site survey checklist template gives you a place to write it down.',
+          ],
+          [
+            'Confirm access, permission, and the unit you will use throughout.',
+            'Sketch the room outline and give the room a reference.',
+            'Measure each wall run, working around the room in one direction.',
+            'Locate doors, windows, and openings from an identified corner, with widths, heights, and sill levels.',
+            'Record the ceiling height and any changes in level, beams, or obstructions.',
+            'Measure at least two diagonals to check the geometry.',
+            'Photograph each wall and label the photographs against the sketch.',
+            'Note every inaccessible position or uncertain reading before leaving the site.',
+          ],
+        ),
+        ordered: true,
+        links: [
+          {
+            href: 'templates/interior-design-site-survey-checklist/',
+            label: 'Download the site survey checklist to record these steps',
+          },
+        ],
+      },
       section('prepare', 'Prepare the record and access arrangements', [
         'Assign a room reference and sketch the outline before adding dimensions. State the unit once on the sheet and repeat it where ambiguity is possible. Check instrument setup and follow its manufacturer’s instructions, including the measurement reference point.',
         'Arrange permission and safe access before the visit. This is a documentation workflow, not a substitute for surveying training, site safety procedures, or specialist inspection. Do not disturb finishes or concealed services to complete a checklist.',
@@ -251,7 +277,7 @@ export const guides = [
       'Are openings, obstructions, and missing readings recorded?',
       'Have conflicting dimensions been checked rather than hidden?',
     ],
-    related: ['site-survey', 'room-data', 'space-planning'],
+    related: ['site-survey', 'room-data', 'space-planning', 'design-process'],
     sample: 'brief',
   },
   {
@@ -290,7 +316,7 @@ export const guides = [
       'Is scope defined separately from a generic process?',
       'Can the recipient identify the current issue and outstanding actions?',
     ],
-    related: ['design-brief', 'timeline', 'drawing-checklist'],
+    related: ['design-brief', 'timeline', 'drawing-checklist', 'measure-room'],
     sample: 'handoff',
   },
   {
@@ -338,7 +364,7 @@ export const guides = [
       'Are quote information and purchasing responsibility current?',
       'Are substitutions and receipt records connected to the original item reference?',
     ],
-    related: ['ffe-schedule', 'spec-sheet', 'budget'],
+    related: ['ffe-schedule', 'spec-sheet', 'budget', 'ffe-guide'],
     sample: 'materials',
   },
   {
@@ -386,12 +412,12 @@ export const guides = [
       'Are dimensions and unknowns explicit?',
       'Do material references and revision status match the rest of the issue?',
     ],
-    related: ['drawing-checklist', 'spec-sheet', 'space-planning'],
+    related: ['drawing-checklist', 'spec-sheet', 'space-planning', 'rcp-guide'],
     sample: 'drawings',
   },
   {
     id: 'rcp-guide',
-    modified: '2026-09-15',
+    modified: '2026-10-02',
     slug: 'reflected-ceiling-plan',
     title: 'What is a reflected ceiling plan?',
     cluster: 'coordinate',
@@ -411,6 +437,21 @@ export const guides = [
         'Identify what each symbol means within that particular drawing. A circle or rectangle is not enough to establish a fixture type, performance, or installation requirement. Look for a schedule reference, ceiling description, and height datum where those are supplied.',
         'Our diagram deliberately marks a notional lighting position and a coordination zone without specifying products or installation locations. The 2800 mm height comes from the illustrative project fixture and remains unverified.',
       ]),
+      section(
+        'symbols',
+        'Common RCP symbols and what to check',
+        [
+          'Reflected ceiling plans typically show ceiling heights and level changes, light fittings, ceiling-mounted services such as sprinkler heads, detectors, diffusers, and access panels, and the extent of ceiling finishes, grids, or bulkheads. Symbol conventions vary between offices and software, so the legend on the drawing, not a general list, defines each symbol.',
+          'When you read one, confirm the datum for each height, whether a fitting is recessed, surface-mounted, or suspended, and which schedule or specification the symbol references. A symbol without a schedule reference records a design intention, not a specified product.',
+        ],
+        [
+          'Ceiling heights and level changes, each with its datum.',
+          'Light fittings with a reference to a lighting schedule.',
+          'Ceiling services supplied by the responsible discipline: sprinklers, detectors, diffusers, access panels.',
+          'Ceiling finish, grid, or bulkhead boundaries.',
+          'Setting-out dimensions for fittings, where the drawing has reached that stage.',
+        ],
+      ),
       section(
         'coordination',
         'Ask which other disciplines are affected',
@@ -440,13 +481,13 @@ export const guides = [
   },
   {
     id: 'ffe-guide',
-    modified: '2026-09-15',
+    modified: '2026-10-02',
     slug: 'ffe-in-interior-design',
-    title: 'What does FF&E mean in interior design?',
+    title: 'What is FF&E in interior design? Meaning, examples, and schedules',
     cluster: 'coordinate',
     wave: 3,
     description:
-      'Understand furniture, fixtures, and equipment in an interior design workflow, including schedule boundaries, product specifications, and procurement status.',
+      'FF&E means furniture, fixtures, and equipment. Learn what it covers in interior design, how it differs from OS&E and finishes, and how a schedule and spec sheet connect.',
     intro:
       'FF&E stands for furniture, fixtures, and equipment. In a design workflow, the term often identifies a group of selections that need to be specified, counted, reviewed, and coordinated for a project.',
     visual: 'ffe',
@@ -455,6 +496,35 @@ export const guides = [
         'The exact boundary varies with the practice, project, and agreement. Do not assume that a familiar acronym settles who specifies, purchases, or installs every item. Agree a classification and responsibilities before assembling the register.',
         'This library uses the FF&E schedule for the sofa F-01, reading chair F-02, and loose rug T-01. Retained flooring FIN-01 belongs in the finish schedule; built-in J-01 joinery is developed through its drawing and specification. This is an explicit teaching convention, not a universal legal or accounting definition.',
       ]),
+      section(
+        'terms',
+        'FF&E, OS&E, and finishes: related terms',
+        [
+          'FF&E usually refers to items that are selected and purchased as products rather than built as part of the structure: seating, tables, storage pieces, decorative light fittings, appliances, and similar equipment. Accounting definitions often limit FF&E to movable items with no permanent connection to the building, while many design practices also schedule attached products such as a wall light or a towel rail under FF&E. Practices, contracts, and accounting rules draw that line differently, so state your own boundary and keep a separate lighting schedule where your drawings reference one.',
+          'OS&E, operating supplies and equipment, is a hospitality term for smaller operational and consumable items such as linen, tableware, and housekeeping equipment; it rarely appears in a residential schedule. Finishes are applied surfaces such as flooring, paint, tile, and wall coverings. In this library, finishes belong in the finish schedule and FF&E in the FF&E schedule, while built-in joinery is developed through its own drawing and specification.',
+        ],
+        [
+          'FF&E: furniture, fixtures, and equipment selected and specified as products.',
+          'OS&E: operating supplies and equipment, mainly in hospitality projects.',
+          'Finishes: applied surfaces recorded in a finish schedule, not the FF&E register.',
+          'Built-in joinery: developed through drawings and a specification in this library’s convention.',
+        ],
+      ),
+      section(
+        'glossary',
+        'Terms you will meet on an FF&E schedule',
+        [
+          'The same words are used loosely across the industry. These short definitions describe how the terms are used in this library and its templates; align them with your own agreement and supplier documents.',
+        ],
+        [
+          'Reference: the stable identifier that links the plan, the schedule, and the specification, such as F-01.',
+          'Schedule: the room-by-room register of items, quantities, and status.',
+          'Specification or spec sheet: the product record, including identity, dimensions, finish, source, and review status.',
+          'Approval: client or technical acceptance of a selection; it is not an order.',
+          'Lead time: the period a supplier states between order confirmation and availability; record it only once confirmed.',
+          'Procurement status: proposed, confirmed by supplier, ordered, delivered, or received, each as a separate state.',
+        ],
+      ),
       section('records', 'A schedule and a specification answer different questions', [
         'The schedule answers where an item belongs and how many are proposed. The product specification answers what the item is: identity, size, finish, source, and review status. A stable reference links the two.',
         'Avoid repeating uncertain product information in several places without a clear source. If a model changes, update the specification and review its impact on quantities, layout, budget, and timing.',
@@ -488,13 +558,13 @@ export const guides = [
   },
   {
     id: 'project-management',
-    modified: '2026-09-15',
+    modified: '2026-10-02',
     slug: 'interior-design-project-management',
-    title: 'Interior design project management: decisions and handoffs',
+    title: 'Interior design project management: phases, approvals, and handoff',
     cluster: 'handoff',
     wave: 3,
     description:
-      'Organize interior design responsibilities, approvals, revisions, and handoffs with a practical decision-management workflow and editable timeline.',
+      'How interior design project management works across phases: decision owners, the approvals that apply, and a handoff with a usable revision trail. Editable timeline included.',
     intro:
       'A design project can have a full task list and still be stalled by one unanswered question. Manage decisions and information handoffs as deliberately as you manage production tasks.',
     visual: 'decisions',
@@ -503,6 +573,55 @@ export const guides = [
         'Describe the decision in plain language, identify who provides the information, and identify who can make or confirm it. A broad task such as “finish selections” becomes more actionable when split into a specific choice and its prerequisites.',
         'In the sample, the final F-01 sofa model remains unresolved. That is not merely a missing cell: dimensions, layout checks, supplier information, and budget discussion may depend on it. A real project needs an assigned owner and review date.',
       ]),
+      {
+        id: 'phases',
+        title: 'What a studio tracks in each phase',
+        paragraphs: [
+          'Phase names differ between practices, but the information a studio has to manage tends to follow the same sequence. The table lists typical records for each phase and the decision that closes it. It is a planning aid to adapt to your agreement, not a contractual scope or a professional standard.',
+        ],
+        items: [],
+        table: {
+          caption: 'Typical records per phase · Illustrative; adapt to your scope and agreement',
+          headers: ['Phase', 'What is tracked', 'Decision that closes the phase'],
+          rows: [
+            [
+              'Discovery and brief',
+              'Questionnaire, site survey, room data, budget range, timeline assumptions',
+              'Client confirms the brief and the scope of work',
+            ],
+            [
+              'Concept and space planning',
+              'Concept boards, space-planning options, outline material direction',
+              'Client selects a direction for development',
+            ],
+            [
+              'Design development and specification',
+              'Spec sheets, FF&E and finish schedules, drawings, budget detail',
+              'Technical review and client approval of selections',
+            ],
+            [
+              'Procurement and coordination',
+              'Supplier confirmations, orders, lead times, change requests',
+              'Purchasing approval and confirmed delivery dates',
+            ],
+            [
+              'Delivery, installation, and handoff',
+              'Site coordination, snagging or punch list, as-installed records',
+              'Handoff package accepted with outstanding items assigned',
+            ],
+          ],
+        },
+        links: [
+          {
+            href: 'templates/interior-design-project-timeline/',
+            label: 'Plan the phases with the editable timeline',
+          },
+          {
+            href: 'resources/interior-design-approval-states/',
+            label: 'Distinguish client, technical, and purchasing approval',
+          },
+        ],
+      },
       section('status', 'Separate review states', [
         'Proposed, under review, selected, technically coordinated, and ordered are not synonyms. Use status labels that match the record’s purpose and avoid a single “done” checkbox that hides the remaining work.',
         'Quiet Oak is the selected illustrative concept, but the drawings still say pending review and the furniture has not been ordered. Those statements are compatible because they describe different decisions.',
@@ -536,17 +655,41 @@ export const guides = [
   },
   {
     id: 'drawing-checklist',
-    modified: '2026-09-15',
+    modified: '2026-10-02',
     slug: 'interior-design-drawing-checklist',
-    title: 'Interior design drawing package checklist',
+    title: 'Interior design drawings: the full set and a drawing checklist',
     cluster: 'handoff',
     wave: 3,
     description:
-      'Review drawing references, units, revisions, schedules, and outstanding coordination questions with a practical interior design issue checklist.',
+      'Which drawings make up an interior design package, from furnished plans to elevations and reflected ceiling plans, plus a checklist for references, units, and revisions.',
     intro:
       'A drawing-package review checks whether the documents tell a consistent story and whether their intended use is clear. This checklist supports that review; it does not certify technical adequacy or construction readiness.',
     visual: 'drawing-index',
     sections: [
+      {
+        ...section(
+          'set',
+          'What an interior design drawing set usually contains',
+          [
+            'A residential interior design package commonly includes a furnished floor plan, interior elevations, sections or details for built-in elements, a reflected ceiling plan where ceiling work is in scope, and the schedules those drawings reference. Which sheets are needed depends on the scope, the agreement, and what other consultants provide. The list describes typical contents, not a required standard.',
+          ],
+          [
+            'Furnished floor plan with room and item references.',
+            'Interior elevations of walls that carry joinery, fixtures, or finish changes.',
+            'Sections and details for built-in joinery and other constructed elements.',
+            'Reflected ceiling plan where lighting or ceiling changes are part of the scope.',
+            'Finish, FF&E, and lighting schedules referenced from the drawings.',
+            'Drawing index with references, revisions, dates, and the purpose of the issue.',
+          ],
+        ),
+        links: [
+          {
+            href: 'resources/interior-elevation-drawings/',
+            label: 'How to read interior elevation drawings',
+          },
+          { href: 'resources/reflected-ceiling-plan/', label: 'What is a reflected ceiling plan?' },
+        ],
+      },
       section('index', 'Start with the issue register', [
         'List every document in the package with its reference, title, revision, date, and intended use. Identify the responsible reviewer and recipients for a real issue. Confirm that superseded files cannot be confused with current files.',
         'The Window Room has WR-01, a furnished plan, and WR-02, a joinery elevation. Both remain R0 illustrative samples. The teaching RCP on this library’s separate guide is not part of that original two-drawing package.',

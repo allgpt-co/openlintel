@@ -68,7 +68,7 @@ export function validateOwnershipManifest(manifest) {
   const unique = new Set();
   for (const file of manifest.files) {
     const permitted =
-      ['.nojekyll', 'sitemap.xml', 'robots.txt', '404.html'].includes(file) ||
+      ['.nojekyll', 'sitemap.xml', 'robots.txt', 'llms.txt', '404.html'].includes(file) ||
       (file.endsWith('index.html') && pages.has(file.slice(0, -'index.html'.length))) ||
       /^assets\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_.-]+\.(?:css|js|svg|webp|png|woff2|xlsx|docx|pptx|pdf|csv|txt|mp4|vtt)$/.test(
         file,

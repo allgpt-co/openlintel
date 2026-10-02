@@ -150,8 +150,18 @@ test('Resource rendering preserves ungated downloads, data attributes, source da
       const downloadTags = [...html.matchAll(/<a [^>]*data-resource-download[^>]*>/g)].map(
         (match) => match[0],
       );
-      assert.equal(downloadTags.length, page.downloads.length);
-      for (const [index, tag] of downloadTags.entries()) {
+      // The header carries one above-the-fold control for the first download; the panel lists all.
+      const [headerTag, ...panelTags] = downloadTags;
+      assert.equal(panelTags.length, page.downloads.length);
+      assert.ok(headerTag.includes('class="button"'));
+      assert.ok(headerTag.includes(`href="${url(page.downloads[0].path)}"`));
+      assert.ok(headerTag.includes(`data-resource-id="${page.id}"`));
+      assert.ok(
+        headerTag.includes(
+          `data-resource-variant="${page.format === 'xlsx' ? 'workbook' : 'blank'}"`,
+        ),
+      );
+      for (const [index, tag] of panelTags.entries()) {
         assert.ok(tag.includes(`data-resource-id="${page.id}"`));
         assert.ok(tag.includes(`data-resource-format="${page.format}"`));
         assert.ok(
@@ -248,7 +258,13 @@ test('Mixed download formats retain each file’s format and variant, and closed
 test('Guide revision dates belong to individual authored entries', () => {
   assert.equal(guides.find((page) => page.id === 'mood-board').modified, '2026-09-26');
   assert.equal(guides.find((page) => page.id === 'material-board').modified, '2026-09-15');
-  assert.ok(workflowGuides.every((page) => page.modified === '2026-09-15'));
+  // The AI concept guide gained a section on 2026-10-02; the other workflow guides are unchanged.
+  assert.ok(
+    workflowGuides.every(
+      (page) =>
+        page.modified === (page.id === 'concept-vs-documents' ? '2026-10-02' : '2026-09-15'),
+    ),
+  );
 });
 
 test('Authored comparison cells are escaped and presentation formats retain the existing URL', () => {
